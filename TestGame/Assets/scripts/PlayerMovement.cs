@@ -3,7 +3,9 @@ using UnityEngine;
 
 public class PlayerMovementScript : MonoBehaviour
 {
-    Rigidbody2D body;
+    [SerializeField] private float moveSpeed = 5f;
+    [SerializeField] private float jumpForce = 7f;
+    private Rigidbody2D body;
     public Animator animator;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -16,13 +18,12 @@ public class PlayerMovementScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
         Vector2 velocity = body.linearVelocity;
 
         // Jumping
-        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.UpArrow)) && Mathf.Abs(body.linearVelocity.y) < 0.01f)
+        if (Input.GetKeyDown(KeyCode.Space) && Mathf.Abs(body.linearVelocity.y) < 0.01f)
         {
-            velocity.y = 7f; // Jump force
+            velocity.y = jumpForce; // Jump force
         }
         else
         {
@@ -30,24 +31,25 @@ public class PlayerMovementScript : MonoBehaviour
             velocity.y += Physics2D.gravity.y * Time.deltaTime;
         }
 
-        var speed = 0;
         // Horizontal movement
-        if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
+        float moveInput = 0f;
+        if (Input.GetKey(KeyCode.RightArrow))
         {
             // Flip scale to face right
-            this.transform.localScale = new Vector3(Mathf.Abs(this.transform.localScale.x) * 1, this.transform.localScale.y);
-            speed = 5;
+            transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y);
+            moveInput = moveSpeed;
             
         }
-        else if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
+        else if (Input.GetKey(KeyCode.LeftArrow))
         {
             // Flip scale to face left
-            this.transform.localScale = new Vector3(Mathf.Abs(this.transform.localScale.x) * -1, this.transform.localScale.y);
-            speed = -5;
+            transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y);
+            moveInput = -moveSpeed;
         }
         
-        velocity.x = speed;
-        animator.SetFloat("speed", Math.Abs(speed));
+        velocity.x = moveInput;
+
+        animator.SetFloat("speed", Mathf.Abs(moveInput));
 
         body.linearVelocity = velocity;
     }
