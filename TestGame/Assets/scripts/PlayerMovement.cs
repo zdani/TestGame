@@ -1,17 +1,22 @@
+using System;
 using UnityEngine;
 
-public class NewMonoBehaviourScript : MonoBehaviour
+public class PlayerMovementScript : MonoBehaviour
 {
     Rigidbody2D body;
+    public Animator animator;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
         body = GetComponent<Rigidbody2D>();
+        body.freezeRotation = true; // Prevent tipping over
     }
 
     // Update is called once per frame
     void Update()
     {
+        
         Vector2 velocity = body.linearVelocity;
 
         // Jumping
@@ -25,21 +30,24 @@ public class NewMonoBehaviourScript : MonoBehaviour
             velocity.y += Physics2D.gravity.y * Time.deltaTime;
         }
 
+        var speed = 0;
         // Horizontal movement
         if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
         {
-            var xscale = this.transform.localScale.x > 0.01 ? 1   : - 1;
-            this.transform.localScale = new Vector3(1, this.transform.localScale.y);
-            velocity.x = 5;
+            // Flip scale to face right
+            this.transform.localScale = new Vector3(Mathf.Abs(this.transform.localScale.x) * 1, this.transform.localScale.y);
+            speed = 5;
+            
         }
         else if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
         {
-            var xscale = this.transform.localScale.x > 0.01 ? -1 : 1;
-            this.transform.localScale = new Vector3(-1, this.transform.localScale.y);
-            velocity.x = -5;
+            // Flip scale to face left
+            this.transform.localScale = new Vector3(Mathf.Abs(this.transform.localScale.x) * -1, this.transform.localScale.y);
+            speed = -5;
         }
-        else
-            velocity.x = 0;
+        
+        velocity.x = speed;
+        animator.SetFloat("speed", Math.Abs(speed));
 
         body.linearVelocity = velocity;
     }
