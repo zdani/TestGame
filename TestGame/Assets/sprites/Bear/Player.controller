@@ -33,7 +33,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: bear_idle
-  m_Speed: 1
+  m_Speed: 0.5
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -5040769205536839426}
@@ -88,18 +88,18 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: -5638584582830730596}
-    m_Position: {x: 480, y: 40, z: 0}
+    m_Position: {x: 390, y: 100, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 7472061601875387621}
-    m_Position: {x: 160, y: 130, z: 0}
+    m_Position: {x: 390, y: 210, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
   m_StateMachineTransitions: {}
   m_StateMachineBehaviours: []
-  m_AnyStatePosition: {x: 50, y: 20, z: 0}
-  m_EntryPosition: {x: 370, y: 270, z: 0}
-  m_ExitPosition: {x: 800, y: 120, z: 0}
+  m_AnyStatePosition: {x: 150, y: 40, z: 0}
+  m_EntryPosition: {x: 150, y: 110, z: 0}
+  m_ExitPosition: {x: 730, y: 110, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
   m_DefaultState: {fileID: -5638584582830730596}
 --- !u!91 &9100000
