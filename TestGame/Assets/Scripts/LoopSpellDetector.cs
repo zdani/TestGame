@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(LineRenderer))]
 public class LoopSpellDetector : MonoBehaviour
@@ -10,6 +11,7 @@ public class LoopSpellDetector : MonoBehaviour
     private readonly List<Vector2> drawnPoints = new();
     private LineRenderer lineRenderer;
     private ParticleSystem myParticleSystem;
+    private bool isDrawing = false;
 
     void Awake()
     {
@@ -24,8 +26,9 @@ public class LoopSpellDetector : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !IsPointerOverUI())
         {
+            isDrawing = true;
             drawnPoints.Clear();
             lineRenderer.positionCount = 0;
             AddPoint(Camera.main.ScreenToWorldPoint(Input.mousePosition));
@@ -34,7 +37,7 @@ public class LoopSpellDetector : MonoBehaviour
             transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             myParticleSystem.Play();
         }
-        else if (Input.GetMouseButton(0))
+        else if (Input.GetMouseButton(0) && isDrawing)
         {
             Vector2 currentPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             transform.position = currentPos;
@@ -43,8 +46,9 @@ public class LoopSpellDetector : MonoBehaviour
                 AddPoint(currentPos);
             }
         }
-        else if (Input.GetMouseButtonUp(0))
+        else if (Input.GetMouseButtonUp(0) && isDrawing)
         {
+            isDrawing = false;
             myParticleSystem.Stop();
 
             if (drawnPoints.Count < 3)
@@ -66,6 +70,10 @@ public class LoopSpellDetector : MonoBehaviour
                 Debug.Log("Not a closed loop.");
             }
         }
+    }
+    bool IsPointerOverUI()
+    {
+        return EventSystem.current != null && EventSystem.current.IsPointerOverGameObject();
     }
 
     void AddPoint(Vector2 point)
