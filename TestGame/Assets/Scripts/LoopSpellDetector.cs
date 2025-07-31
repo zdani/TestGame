@@ -5,8 +5,13 @@ using UnityEngine.EventSystems;
 [RequireComponent(typeof(LineRenderer))]
 public class LoopSpellDetector : MonoBehaviour
 {
-    public Gradient sparkGradientNormal;
-    public Gradient sparkGradientBright;
+    public GameObject intersectionPrefab;
+    private List<Vector2> activeIntersections = new();
+    private List<Vector2> pendingIntersections = new();
+    private List<GameObject> intersectionObjs = new();
+
+    public Gradient lineGradientNormal;
+    public Gradient lineGradientBright;
 
     public float minPointDistance = 0.15f;
     public float minLoopLength = 0.75f;
@@ -27,7 +32,7 @@ public class LoopSpellDetector : MonoBehaviour
         lineRenderer.useWorldSpace = true;
         lineRenderer.loop = false;
         lineRenderer.widthMultiplier = 0.05f;
-        lineRenderer.colorGradient = sparkGradientNormal;
+        lineRenderer.colorGradient = lineGradientNormal;
 
         myParticleSystem = GetComponent<ParticleSystem>();
     }
@@ -62,23 +67,35 @@ public class LoopSpellDetector : MonoBehaviour
             // Change appearance if loop is ready
             if (loopReady)
             {
-                lineRenderer.colorGradient = sparkGradientBright;
+                lineRenderer.colorGradient = lineGradientBright;
                 lineRenderer.widthMultiplier = 0.15f;
             }
             else
             {
-                lineRenderer.colorGradient = sparkGradientNormal;
+                lineRenderer.colorGradient = lineGradientNormal;
                 lineRenderer.widthMultiplier = 0.05f;
+            }
+
+            for (int i = pendingIntersections.Count - 1; i >= 0; i--)
+            {
+                Vector2 intersectPoint = pendingIntersections[i];
+                if (Vector2.Distance(intersectPoint, drawnPoints[^1]) > closeLoopThreshold)
+                {
+                    intersectionObjs.Add(Instantiate(intersectionPrefab, intersectPoint, intersectionPrefab.transform.rotation));
+                    activeIntersections.Add(intersectPoint);
+                    pendingIntersections.RemoveAt(i);
+                }
             }
         }
         else if (Input.GetMouseButtonUp(0) && isDrawing)
         {
             isDrawing = false;
             myParticleSystem.Stop();
+            CloseLoopIfNeeded();
 
             if (loopReady)
             {
-                int crossings = CountSelfIntersections(drawnPoints, closeLoopThreshold);
+                int crossings = activeIntersections.Count;
                 Debug.Log($"Loop closed. Self-crossings: {crossings}");
                 TriggerSpell(crossings);
             }
@@ -86,6 +103,9 @@ public class LoopSpellDetector : MonoBehaviour
             {
                 Debug.Log("Not a closed loop.");
             }
+
+            pendingIntersections.Clear();
+            activeIntersections.Clear();
         }
     }
     bool IsPointerOverUI()
@@ -93,11 +113,35 @@ public class LoopSpellDetector : MonoBehaviour
         return EventSystem.current != null && EventSystem.current.IsPointerOverGameObject();
     }
 
-    void AddPoint(Vector2 point)
+    void AddPoint(Vector2 newPoint)
     {
-        drawnPoints.Add(point);
+        if (drawnPoints.Count > 0)
+        {
+            Vector2 prevPoint = drawnPoints[^1];
+
+            for (int i = 0; i < drawnPoints.Count - 2; i++)
+            {
+                Vector2 a1 = drawnPoints[i];
+                Vector2 a2 = drawnPoints[i + 1];
+
+                if (DoLinesIntersect(a1, a2, prevPoint, newPoint, out _))
+                {
+                    Vector2 intersectionApprox = (a1 + a2 + prevPoint + newPoint) / 4f;
+
+                    bool alreadyPending = pendingIntersections.Exists(p => Vector2.Distance(p, intersectionApprox) < 0.1f);
+                    bool alreadyActive = activeIntersections.Exists(p => Vector2.Distance(p, intersectionApprox) < 0.1f);
+
+                    if (!alreadyPending && !alreadyActive)
+                    {
+                        pendingIntersections.Add(intersectionApprox);
+                    }
+                }
+            }
+        }
+
+        drawnPoints.Add(newPoint);
         lineRenderer.positionCount = drawnPoints.Count;
-        lineRenderer.SetPosition(drawnPoints.Count - 1, point);
+        lineRenderer.SetPosition(drawnPoints.Count - 1, newPoint);
     }
 
     float GetPathLength(List<Vector2> points, int startIndex = 0)
@@ -110,70 +154,76 @@ public class LoopSpellDetector : MonoBehaviour
         return length;
     }
 
-    int CountSelfIntersections(List<Vector2> path, float closeLoopThreshold)
+    bool DoLinesIntersect(Vector2 a1, Vector2 a2, Vector2 b1, Vector2 b2, out Vector2 intersection)
     {
-        int count = 0;
-        int segmentCount = path.Count;
+        intersection = Vector2.zero;
 
-        if (segmentCount < 4)
-            return 0; // Not enough segments to intersect
+        // Early-out if segments share an endpoint
+        if (a1 == b1 || a1 == b2 || a2 == b1 || a2 == b2)
+            return false;
 
-        Vector2 startPoint = path[0];
-
-        for (int i = 0; i < segmentCount - 1; i++)
-        {
-            Vector2 a1 = path[i];
-            Vector2 a2 = path[i + 1];
-
-            for (int j = i + 2; j < segmentCount - 1; j++)
-            {
-                // Skip adjacent segments
-                if (j == i + 1)
-                    continue;
-
-                Vector2 b1 = path[j];
-                Vector2 b2 = path[j + 1];
-
-                if (DoLinesIntersect(a1, a2, b1, b2))
-                {
-                    // Don't count intersection if the segment is positionally close to the start point and path-length-wise close to the end point
-                    bool segmentPositionallyCloseToStart = Vector2.Distance(a1, startPoint) < closeLoopThreshold || Vector2.Distance(a2, startPoint) < closeLoopThreshold;
-                    if (!segmentPositionallyCloseToStart)
-                    {
-                        count++;
-                    }
-                    else
-                    {
-                        bool segmentLengthCloseToEnd = GetPathLength(path, j) < minLoopLength;
-                        Debug.Log($"Length to end of path is {GetPathLength(path, j)}");
-                        if (!segmentLengthCloseToEnd)
-                        {
-                            count++;
-                        }
-                        else
-                        {
-                            Debug.Log("Skipping segment due to close proximity to start and end points");
-                            continue;
-                        }
-
-                    }
-                }
-            }
-        }
-
-        return count;
-    }
-
-    bool DoLinesIntersect(Vector2 a1, Vector2 a2, Vector2 b1, Vector2 b2)
-    {
         float d = (a2.x - a1.x) * (b2.y - b1.y) - (a2.y - a1.y) * (b2.x - b1.x);
         if (Mathf.Approximately(d, 0))
-            return false;
+            return false; // Lines are parallel or coincident
 
         float u = ((b1.x - a1.x) * (b2.y - b1.y) - (b1.y - a1.y) * (b2.x - b1.x)) / d;
         float v = ((b1.x - a1.x) * (a2.y - a1.y) - (b1.y - a1.y) * (a2.x - a1.x)) / d;
 
-        return (u >= 0 && u <= 1) && (v >= 0 && v <= 1);
+        if ((u > 0 && u < 1) && (v > 0 && v < 1))
+        {
+            intersection = a1 + u * (a2 - a1);
+            return true;
+        }
+
+        return false;
+    }
+
+    void CloseLoopIfNeeded()
+    {
+        if (loopReady)
+        {
+            Vector2 finalPoint = drawnPoints[^1]; // Last point drawn
+
+            // Add segment to close loop
+            drawnPoints.Add(startPoint);
+            lineRenderer.positionCount = drawnPoints.Count;
+            lineRenderer.SetPosition(drawnPoints.Count - 1, startPoint);
+
+            // Prepare to add the closing segment
+            Vector2 closingStart = finalPoint;
+            Vector2 closingEnd = startPoint;
+
+            // Check for intersection BEFORE adding the point to drawnPoints
+            for (int i = 0; i < drawnPoints.Count - 2; i++) // -2 so we skip the last segment
+            {
+                Vector2 a1 = drawnPoints[i];
+                Vector2 a2 = drawnPoints[i + 1];
+
+                // Skip if a2 is the same as closingStart (adjacent segment)
+                if ((a1 == closingStart) || (a2 == closingStart))
+                    continue;
+
+                if (DoLinesIntersect(a1, a2, closingStart, closingEnd, out Vector2 intersectPoint))
+                {
+                    // Avoid spawns near endpoints of the closing segment
+                    if (Vector2.Distance(intersectPoint, startPoint) > 0.01f &&
+                        Vector2.Distance(intersectPoint, finalPoint) > 0.01f)
+                    {
+                        intersectionObjs.Add(Instantiate(intersectionPrefab, intersectPoint, intersectionPrefab.transform.rotation));
+                        activeIntersections.Add(intersectPoint);
+                    }
+                }
+            }
+
+            for (int i = pendingIntersections.Count - 1; i >= 0; i--)
+            {
+                Vector2 intersectPoint = pendingIntersections[i];
+
+                intersectionObjs.Add(Instantiate(intersectionPrefab, intersectPoint, intersectionPrefab.transform.rotation));
+                activeIntersections.Add(intersectPoint);
+                pendingIntersections.RemoveAt(i);
+            }
+        }
     }
 
     void TriggerSpell(int crossings)
