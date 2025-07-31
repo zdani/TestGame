@@ -7,15 +7,19 @@ public enum ZombieState
     WalkingRight
 }
 
-public class ZombieEnemy : MonoBehaviour
+public class ZombieEnemy : Enemy
 {
-    [Header("Physics Settings")]
-    [SerializeField] private float gravityScale = 1f;
+    [Header("Zombie Settings")]
+    [SerializeField] private float damageAmount = 30f;
     [SerializeField] private LayerMask groundLayerMask = 1; // Default layer
     
     [Header("Movement Settings")]
     [SerializeField] private float walkSpeed = 2f;
     [SerializeField] private float edgeDetectionDistance = 0.1f;
+    [SerializeField] private float turnBufferDistance = 0.5f; // Buffer to prevent rapid turning
+    
+    // Implementation of abstract property from Enemy base class
+    public override float DamageAmount => damageAmount;
     
     private Rigidbody2D rb;
     private BoxCollider2D boxCollider;
@@ -24,9 +28,18 @@ public class ZombieEnemy : MonoBehaviour
     private GameObject currentPlatform;
     private Collider2D platformCollider;
     private ZombieState currentState = ZombieState.Falling;
+    private bool hasTurnedRecently = false; // Prevent rapid turning
+    private float lastTurnTime = 0f;
+    private const float TURN_COOLDOWN = 1f; // Minimum time between turns
     
-    void Start()
+    protected override void Start()
     {
+        // Call base class Start method
+        base.Start();
+        
+        // Set zombie-specific properties
+        enemyName = "Zombie";
+        
         // Get required components
         rb = GetComponent<Rigidbody2D>();
         boxCollider = GetComponent<BoxCollider2D>();
@@ -48,14 +61,23 @@ public class ZombieEnemy : MonoBehaviour
         }
     }
     
+    void FixedUpdate()
+    {
+        // Alternative: Move edge detection here for less frequent checks
+        // This runs at a fixed time step (usually 50 times per second)
+        if (currentState == ZombieState.WalkingLeft || currentState == ZombieState.WalkingRight)
+        {
+            CheckForEdgeTurn();
+        }
+    }
+    
     private void SetupRigidbody()
     {
-        rb.gravityScale = gravityScale;
+
         rb.constraints = RigidbodyConstraints2D.FreezeRotation; // Prevent rotation
-        rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous; // Better collision detection
+
         // Ensure the zombie starts falling
         rb.linearVelocity = Vector2.zero;
-        rb.gravityScale = gravityScale;
     }
     
     
@@ -80,25 +102,14 @@ public class ZombieEnemy : MonoBehaviour
     }
     
     private void OnLanded()
-    {        
-        Debug.Log("Zombie has landed on ground!");
-        
+    {         
         // Start walking behavior
         currentState = ZombieState.WalkingRight;
-        Debug.Log($"Zombie started walking on platform: {currentPlatform.name}");
     }
     
     private void WalkOnPlatform()
     {
         if (currentPlatform == null || platformCollider == null) return;
-        
-        // Check if we're at the edge of the platform
-        if (IsAtPlatformEdge())
-        {
-            // Turn around
-            currentState = (currentState == ZombieState.WalkingRight) ? ZombieState.WalkingLeft : ZombieState.WalkingRight;
-            Debug.Log($"Zombie turned around at platform edge. Now {currentState}");
-        }
         
         // Move in current direction
         float direction = (currentState == ZombieState.WalkingRight) ? 1f : -1f;
@@ -107,6 +118,16 @@ public class ZombieEnemy : MonoBehaviour
         
         // Flip sprite based on direction
         FlipSprite();
+    }
+    
+    private void CheckForEdgeTurn()
+    {
+        // Check if we're at the edge of the platform
+        if (IsAtPlatformEdge())
+        {
+            // Turn around
+            currentState = (currentState == ZombieState.WalkingRight) ? ZombieState.WalkingLeft : ZombieState.WalkingRight;
+        }
     }
     
     private void FlipSprite()
@@ -121,14 +142,43 @@ public class ZombieEnemy : MonoBehaviour
     {
         if (platformCollider == null) return false;
         
+        // Don't check for edges if we just turned
+        if (hasTurnedRecently && Time.time - lastTurnTime < TURN_COOLDOWN)
+        {
+            return false;
+        }
+        
         // Get the platform bounds
         Bounds platformBounds = platformCollider.bounds;
         
-        // Check if zombie is near the left or right edge
+        // Check if zombie is near the left or right edge with buffer
         float zombieX = transform.position.x;
-        float leftEdge = platformBounds.min.x + edgeDetectionDistance;
-        float rightEdge = platformBounds.max.x - edgeDetectionDistance;
+        float leftEdge = platformBounds.min.x + edgeDetectionDistance + turnBufferDistance;
+        float rightEdge = platformBounds.max.x - edgeDetectionDistance - turnBufferDistance;
         
-        return zombieX <= leftEdge || zombieX >= rightEdge;
+        bool atEdge = zombieX <= leftEdge || zombieX >= rightEdge;
+        
+        // If we're at an edge, mark that we've turned recently
+        if (atEdge)
+        {
+            hasTurnedRecently = true;
+            lastTurnTime = Time.time;
+        }
+        else
+        {
+            // Reset the flag when we're away from edges
+            hasTurnedRecently = false;
+        }
+        
+        return atEdge;
+    }
+    
+    // Implementation of abstract method from Enemy base class
+    protected override void OnPlayerCollision(Player player)
+    {
+        Debug.Log($"ZombieEnemy.OnPlayerCollision called with player: {player.name}");
+        
+        // Zombie-specific collision behavior can be added here if needed
+        Debug.Log($"Zombie collided with player! Will deal {damageAmount} damage.");
     }
 } 

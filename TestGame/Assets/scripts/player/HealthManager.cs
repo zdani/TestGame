@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 // Health manager implementation
@@ -7,9 +8,6 @@ public class HealthManager : IHealthManager
     public float CurrentHealth { get; private set; }
     public float MaxHealth { get; private set; }
     public bool IsAlive => CurrentHealth > 0f;
-
-    public event Action<float> OnHealthChanged;
-    public event Action OnPlayerDied;
 
     public HealthManager(float maxHealth)
     {
@@ -24,11 +22,13 @@ public class HealthManager : IHealthManager
         float oldHealth = CurrentHealth;
         CurrentHealth = Mathf.Max(0f, CurrentHealth - damage);
 
-        OnHealthChanged?.Invoke(CurrentHealth);
+        // Trigger health changed event through GameEvents
+        GameEvents.Instance?.TriggerHealthChanged(CurrentHealth);
 
         if (CurrentHealth <= 0f && oldHealth > 0f)
         {
-            OnPlayerDied?.Invoke();
+            // Trigger player died event through GameEvents
+            GameEvents.Instance?.TriggerPlayerDied();
         }
     }
 
@@ -41,7 +41,8 @@ public class HealthManager : IHealthManager
 
         if (CurrentHealth != oldHealth)
         {
-            OnHealthChanged?.Invoke(CurrentHealth);
+            // Trigger health changed event through GameEvents
+            GameEvents.Instance?.TriggerHealthChanged(CurrentHealth);
         }
     }
 

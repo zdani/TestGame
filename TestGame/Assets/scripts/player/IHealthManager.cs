@@ -1,3 +1,4 @@
+using System;
 
 // Interface for health management
 public interface IHealthManager
