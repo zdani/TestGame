@@ -6833,13 +6833,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 698992b53a150f7418c1dc36d907a2fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 2
-  groundCheckDistance: 0.5
-  groundLayer:
+  gravityScale: 1
+  groundLayerMask:
     serializedVersion: 2
-    m_Bits: 8
-  damageAmount: 10
-  damageCooldown: 1
+    m_Bits: 9
+  walkSpeed: 2
+  edgeDetectionDistance: 0.1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
