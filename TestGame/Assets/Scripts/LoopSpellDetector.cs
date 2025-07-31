@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -16,6 +17,7 @@ public class LoopSpellDetector : MonoBehaviour
     public float minPointDistance = 0.15f;
     public float minLoopLength = 0.75f;
     public float closeLoopThreshold = 0.4f;
+    public float fadeDuration = 1f;
 
     private LineRenderer lineRenderer;
     private ParticleSystem myParticleSystem;
@@ -92,6 +94,15 @@ public class LoopSpellDetector : MonoBehaviour
             isDrawing = false;
             myParticleSystem.Stop();
             CloseLoopIfNeeded();
+            StartCoroutine(FadeOutLine(fadeDuration));
+
+            foreach (GameObject obj in intersectionObjs)
+            {
+                if (obj != null)
+                {
+                    StartCoroutine(FadeAndDestroySprite(obj, fadeDuration));
+                }
+            }
 
             if (loopReady)
             {
@@ -224,6 +235,54 @@ public class LoopSpellDetector : MonoBehaviour
                 pendingIntersections.RemoveAt(i);
             }
         }
+    }
+
+    IEnumerator FadeOutLine(float duration)
+    {
+        float time = 0f;
+        Gradient gradient = lineRenderer.colorGradient;
+
+        // Capture the original gradient colors
+        GradientColorKey[] colorKeys = gradient.colorKeys;
+        GradientAlphaKey[] alphaKeys = gradient.alphaKeys;
+
+        while (time < duration)
+        {
+            float t = time / duration;
+            float alpha = Mathf.Lerp(1f, 0f, t);
+
+            GradientAlphaKey[] newAlphaKeys = new GradientAlphaKey[alphaKeys.Length];
+            for (int i = 0; i < alphaKeys.Length; i++)
+            {
+                newAlphaKeys[i] = new GradientAlphaKey(alpha, alphaKeys[i].time);
+            }
+
+            Gradient newGradient = new Gradient();
+            newGradient.SetKeys(colorKeys, newAlphaKeys);
+            lineRenderer.colorGradient = newGradient;
+
+            time += Time.deltaTime;
+            yield return null;
+        }
+
+        //lineRenderer.enabled = false; // This mechanic will be used so often, I don't think we need to disable the line renderer every time
+    }
+
+    IEnumerator FadeAndDestroySprite(GameObject obj, float duration)
+    {
+        SpriteRenderer sr = obj.GetComponent<SpriteRenderer>();
+        Color originalColor = sr.color;
+        float time = 0f;
+
+        while (time < duration)
+        {
+            float alpha = Mathf.Lerp(1f, 0f, time / duration);
+            sr.color = new Color(originalColor.r, originalColor.g, originalColor.b, alpha);
+            time += Time.deltaTime;
+            yield return null;
+        }
+
+        Destroy(obj);
     }
 
     void TriggerSpell(int crossings)
