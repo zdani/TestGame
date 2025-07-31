@@ -85,11 +85,6 @@ public class ZombieEnemy : MonoBehaviour
         
         // Start walking behavior
         currentState = ZombieState.WalkingRight;
-        StartWalking();
-    }
-    
-    private void StartWalking()
-    {
         Debug.Log($"Zombie started walking on platform: {currentPlatform.name}");
     }
     
