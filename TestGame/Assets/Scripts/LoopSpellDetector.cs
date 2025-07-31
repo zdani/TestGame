@@ -5,13 +5,20 @@ using UnityEngine.EventSystems;
 [RequireComponent(typeof(LineRenderer))]
 public class LoopSpellDetector : MonoBehaviour
 {
+    public Gradient sparkGradientNormal;
+    public Gradient sparkGradientBright;
+
     public float minPointDistance = 0.15f;
+    public float minLoopLength = 0.75f;
     public float closeLoopThreshold = 0.4f;
 
-    private readonly List<Vector2> drawnPoints = new();
     private LineRenderer lineRenderer;
     private ParticleSystem myParticleSystem;
+
+    private readonly List<Vector2> drawnPoints = new();
+    private Vector2 startPoint;    
     private bool isDrawing = false;
+    private bool loopReady = false;
 
     void Awake()
     {
@@ -20,6 +27,7 @@ public class LoopSpellDetector : MonoBehaviour
         lineRenderer.useWorldSpace = true;
         lineRenderer.loop = false;
         lineRenderer.widthMultiplier = 0.05f;
+        lineRenderer.colorGradient = sparkGradientNormal;
 
         myParticleSystem = GetComponent<ParticleSystem>();
     }
@@ -31,19 +39,36 @@ public class LoopSpellDetector : MonoBehaviour
             isDrawing = true;
             drawnPoints.Clear();
             lineRenderer.positionCount = 0;
-            AddPoint(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+            startPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            AddPoint(startPoint);
 
             //Particle effect management
-            transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            transform.position = startPoint;
             myParticleSystem.Play();
         }
         else if (Input.GetMouseButton(0) && isDrawing)
         {
-            Vector2 currentPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            transform.position = currentPos;
-            if (Vector2.Distance(currentPos, drawnPoints[^1]) > minPointDistance)
+            Vector2 currentPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            transform.position = currentPoint;
+            if (Vector2.Distance(currentPoint, drawnPoints[^1]) > minPointDistance)
             {
-                AddPoint(currentPos);
+                AddPoint(currentPoint);
+            }
+
+            float pathLength = GetPathLength(drawnPoints);
+            bool isCloseToStart = Vector2.Distance(currentPoint, startPoint) < closeLoopThreshold;
+            loopReady = isCloseToStart && pathLength >= minLoopLength;
+
+            // Change appearance if loop is ready
+            if (loopReady)
+            {
+                lineRenderer.colorGradient = sparkGradientBright;
+                lineRenderer.widthMultiplier = 0.15f;
+            }
+            else
+            {
+                lineRenderer.colorGradient = sparkGradientNormal;
+                lineRenderer.widthMultiplier = 0.05f;
             }
         }
         else if (Input.GetMouseButtonUp(0) && isDrawing)
@@ -51,15 +76,7 @@ public class LoopSpellDetector : MonoBehaviour
             isDrawing = false;
             myParticleSystem.Stop();
 
-            if (drawnPoints.Count < 3)
-            {
-                Debug.Log("Too few points.");
-                return;
-            }
-
-            bool isClosed = Vector2.Distance(drawnPoints[0], drawnPoints[^1]) < closeLoopThreshold;
-
-            if (isClosed)
+            if (loopReady)
             {
                 int crossings = CountSelfIntersections(drawnPoints, closeLoopThreshold);
                 Debug.Log($"Loop closed. Self-crossings: {crossings}");
@@ -83,7 +100,17 @@ public class LoopSpellDetector : MonoBehaviour
         lineRenderer.SetPosition(drawnPoints.Count - 1, point);
     }
 
-   int CountSelfIntersections(List<Vector2> path, float closeLoopThreshold)
+    float GetPathLength(List<Vector2> points, int startIndex = 0)
+    {
+        float length = 0f;
+        for (int i = startIndex; i < points.Count - 1; i++)
+        {
+            length += Vector2.Distance(points[i], points[i + 1]);
+        }
+        return length;
+    }
+
+    int CountSelfIntersections(List<Vector2> path, float closeLoopThreshold)
     {
         int count = 0;
         int segmentCount = path.Count;
@@ -98,10 +125,6 @@ public class LoopSpellDetector : MonoBehaviour
             Vector2 a1 = path[i];
             Vector2 a2 = path[i + 1];
 
-            // Skip if either point in segment A is near the start
-            if (Vector2.Distance(a1, startPoint) < closeLoopThreshold || Vector2.Distance(a2, startPoint) < closeLoopThreshold)
-                continue;
-
             for (int j = i + 2; j < segmentCount - 1; j++)
             {
                 // Skip adjacent segments
@@ -111,21 +134,34 @@ public class LoopSpellDetector : MonoBehaviour
                 Vector2 b1 = path[j];
                 Vector2 b2 = path[j + 1];
 
-                // Skip if either point in segment B is near the start
-                if (Vector2.Distance(b1, startPoint) < closeLoopThreshold || Vector2.Distance(b2, startPoint) < closeLoopThreshold)
-                    continue;
+                if (DoLinesIntersect(a1, a2, b1, b2))
+                {
+                    // Don't count intersection if the segment is positionally close to the start point and path-length-wise close to the end point
+                    bool segmentPositionallyCloseToStart = Vector2.Distance(a1, startPoint) < closeLoopThreshold || Vector2.Distance(a2, startPoint) < closeLoopThreshold;
+                    if (!segmentPositionallyCloseToStart)
+                    {
+                        count++;
+                    }
+                    else
+                    {
+                        bool segmentLengthCloseToEnd = GetPathLength(path, j) < minLoopLength;
+                        Debug.Log($"Length to end of path is {GetPathLength(path, j)}");
+                        if (!segmentLengthCloseToEnd)
+                        {
+                            count++;
+                        }
+                        else
+                        {
+                            Debug.Log("Skipping segment due to close proximity to start and end points");
+                            continue;
+                        }
 
-                if (LineSegmentsIntersect(a1, a2, b1, b2))
-                    count++;
+                    }
+                }
             }
         }
 
         return count;
-    }
-
-    bool LineSegmentsIntersect(Vector2 p1, Vector2 p2, Vector2 q1, Vector2 q2)
-    {
-        return DoLinesIntersect(p1, p2, q1, q2);
     }
 
     bool DoLinesIntersect(Vector2 a1, Vector2 a2, Vector2 b1, Vector2 b2)
@@ -154,8 +190,11 @@ public class LoopSpellDetector : MonoBehaviour
             case 2:
                 Debug.Log("Casting ability #3");
                 break;
-            default:
+            case 3:
                 Debug.Log("Casting ability #4");
+                break;
+            default:
+                Debug.Log("No ability is mapped to this number of crossings");
                 break;
         }
     }
