@@ -9,6 +9,7 @@ public class LoopSpellDetector : MonoBehaviour
 
     private readonly List<Vector2> drawnPoints = new();
     private LineRenderer lineRenderer;
+    private ParticleSystem myParticleSystem;
 
     void Awake()
     {
@@ -17,6 +18,8 @@ public class LoopSpellDetector : MonoBehaviour
         lineRenderer.useWorldSpace = true;
         lineRenderer.loop = false;
         lineRenderer.widthMultiplier = 0.05f;
+
+        myParticleSystem = GetComponent<ParticleSystem>();
     }
 
     void Update()
@@ -26,10 +29,15 @@ public class LoopSpellDetector : MonoBehaviour
             drawnPoints.Clear();
             lineRenderer.positionCount = 0;
             AddPoint(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+
+            //Particle effect management
+            transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            myParticleSystem.Play();
         }
         else if (Input.GetMouseButton(0))
         {
             Vector2 currentPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            transform.position = currentPos;
             if (Vector2.Distance(currentPos, drawnPoints[^1]) > minPointDistance)
             {
                 AddPoint(currentPos);
@@ -37,6 +45,8 @@ public class LoopSpellDetector : MonoBehaviour
         }
         else if (Input.GetMouseButtonUp(0))
         {
+            myParticleSystem.Stop();
+
             if (drawnPoints.Count < 3)
             {
                 Debug.Log("Too few points.");
@@ -128,16 +138,16 @@ public class LoopSpellDetector : MonoBehaviour
         switch (crossings)
         {
             case 0:
-                Debug.Log("Cast Fireball!");
+                Debug.Log("Casting Fireball");
                 break;
             case 1:
-                Debug.Log("Cast Ice Spear!");
+                Debug.Log("Casting ability #2");
                 break;
             case 2:
-                Debug.Log("Cast Lightning Arc!");
+                Debug.Log("Casting ability #3");
                 break;
             default:
-                Debug.Log("Cast Black Hole!");
+                Debug.Log("Casting ability #4");
                 break;
         }
     }
