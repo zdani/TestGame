@@ -1,5 +1,12 @@
 using UnityEngine;
 
+public enum ZombieState
+{
+    Falling,
+    WalkingLeft,
+    WalkingRight
+}
+
 public class ZombieEnemy : MonoBehaviour
 {
     [Header("Physics Settings")]
@@ -16,8 +23,7 @@ public class ZombieEnemy : MonoBehaviour
     private bool isGrounded = false;
     private GameObject currentPlatform;
     private Collider2D platformCollider;
-    private bool walkingRight = true;
-    private bool isWalking = false;
+    private ZombieState currentState = ZombieState.Falling;
     
     void Start()
     {
@@ -36,7 +42,7 @@ public class ZombieEnemy : MonoBehaviour
         CheckGrounded();
         
         // Handle walking behavior
-        if (isWalking)
+        if (currentState == ZombieState.WalkingLeft || currentState == ZombieState.WalkingRight)
         {
             WalkOnPlatform();
         }
@@ -78,15 +84,12 @@ public class ZombieEnemy : MonoBehaviour
         Debug.Log("Zombie has landed on ground!");
         
         // Start walking behavior
-        isWalking = true;
+        currentState = ZombieState.WalkingRight;
         StartWalking();
     }
     
     private void StartWalking()
     {
-        // Set initial walking direction
-        walkingRight = true;
-        
         Debug.Log($"Zombie started walking on platform: {currentPlatform.name}");
     }
     
@@ -98,12 +101,12 @@ public class ZombieEnemy : MonoBehaviour
         if (IsAtPlatformEdge())
         {
             // Turn around
-            walkingRight = !walkingRight;
-            Debug.Log($"Zombie turned around at platform edge. Now walking {(walkingRight ? "right" : "left")}");
+            currentState = (currentState == ZombieState.WalkingRight) ? ZombieState.WalkingLeft : ZombieState.WalkingRight;
+            Debug.Log($"Zombie turned around at platform edge. Now {currentState}");
         }
         
         // Move in current direction
-        float direction = walkingRight ? 1f : -1f;
+        float direction = (currentState == ZombieState.WalkingRight) ? 1f : -1f;
         Vector2 movement = new Vector2(direction * walkSpeed, 0f);
         rb.linearVelocity = movement;
         
@@ -115,7 +118,7 @@ public class ZombieEnemy : MonoBehaviour
     {
         if (spriteRenderer != null)
         {
-            spriteRenderer.flipX = walkingRight;
+            spriteRenderer.flipX = (currentState == ZombieState.WalkingRight);
         }
     }
     

@@ -6836,7 +6836,7 @@ MonoBehaviour:
   gravityScale: 1
   groundLayerMask:
     serializedVersion: 2
-    m_Bits: 9
+    m_Bits: 8
   walkSpeed: 2
   edgeDetectionDistance: 0.1
 --- !u!1660057539 &9223372036854775807
