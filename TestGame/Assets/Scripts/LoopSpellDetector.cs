@@ -7,6 +7,7 @@ using UnityEngine.EventSystems;
 public class LoopSpellDetector : MonoBehaviour
 {
     public GameObject intersectionPrefab;
+    public Animator playerAnimator; 
     private List<Vector2> activeIntersections = new();
     private List<Vector2> pendingIntersections = new();
     private List<GameObject> intersectionObjs = new();
@@ -45,6 +46,8 @@ public class LoopSpellDetector : MonoBehaviour
         if (Input.GetMouseButtonDown(0) && !IsPointerOverUI())
         {
             isDrawing = true;
+            playerAnimator.SetBool("isCasting", true);
+
             drawnPoints.Clear();
             lineRenderer.positionCount = 0;
             startPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -93,6 +96,8 @@ public class LoopSpellDetector : MonoBehaviour
         else if (Input.GetMouseButtonUp(0) && isDrawing)
         {
             isDrawing = false;
+            playerAnimator.SetBool("isCasting", false);
+            
             myParticleSystem.Stop();
             CloseLoopIfNeeded();
             SpawnAndFadeCloneLine();
