@@ -707,6 +707,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   intersectionPrefab: {fileID: 823190141134836104, guid: 5dba736b0894d02409677b41cd25c5c6, type: 3}
+  fadingLinePrefab: {fileID: 8646012810190170219, guid: 53464d2a663b816479f7116efbdbfd08, type: 3}
   lineGradientNormal:
     serializedVersion: 2
     key0: {r: 1, g: 0.45454547, b: 0, a: 1}
@@ -770,6 +771,7 @@ MonoBehaviour:
   minPointDistance: 0.15
   minLoopLength: 0.75
   closeLoopThreshold: 0.4
+  fadeDuration: 1
 --- !u!120 &775114413
 LineRenderer:
   serializedVersion: 2
@@ -813,7 +815,7 @@ LineRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 733280889
-  m_SortingLayer: 1
+  m_SortingLayer: -1
   m_SortingOrder: 0
   m_Positions:
   - {x: 0, y: 0, z: 0}
@@ -6218,7 +6220,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1600332947
-  m_SortingLayer: -1
+  m_SortingLayer: -2
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 0.03773582, g: 0.03619316, b: 0.03619316, a: 1}

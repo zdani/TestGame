@@ -11,6 +11,7 @@ public class LoopSpellDetector : MonoBehaviour
     private List<Vector2> pendingIntersections = new();
     private List<GameObject> intersectionObjs = new();
 
+    public GameObject fadingLinePrefab;
     public Gradient lineGradientNormal;
     public Gradient lineGradientBright;
 
@@ -94,14 +95,13 @@ public class LoopSpellDetector : MonoBehaviour
             isDrawing = false;
             myParticleSystem.Stop();
             CloseLoopIfNeeded();
-            StartCoroutine(FadeOutLine(fadeDuration));
+            SpawnAndFadeCloneLine();
+            lineRenderer.positionCount = 0;
+            lineRenderer.colorGradient = lineGradientNormal;
 
             foreach (GameObject obj in intersectionObjs)
             {
-                if (obj != null)
-                {
-                    StartCoroutine(FadeAndDestroySprite(obj, fadeDuration));
-                }
+                StartCoroutine(FadeAndDestroySprite(obj, fadeDuration));
             }
 
             if (loopReady)
@@ -237,52 +237,53 @@ public class LoopSpellDetector : MonoBehaviour
         }
     }
 
-    IEnumerator FadeOutLine(float duration)
+    void SpawnAndFadeCloneLine()
     {
-        float time = 0f;
-        Gradient gradient = lineRenderer.colorGradient;
+        if (lineRenderer.positionCount == 0) return;
 
-        // Capture the original gradient colors
-        GradientColorKey[] colorKeys = gradient.colorKeys;
-        GradientAlphaKey[] alphaKeys = gradient.alphaKeys;
+        GameObject clone = Instantiate(fadingLinePrefab);
+        LineRenderer cloneLR = clone.GetComponent<LineRenderer>();
 
-        while (time < duration)
+        // Copy appearance
+        cloneLR.widthMultiplier = lineRenderer.widthMultiplier;
+        cloneLR.colorGradient = lineRenderer.colorGradient;
+        cloneLR.positionCount = lineRenderer.positionCount;
+
+        for (int i = 0; i < lineRenderer.positionCount; i++)
         {
-            float t = time / duration;
-            float alpha = Mathf.Lerp(1f, 0f, t);
-
-            GradientAlphaKey[] newAlphaKeys = new GradientAlphaKey[alphaKeys.Length];
-            for (int i = 0; i < alphaKeys.Length; i++)
-            {
-                newAlphaKeys[i] = new GradientAlphaKey(alpha, alphaKeys[i].time);
-            }
-
-            Gradient newGradient = new Gradient();
-            newGradient.SetKeys(colorKeys, newAlphaKeys);
-            lineRenderer.colorGradient = newGradient;
-
-            time += Time.deltaTime;
-            yield return null;
+            cloneLR.SetPosition(i, lineRenderer.GetPosition(i));
         }
 
-        //lineRenderer.enabled = false; // This mechanic will be used so often, I don't think we need to disable the line renderer every time
+        // Begin fade out
+        FadingLineRenderer fading = clone.GetComponent<FadingLineRenderer>();
+        fading.fadeDuration = fadeDuration;
+        fading.StartFade(lineRenderer.colorGradient);
     }
 
     IEnumerator FadeAndDestroySprite(GameObject obj, float duration)
     {
+        if (obj == null)
+            yield break;
+
         SpriteRenderer sr = obj.GetComponent<SpriteRenderer>();
         Color originalColor = sr.color;
         float time = 0f;
 
         while (time < duration)
         {
+            if (obj == null || obj.gameObject == null)
+                yield break;
+
             float alpha = Mathf.Lerp(1f, 0f, time / duration);
             sr.color = new Color(originalColor.r, originalColor.g, originalColor.b, alpha);
             time += Time.deltaTime;
             yield return null;
         }
 
-        Destroy(obj);
+        if (obj != null && obj.gameObject != null)
+        {
+            Destroy(obj);
+        }
     }
 
     void TriggerSpell(int crossings)
