@@ -6,11 +6,41 @@ public class FireballProjectile : MonoBehaviour
     public float lifetime = 3f;
     private Vector2 direction;
 
+    public Sprite[] animationFrames; // Size = 2 in Inspector
+    public float animationSpeed = 0.1f; // Time between frames
+
+    private SpriteRenderer spriteRenderer;
+    private int currentFrame;
+    private float animationTimer;
+
     void Start()
     {
         Destroy(gameObject, lifetime); // Prevent lingering fireballs
+
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        animationTimer = animationSpeed;
+        currentFrame = 0;
+
+        if (animationFrames != null && animationFrames.Length > 0)
+        {
+            spriteRenderer.sprite = animationFrames[0];
+        }
     }
-    
+
+    void Update()
+    {
+        if (animationFrames == null || animationFrames.Length < 2) return;
+
+        animationTimer -= Time.deltaTime;
+
+        if (animationTimer <= 0f)
+        {
+            currentFrame = (currentFrame + 1) % animationFrames.Length;
+            spriteRenderer.sprite = animationFrames[currentFrame];
+            animationTimer = animationSpeed;
+        }
+    }
+
     public void Initialize(Vector2 shootDirection)
     {
         direction = shootDirection.normalized;
@@ -27,4 +57,6 @@ public class FireballProjectile : MonoBehaviour
         Rigidbody2D rb = GetComponent<Rigidbody2D>();
         rb.linearVelocity = direction * speed;
     }
+    
+
 }
