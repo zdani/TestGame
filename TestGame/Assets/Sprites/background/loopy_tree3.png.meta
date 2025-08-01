@@ -1,10 +1,13 @@
 fileFormatVersion: 2
-guid: d6ccac1dc4111e747af6b276ab55c2fa
+guid: 60936706379c1d048b5a22fbc29e3cc1
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8092818901616757176
-    second: tileset_outer_conner_0
+      213: -6736051508083698584
+    second: loopy_tree3_0
+  - first:
+      213: -4347738272785126413
+    second: loopy_tree3_1
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -49,9 +52,9 @@ TextureImporter:
   spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
-  alignment: 0
-  spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 130
+  alignment: 9
+  spritePivot: {x: 0.5488466, y: 0.01945053}
+  spritePixelsToUnits: 300
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -152,23 +155,45 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: tileset_outer_conner_0
+      name: loopy_tree3_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 130
-        height: 130
+        x: 161
+        y: 2035
+        width: 14
+        height: 12
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8b90f66d9e77f4070800000000000000
-      internalID: 8092818901616757176
+      spriteID: 864dfefa7dcb482a0800000000000000
+      internalID: -6736051508083698584
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: loopy_tree3_1
+      rect:
+        serializedVersion: 2
+        x: 213
+        y: 16
+        width: 598
+        height: 2241
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3fba542831bb9a3c0800000000000000
+      internalID: -4347738272785126413
       vertices: []
       indices: 
       edges: []
@@ -178,7 +203,7 @@ TextureImporter:
     physicsShape: []
     bones: []
     spriteID: 5e97eb03825dee720800000000000000
-    internalID: 0
+    internalID: 1537655665
     vertices: []
     indices: 
     edges: []
@@ -187,7 +212,8 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      tileset_outer_conner_0: 8092818901616757176
+      loopy_tree3_0: -6736051508083698584
+      loopy_tree3_1: -4347738272785126413
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
