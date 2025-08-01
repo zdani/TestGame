@@ -16,7 +16,7 @@ public class ZombieEnemy : Enemy
     [SerializeField] private LayerMask groundLayerMask = 1; // Default layer
     
     [Header("Zombie Health Settings")]
-    [SerializeField] private float zombieMaxHealth = 50f;
+    [SerializeField] private float zombieMaxHealth = 3f;
     
     [Header("Detection Settings")]
     [SerializeField] private float detectionRadius = 5f;
