@@ -1,10 +1,12 @@
 using UnityEngine;
+using System.Collections;
 
 public enum ZombieState
 {
     Falling,
     Walking,
-    Chasing
+    Chasing,
+    Dead
 }
 
 public class ZombieEnemy : Enemy
@@ -12,6 +14,9 @@ public class ZombieEnemy : Enemy
     [Header("Zombie Settings")]
     [SerializeField] private float damageAmount = 30f;
     [SerializeField] private LayerMask groundLayerMask = 1; // Default layer
+    
+    [Header("Zombie Health Settings")]
+    [SerializeField] private float zombieMaxHealth = 50f;
     
     [Header("Detection Settings")]
     [SerializeField] private float detectionRadius = 5f;
@@ -26,6 +31,7 @@ public class ZombieEnemy : Enemy
     // Animation state constants
     private const string ANIM_IS_WALKING = "IsWalking";
     private const string ANIM_IS_CHASING = "IsChasing";
+    private const string ANIM_IS_DEAD = "IsDead";
     
     // Implementation of abstract property from Enemy base class
     public override float DamageAmount => damageAmount;
@@ -48,6 +54,9 @@ public class ZombieEnemy : Enemy
     
     protected override void Start()
     {
+        // Set zombie-specific health before calling base Start
+        SetMaxHealth(zombieMaxHealth);
+        
         // Call base class Start method
         base.Start();
         
@@ -66,6 +75,9 @@ public class ZombieEnemy : Enemy
     
     void Update()
     {
+        // Don't update if dead
+        if (currentState == ZombieState.Dead) return;
+        
         // Check if zombie has landed on ground
         CheckGrounded();
         
@@ -85,12 +97,83 @@ public class ZombieEnemy : Enemy
     
     void FixedUpdate()
     {
+        // Don't update if dead
+        if (currentState == ZombieState.Dead) return;
+        
         // Alternative: Move edge detection here for less frequent checks
         // This runs at a fixed time step (usually 50 times per second)
         if (IsWalkingState())
         {
             CheckForEdgeTurn();
         }
+    }
+    
+    // Override health management methods for zombie-specific behavior
+    public override void TakeDamage(float damage)
+    {
+        if (currentState == ZombieState.Dead) return;
+        
+        // Call base implementation
+        base.TakeDamage(damage);
+        
+        // Zombie-specific damage behavior
+        if (IsAlive)
+        {
+            // Zombies might get more aggressive when damaged
+            if (playerDetected && currentState == ZombieState.Walking)
+            {
+                OnPlayerDetected(); // Switch to chase mode
+            }
+        }
+    }
+    
+    protected override void OnDamageTaken(float damage)
+    {
+        base.OnDamageTaken(damage);
+        
+        // Zombie-specific damage feedback
+        Debug.Log($"Zombie grunts in pain! Took {damage} damage. Health: {CurrentHealth}/{MaxHealth}");
+        
+        // Visual feedback - could flash red, play sound, etc.
+        if (spriteRenderer != null)
+        {
+            StartCoroutine(FlashRed());
+        }
+    }
+    
+    protected override void OnDeath()
+    {
+        base.OnDeath();
+        
+        // Set zombie to dead state
+        currentState = ZombieState.Dead;
+        
+        // Stop all movement
+        if (rb != null)
+        {
+            rb.velocity = Vector2.zero;
+            rb.isKinematic = true; // Prevent further physics interactions
+        }
+        
+        // Disable collider to prevent further collisions
+        if (boxCollider != null)
+        {
+            boxCollider.enabled = false;
+        }
+        
+        // Set death animation
+        SetAnimationState(currentState);
+        
+        Debug.Log("Zombie has been defeated!");
+    }
+    
+    // Visual feedback coroutine
+    private IEnumerator FlashRed()
+    {
+        Color originalColor = spriteRenderer.color;
+        spriteRenderer.color = Color.red;
+        yield return new WaitForSeconds(0.1f);
+        spriteRenderer.color = originalColor;
     }
     
     private void SetupRigidbody()
@@ -208,6 +291,7 @@ public class ZombieEnemy : Enemy
             // Reset all animation parameters
             animator.SetBool(ANIM_IS_WALKING, false);
             animator.SetBool(ANIM_IS_CHASING, false);
+            animator.SetBool(ANIM_IS_DEAD, false);
             
             // Set the appropriate animation state
             switch (state)
@@ -217,6 +301,9 @@ public class ZombieEnemy : Enemy
                     break;
                 case ZombieState.Chasing:
                     animator.SetBool(ANIM_IS_CHASING, true);
+                    break;
+                case ZombieState.Dead:
+                    animator.SetBool(ANIM_IS_DEAD, true);
                     break;
                 case ZombieState.Falling:
                     // No animation for falling state

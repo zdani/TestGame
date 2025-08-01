@@ -1,17 +1,70 @@
 using UnityEngine;
 
-public abstract class Enemy : MonoBehaviour
+public abstract class Enemy : MonoBehaviour, IHealthManager
 {
     [Header("Enemy Settings")]
     [SerializeField] protected string enemyName = "Enemy";
+    
+    [Header("Health Settings")]
+    [SerializeField] protected float maxHealth = 100f;
+    [SerializeField] protected float currentHealth;
     
     // Public properties
     public string EnemyName => enemyName;
     public abstract float DamageAmount { get; }
     
+    // IHealthManager implementation
+    public float CurrentHealth => currentHealth;
+    public float MaxHealth => maxHealth;
+    public bool IsAlive => currentHealth > 0f;
+    
     protected virtual void Start()
     {
+        // Initialize health
+        currentHealth = maxHealth;
         // Base initialization - can be overridden by derived classes
+    }
+    
+    // IHealthManager implementation
+    public virtual void TakeDamage(float damage)
+    {
+        if (!IsAlive) return;
+        
+        currentHealth = Mathf.Max(0f, currentHealth - damage);
+        
+        if (!IsAlive)
+        {
+            OnDeath();
+        }
+        else
+        {
+            OnDamageTaken(damage);
+        }
+    }
+    
+    public virtual void Heal(float amount)
+    {
+        if (!IsAlive) return;
+        
+        currentHealth = Mathf.Min(maxHealth, currentHealth + amount);
+    }
+    
+    public virtual void SetMaxHealth(float newMaxHealth)
+    {
+        maxHealth = newMaxHealth;
+        currentHealth = Mathf.Min(currentHealth, maxHealth);
+    }
+    
+    // Virtual methods for derived classes to override
+    protected virtual void OnDamageTaken(float damage)
+    {
+        Debug.Log($"{enemyName} took {damage} damage. Health: {currentHealth}/{maxHealth}");
+    }
+    
+    protected virtual void OnDeath()
+    {
+        Debug.Log($"{enemyName} has died!");
+        // Derived classes can override this to add death behavior
     }
     
     // Abstract method that derived classes must implement for custom collision behavior
