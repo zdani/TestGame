@@ -16,7 +16,7 @@ public class ZombieEnemy : Enemy
     [SerializeField] private LayerMask groundLayerMask = 1; // Default layer
     
     [Header("Zombie Health Settings")]
-    [SerializeField] private float zombieMaxHealth = 50f;
+    [SerializeField] private float zombieMaxHealth = 3f;
     
     [Header("Detection Settings")]
     [SerializeField] private float detectionRadius = 5f;
@@ -38,7 +38,6 @@ public class ZombieEnemy : Enemy
     
     private Rigidbody2D rb;
     private BoxCollider2D boxCollider;
-    private SpriteRenderer spriteRenderer;
     private Animator animator; // For animation control
     private bool isGrounded = false;
     private GameObject currentPlatform;
@@ -66,7 +65,6 @@ public class ZombieEnemy : Enemy
         // Get required components
         rb = GetComponent<Rigidbody2D>();
         boxCollider = GetComponent<BoxCollider2D>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
         
         // Configure Rigidbody2D for gravity
@@ -134,11 +132,7 @@ public class ZombieEnemy : Enemy
         // Zombie-specific damage feedback
         Debug.Log($"Zombie grunts in pain! Took {damage} damage. Health: {CurrentHealth}/{MaxHealth}");
         
-        // Visual feedback - could flash red, play sound, etc.
-        if (spriteRenderer != null)
-        {
-            StartCoroutine(FlashRed());
-        }
+        // Additional zombie-specific damage behavior can be added here
     }
     
     protected override void OnDeath()
@@ -167,14 +161,9 @@ public class ZombieEnemy : Enemy
         Debug.Log("Zombie has been defeated!");
     }
     
-    // Visual feedback coroutine
-    private IEnumerator FlashRed()
-    {
-        Color originalColor = spriteRenderer.color;
-        spriteRenderer.color = Color.red;
-        yield return new WaitForSeconds(0.1f);
-        spriteRenderer.color = originalColor;
-    }
+
+    
+
     
     private void SetupRigidbody()
     {
@@ -340,6 +329,7 @@ public class ZombieEnemy : Enemy
     
     private void FlipSprite()
     {
+        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
         if (spriteRenderer != null)
         {
             spriteRenderer.flipX = isMovingRight;
