@@ -91,16 +91,49 @@ public abstract class Enemy : MonoBehaviour, IHealthManager
     protected virtual void OnCollisionEnter2D(Collision2D collision)
     {
         Debug.Log($"Enemy OnCollisionEnter2D with: {collision.gameObject.name} (Tag: {collision.gameObject.tag})");
+        
+        // Check for Player collision
         Player player = collision.gameObject.GetComponent<Player>();
         if (player != null)
         {
             Debug.Log($"Found Player component on {collision.gameObject.name}, calling OnPlayerCollision");
             OnPlayerCollision(player);
             DealDamageToPlayer(player);
+            return;
         }
-        else
+        
+        // Check for FireballProjectile collision
+        FireballProjectile fireball = collision.gameObject.GetComponent<FireballProjectile>();
+        if (fireball != null)
         {
-            Debug.Log($"No Player component found on {collision.gameObject.name}");
+            Debug.Log($"{enemyName} hit by fireball! Taking 1 damage.");
+            TakeDamage(1f);
+            
+            // Destroy the fireball
+            Destroy(fireball.gameObject);
+            return;
         }
+        
+        Debug.Log($"No Player or FireballProjectile component found on {collision.gameObject.name}");
+    }
+    
+    // Trigger detection for projectiles (often more reliable than collision)
+    protected virtual void OnTriggerEnter2D(Collider2D other)
+    {
+        Debug.Log($"Enemy OnTriggerEnter2D with: {other.gameObject.name} (Tag: {other.gameObject.tag})");
+        
+        // Check for FireballProjectile collision
+        FireballProjectile fireball = other.gameObject.GetComponent<FireballProjectile>();
+        if (fireball != null)
+        {
+            Debug.Log($"{enemyName} hit by fireball (trigger)! Taking 1 damage.");
+            TakeDamage(1f);
+            
+            // Destroy the fireball
+            Destroy(fireball.gameObject);
+            return;
+        }
+        
+        Debug.Log($"No FireballProjectile component found on {other.gameObject.name}");
     }
 } 
