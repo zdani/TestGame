@@ -6,8 +6,11 @@ using UnityEngine.EventSystems;
 [RequireComponent(typeof(LineRenderer))]
 public class LoopSpellDetector : MonoBehaviour
 {
+    public GameObject player;
+    private Animator playerAnimator;
+    private PlayerMovementScript playerMovementScript;
+
     public GameObject intersectionPrefab;
-    public Animator playerAnimator; 
     private List<Vector2> activeIntersections = new();
     private List<Vector2> pendingIntersections = new();
     private List<GameObject> intersectionObjs = new();
@@ -25,17 +28,18 @@ public class LoopSpellDetector : MonoBehaviour
     private ParticleSystem myParticleSystem;
 
     private readonly List<Vector2> drawnPoints = new();
-    private Vector2 startPoint;    
+    private Vector2 startPoint;
     private bool isDrawing = false;
     private bool loopReady = false;
 
     public GameObject fireballPrefab;
     public Transform fireballSpawnPoint;
-    private IAbility fireballAbility;
-    private Player player;
 
     void Awake()
     {
+        playerAnimator = player.GetComponent<Animator>();
+        playerMovementScript = player.GetComponent<PlayerMovementScript>();
+
         lineRenderer = GetComponent<LineRenderer>();
         lineRenderer.positionCount = 0;
         lineRenderer.useWorldSpace = true;
@@ -43,14 +47,6 @@ public class LoopSpellDetector : MonoBehaviour
         lineRenderer.widthMultiplier = 0.05f;
         lineRenderer.colorGradient = lineGradientNormal;
         myParticleSystem = GetComponent<ParticleSystem>();
-
-        // Get references to the abilities
-        //fireballAbility = new FireballAbility("Fireball", fireballPrefab, fireballSpawnPoint);
-    }
-
-    private void Start()
-    {
-        player = GetComponent<Player>();
     }
 
     void Update()
@@ -310,7 +306,7 @@ public class LoopSpellDetector : MonoBehaviour
         {
             case 0:
                 Debug.Log("Casting Fireball");
-                
+                CastFireball();
                 break;
             case 1:
                 Debug.Log("Casting ability #2");
@@ -325,5 +321,10 @@ public class LoopSpellDetector : MonoBehaviour
                 Debug.Log("No ability is mapped to this number of crossings");
                 break;
         }
+    }
+
+    void CastFireball()
+    {
+        Instantiate(fireballPrefab, fireballSpawnPoint.position, fireballPrefab.transform.rotation);
     }
 }

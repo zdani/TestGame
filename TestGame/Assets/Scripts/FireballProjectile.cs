@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Fireball : MonoBehaviour
+public class FireballProjectile : MonoBehaviour
 {
     public float speed = 10f;
     public float lifetime = 3f;
