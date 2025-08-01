@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4175705911981932633}
   - component: {fileID: 2415717618683337439}
   - component: {fileID: 3036752153097983147}
-  - component: {fileID: 1226550744638743550}
+  - component: {fileID: 269800691642227939}
   m_Layer: 7
   m_Name: zombie
   m_TagString: Untagged
@@ -163,7 +163,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 0
---- !u!114 &1226550744638743550
+--- !u!114 &269800691642227939
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -181,7 +181,7 @@ MonoBehaviour:
   damageAmount: 1
   groundLayerMask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 8
   zombieMaxHealth: 3
   detectionRadius: 5
   playerTransform: {fileID: 0}

@@ -54,6 +54,7 @@ public class ZombieEnemy : Enemy
     private Vector2 startingPosition;
     private float chaseTimeoutTimer = 0f;
     private bool isChaseTimeoutActive = false;
+    private bool isReturningToPatrol = false; // Track if zombie is heading back to starting area
     
     protected override void Start()
     {
@@ -258,8 +259,13 @@ public class ZombieEnemy : Enemy
                 // Chase timeout expired, return to walking
                 isChaseTimeoutActive = false;
                 currentState = ZombieState.Walking;
+                
+                // Set direction toward starting position when returning to patrol
+                isMovingRight = startingPosition.x > transform.position.x;
+                isReturningToPatrol = true; // Mark that we're heading back to starting area
+                
                 SetAnimationState(currentState);
-                Debug.Log("Zombie chase timeout expired! Returning to patrol mode.");
+                Debug.Log("Zombie chase timeout expired! Returning to patrol mode and heading toward starting position.");
             }
         }
     }
@@ -344,8 +350,16 @@ public class ZombieEnemy : Enemy
         // Move in current direction
         float direction = isMovingRight ? 1f : -1f;
         
-        // Check if moving in this direction would go off the platform edge or exceed patrol distance
-        if (WouldGoOffEdge(direction) || WouldExceedPatrolDistance(direction))
+        // Check if moving in this direction would go off the platform edge
+        if (WouldGoOffEdge(direction))
+        {
+            // Turn around
+            isMovingRight = !isMovingRight;
+            direction = isMovingRight ? 1f : -1f;
+            Debug.Log("Zombie reached platform edge, turning around!");
+        }
+        // Only check patrol distance if we're not returning to patrol area
+        else if (!isReturningToPatrol && WouldExceedPatrolDistance(direction))
         {
             // Turn around
             isMovingRight = !isMovingRight;
@@ -361,6 +375,17 @@ public class ZombieEnemy : Enemy
         
         // Set walk animation
         SetAnimationState(currentState);
+        
+        // Check if we've reached the starting area and can stop returning to patrol
+        if (isReturningToPatrol)
+        {
+            float distanceFromStart = Mathf.Abs(transform.position.x - startingPosition.x);
+            if (distanceFromStart <= maxPatrolDistance)
+            {
+                isReturningToPatrol = false;
+                Debug.Log("Zombie has returned to patrol area! Resuming normal patrol behavior.");
+            }
+        }
     }
     
 
