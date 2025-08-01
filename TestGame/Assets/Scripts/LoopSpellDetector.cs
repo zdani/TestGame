@@ -8,8 +8,10 @@ public class LoopSpellDetector : MonoBehaviour
 {
     public GameObject player;
     private Animator playerAnimator;
-    private AbilityManager playerAbilityManager;
-
+    private FireballAbility fireballAbility;
+    private IceShieldAbility iceShieldAbility;
+    //private BoulderAbility boulderAbility;
+    
     public GameObject intersectionPrefab;
     private List<Vector2> activeIntersections = new();
     private List<Vector2> pendingIntersections = new();
@@ -38,7 +40,9 @@ public class LoopSpellDetector : MonoBehaviour
     void Awake()
     {
         playerAnimator = player.GetComponent<Animator>();
-        playerAbilityManager = player.GetComponent<AbilityManager>();
+        fireballAbility = player.GetComponent<FireballAbility>();
+        iceShieldAbility = player.GetComponent<IceShieldAbility>();
+        //boulderAbility = player.GetComponent<BoulderAbility>();
 
         lineRenderer = GetComponent<LineRenderer>();
         lineRenderer.positionCount = 0;
@@ -295,20 +299,51 @@ public class LoopSpellDetector : MonoBehaviour
         switch (crossings)
         {
             case 0:
-                Debug.Log("Casting Fireball");
-                playerAbilityManager.CastFireball();
+                if (true) // Add logic to check Player.cs for ability availability
+                {
+                    fireballAbility.Cast();
+                    Debug.Log("Casting Fireball");
+                }
+                else
+                {
+                    //Debug.Log("Fireball ability is not available.");
+                }
                 break;
             case 1:
-                Debug.Log("Casting ability #2");
+                if (true) // Add logic to check Player.cs for ability availability
+                {
+                    iceShieldAbility.Cast();
+                    Debug.Log("Casting Ice Shield");
+                }
+                else
+                {
+                    //Debug.Log("Fireball ability is not available.");
+                }
                 break;
             case 2:
-                Debug.Log("Casting ability #3");
+                if (false) // Add logic to check Player.cs for ability availability
+                {
+                    //boulderAbility.Cast();
+                    //Debug.Log("Casting Boulder");
+                }
+                else
+                {
+                    Debug.Log("Boulder ability is not available.");
+                }
                 break;
             case 3:
-                Debug.Log("Casting ability #4");
+                if (false) // Add logic to check Player.cs for ability availability
+                {
+                    //4thAbility.Cast();
+                    //Debug.Log("Casting 4th ability");
+                }
+                else
+                {
+                    Debug.Log("4th ability is not available.");
+                }
                 break;
             default:
-                Debug.Log("No ability is mapped to this number of crossings");
+                Debug.Log("Either no ability is mapped to this number of crossings, or it hasn't been learned yet.");
                 break;
         }
     }
