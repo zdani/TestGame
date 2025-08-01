@@ -7439,8 +7439,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   zombieMaxHealth: 50
-  detectionRadius: 5
-  playerTransform: {fileID: 0}
+  detectionRadius: 8
+  playerTransform: {fileID: 1476169394}
   walkSpeed: 2
   chaseSpeed: 4
   edgeDetectionDistance: 0.1
