@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3036752153097983147}
   - component: {fileID: 269800691642227939}
   m_Layer: 7
-  m_Name: zombie
+  m_Name: Zombie
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -28,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8050744641536421847}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 3.03, y: 0.92, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -79,7 +79,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 8947663228295847516, guid: b58935bc862c950429d66ff3b2ae90b8, type: 3}
+  m_Sprite: {fileID: 8000342549551186686, guid: d702f3316de507446b7355dae04e1e8e, type: 3}
   m_Color: {r: 0.9685534, g: 0.9411415, b: 0.9411415, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -124,17 +124,17 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.08156085, y: 0.026272774}
+  m_Offset: {x: 0.0019979477, y: 0.0016517043}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2.96, y: 6.92}
+    oldSize: {x: 1.3266666, y: 2.460367}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 3.2880764, y: 7.0298986}
+  m_Size: {x: 1.4075556, y: 2.508587}
   m_EdgeRadius: 0
 --- !u!50 &3036752153097983147
 Rigidbody2D:
@@ -178,6 +178,8 @@ MonoBehaviour:
   enemyName: Enemy
   maxHealth: 100
   currentHealth: 0
+  slideForce: 5
+  downwardForce: 3
   damageAmount: 1
   groundLayerMask:
     serializedVersion: 2
