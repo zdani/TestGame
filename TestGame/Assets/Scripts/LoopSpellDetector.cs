@@ -8,7 +8,7 @@ public class LoopSpellDetector : MonoBehaviour
 {
     public GameObject player;
     private Animator playerAnimator;
-    private PlayerMovementScript playerMovementScript;
+    private AbilityManager playerAbilityManager;
 
     public GameObject intersectionPrefab;
     private List<Vector2> activeIntersections = new();
@@ -38,7 +38,7 @@ public class LoopSpellDetector : MonoBehaviour
     void Awake()
     {
         playerAnimator = player.GetComponent<Animator>();
-        playerMovementScript = player.GetComponent<PlayerMovementScript>();
+        playerAbilityManager = player.GetComponent<AbilityManager>();
 
         lineRenderer = GetComponent<LineRenderer>();
         lineRenderer.positionCount = 0;
@@ -301,12 +301,11 @@ public class LoopSpellDetector : MonoBehaviour
 
     void TriggerSpell(int crossings)
     {
-        // Replace these with actual spell logic
         switch (crossings)
         {
             case 0:
                 Debug.Log("Casting Fireball");
-                CastFireball();
+                playerAbilityManager.CastFireball();
                 break;
             case 1:
                 Debug.Log("Casting ability #2");
@@ -321,10 +320,5 @@ public class LoopSpellDetector : MonoBehaviour
                 Debug.Log("No ability is mapped to this number of crossings");
                 break;
         }
-    }
-
-    void CastFireball()
-    {
-        Instantiate(fireballPrefab, fireballSpawnPoint.position, fireballPrefab.transform.rotation);
     }
 }

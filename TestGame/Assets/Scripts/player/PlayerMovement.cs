@@ -14,8 +14,6 @@ public class PlayerMovementScript : MonoBehaviour
 
     public bool IsOnGround { get; private set; }
     public bool IsWalking { get; private set; }
-    public enum FacingDirection { Left, Right };
-    public FacingDirection CurrentFacingDirection { get; private set; } = FacingDirection.Right;
 
     private Rigidbody2D body;
     private LayerMask groundLayerMask; // This will be used to check whether the player is on the ground
@@ -49,13 +47,11 @@ public class PlayerMovementScript : MonoBehaviour
         if (moveInput.x > 0) // moveInput.x will be positive when moving right
         {
             // Flip scale to face right
-            CurrentFacingDirection = FacingDirection.Right;
             transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y);
         }
         else if (moveInput.x < 0) // moveInput.x will be negative when moving left
         {
             // Flip scale to face left
-            CurrentFacingDirection = FacingDirection.Left;
             transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y);
         }
 

@@ -151,7 +151,7 @@ public class ZombieEnemy : Enemy
         // Stop all movement
         if (rb != null)
         {
-            rb.velocity = Vector2.zero;
+            rb.linearVelocity = Vector2.zero;
             rb.isKinematic = true; // Prevent further physics interactions
         }
         
