@@ -6,6 +6,10 @@ using UnityEngine.EventSystems;
 [RequireComponent(typeof(LineRenderer))]
 public class LoopSpellDetector : MonoBehaviour
 {
+    public GameObject player;
+    private Animator playerAnimator;
+    private AbilityManager playerAbilityManager;
+
     public GameObject intersectionPrefab;
     private List<Vector2> activeIntersections = new();
     private List<Vector2> pendingIntersections = new();
@@ -24,19 +28,24 @@ public class LoopSpellDetector : MonoBehaviour
     private ParticleSystem myParticleSystem;
 
     private readonly List<Vector2> drawnPoints = new();
-    private Vector2 startPoint;    
+    private Vector2 startPoint;
     private bool isDrawing = false;
     private bool loopReady = false;
 
+    public GameObject fireballPrefab;
+    public Transform fireballSpawnPoint;
+
     void Awake()
     {
+        playerAnimator = player.GetComponent<Animator>();
+        playerAbilityManager = player.GetComponent<AbilityManager>();
+
         lineRenderer = GetComponent<LineRenderer>();
         lineRenderer.positionCount = 0;
         lineRenderer.useWorldSpace = true;
         lineRenderer.loop = false;
         lineRenderer.widthMultiplier = 0.05f;
         lineRenderer.colorGradient = lineGradientNormal;
-
         myParticleSystem = GetComponent<ParticleSystem>();
     }
 
@@ -45,6 +54,8 @@ public class LoopSpellDetector : MonoBehaviour
         if (Input.GetMouseButtonDown(0) && !IsPointerOverUI())
         {
             isDrawing = true;
+            playerAnimator.SetBool("isCasting", true);
+
             drawnPoints.Clear();
             lineRenderer.positionCount = 0;
             startPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -93,6 +104,8 @@ public class LoopSpellDetector : MonoBehaviour
         else if (Input.GetMouseButtonUp(0) && isDrawing)
         {
             isDrawing = false;
+            playerAnimator.SetBool("isCasting", false);
+
             myParticleSystem.Stop();
             CloseLoopIfNeeded();
             SpawnAndFadeCloneLine();
@@ -288,11 +301,11 @@ public class LoopSpellDetector : MonoBehaviour
 
     void TriggerSpell(int crossings)
     {
-        // Replace these with actual spell logic
         switch (crossings)
         {
             case 0:
                 Debug.Log("Casting Fireball");
+                playerAbilityManager.CastFireball();
                 break;
             case 1:
                 Debug.Log("Casting ability #2");
