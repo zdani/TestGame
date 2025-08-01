@@ -87,20 +87,28 @@ public abstract class Enemy : MonoBehaviour, IHealthManager
         OnPlayerHit(player);
     }
     
-    // Unified trigger detection for all collisions
-    protected virtual void OnTriggerEnter2D(Collider2D other)
+    // Handle physical collisions (player bumping into enemy)
+    protected virtual void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log($"Enemy OnTriggerEnter2D with: {other.gameObject.name} (Tag: {other.gameObject.tag})");
+        Debug.Log($"Enemy OnCollisionEnter2D with: {collision.gameObject.name} (Tag: {collision.gameObject.tag})");
         
         // Check for Player collision
-        Player player = other.gameObject.GetComponent<Player>();
+        Player player = collision.gameObject.GetComponent<Player>();
         if (player != null)
         {
-            Debug.Log($"Found Player component on {other.gameObject.name}, calling OnPlayerCollision");
+            Debug.Log($"Found Player component on {collision.gameObject.name}, calling OnPlayerCollision");
             OnPlayerCollision(player);
             DealDamageToPlayer(player);
             return;
         }
+        
+        Debug.Log($"No Player component found on {collision.gameObject.name}");
+    }
+    
+    // Handle trigger collisions (projectiles)
+    protected virtual void OnTriggerEnter2D(Collider2D other)
+    {
+        Debug.Log($"Enemy OnTriggerEnter2D with: {other.gameObject.name} (Tag: {other.gameObject.tag})");
         
         // Check for FireballProjectile collision
         FireballProjectile fireball = other.gameObject.GetComponent<FireballProjectile>();
@@ -114,6 +122,6 @@ public abstract class Enemy : MonoBehaviour, IHealthManager
             return;
         }
         
-        Debug.Log($"No Player or FireballProjectile component found on {other.gameObject.name}");
+        Debug.Log($"No FireballProjectile component found on {other.gameObject.name}");
     }
 } 

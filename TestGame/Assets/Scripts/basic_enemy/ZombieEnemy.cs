@@ -71,6 +71,12 @@ public class ZombieEnemy : Enemy
         
         // Configure Rigidbody2D for gravity
         SetupRigidbody();
+        
+        // Store the original sprite color for flashing
+        if (spriteRenderer != null)
+        {
+            originalSpriteColor = spriteRenderer.color;
+        }
     }
     
     void Update()
@@ -113,6 +119,15 @@ public class ZombieEnemy : Enemy
     {
         if (currentState == ZombieState.Dead) return;
         
+        // Check damage cooldown to prevent multiple rapid hits
+        if (Time.time - lastDamageTime < DAMAGE_COOLDOWN)
+        {
+            Debug.Log($"Zombie damage blocked by cooldown. Time since last damage: {Time.time - lastDamageTime:F3}s");
+            return;
+        }
+        
+        lastDamageTime = Time.time;
+        
         // Call base implementation
         base.TakeDamage(damage);
         
@@ -137,7 +152,18 @@ public class ZombieEnemy : Enemy
         // Visual feedback - could flash red, play sound, etc.
         if (spriteRenderer != null)
         {
-            StartCoroutine(FlashRed());
+            Debug.Log($"Starting flash coroutine for zombie. Current color: {spriteRenderer.color}");
+            // Stop any existing flash coroutine before starting a new one
+            if (flashCoroutine != null)
+            {
+                Debug.Log("Stopping existing flash coroutine");
+                StopCoroutine(flashCoroutine);
+            }
+            flashCoroutine = StartCoroutine(FlashRed());
+        }
+        else
+        {
+            Debug.LogError("SpriteRenderer is null! Cannot flash zombie.");
         }
     }
     
@@ -168,12 +194,25 @@ public class ZombieEnemy : Enemy
     }
     
     // Visual feedback coroutine
+    private Coroutine flashCoroutine;
+    
+    // Damage cooldown to prevent multiple hits from same source
+    private float lastDamageTime = 0f;
+    private const float DAMAGE_COOLDOWN = 0.1f; // 100ms cooldown between damage events
+    
+    // Store the original color to prevent issues with rapid damage
+    private Color originalSpriteColor = Color.white;
+    
     private IEnumerator FlashRed()
     {
-        Color originalColor = spriteRenderer.color;
+        Debug.Log("FlashRed coroutine started");
+        Debug.Log($"Original color: {originalSpriteColor}, Setting to red");
         spriteRenderer.color = Color.red;
         yield return new WaitForSeconds(0.1f);
-        spriteRenderer.color = originalColor;
+        Debug.Log($"Setting color back to: {originalSpriteColor}");
+        spriteRenderer.color = originalSpriteColor;
+        flashCoroutine = null; // Clear the reference when done
+        Debug.Log("FlashRed coroutine finished");
     }
     
     private void SetupRigidbody()
