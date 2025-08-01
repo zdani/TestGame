@@ -55,10 +55,32 @@ public class PlayerMovementScript : MonoBehaviour
             transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y);
         }
 
-        velocity.x = moveInput.x * moveSpeed; // Scale the input value by moveSpeed
-        body.linearVelocity = new Vector2(velocity.x, body.linearVelocity.y); // Set the horizontal velocity without changing the vertical velocity
+        // Apply horizontal movement - different methods for ground vs air
+        if (Mathf.Abs(moveInput.x) > 0.1f)
+        {
+            if (IsOnGround)
+            {
+                // On ground: use velocity for responsive movement
+                float targetVelocityX = moveInput.x * moveSpeed;
+                float currentVelocityX = body.linearVelocity.x;
+                
+                // Smoothly interpolate to target velocity
+                float newVelocityX = Mathf.Lerp(currentVelocityX, targetVelocityX, 0.8f);
+                body.linearVelocity = new Vector2(newVelocityX, body.linearVelocity.y);
+            }
+            else
+            {
+                // In air: use AddForce to prevent wall-sticking
+                body.AddForce(new Vector2(moveInput.x * moveSpeed, 0), ForceMode2D.Force);
+            }
+        }
+        else
+        {
+            // Apply friction when no input
+            body.linearVelocity = new Vector2(body.linearVelocity.x * 0.8f, body.linearVelocity.y);
+        }
 
-        IsWalking = Mathf.Abs(velocity.x) > 0.1f; // Consider the player walking if the horizontal velocity is above a small threshold
+        IsWalking = Mathf.Abs(moveInput.x) > 0.1f; // Consider the player walking if the input is above a small threshold
 
         if (IsWalking)
         {
@@ -84,4 +106,6 @@ public class PlayerMovementScript : MonoBehaviour
         RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 0.1f, groundLayerMask);
         return hit.collider != null;
     }
+    
+
 }
