@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public abstract class Enemy : MonoBehaviour, IHealthManager
@@ -173,7 +174,7 @@ public abstract class Enemy : MonoBehaviour, IHealthManager
     }
     
     // Visual feedback coroutine
-    private System.Collections.IEnumerator FlashRed()
+    private IEnumerator FlashRed()
     {
         Debug.Log($"FlashRed coroutine started for {enemyName}");
         Debug.Log($"Original color: {originalSpriteColor}, Setting to red");
