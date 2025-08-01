@@ -16,7 +16,7 @@ public class ZombieEnemy : Enemy
     [SerializeField] private LayerMask groundLayerMask = 1; // Default layer
     
     [Header("Zombie Health Settings")]
-    [SerializeField] private float zombieMaxHealth = 50f;
+    [SerializeField] private float zombieMaxHealth = 3f;
     
     [Header("Detection Settings")]
     [SerializeField] private float detectionRadius = 5f;
@@ -27,6 +27,8 @@ public class ZombieEnemy : Enemy
     [SerializeField] private float chaseSpeed = 4f; // Speed when chasing player
     [SerializeField] private float edgeDetectionDistance = 0.1f;
     [SerializeField] private float turnBufferDistance = 0.5f; // Buffer to prevent rapid turning
+    [SerializeField] private float maxPatrolDistance = 10f; // Maximum distance from starting point
+    [SerializeField] private float chaseTimeout = 4f; // How long to keep chasing after losing player
     
     // Animation state constants
     private const string ANIM_IS_WALKING = "IsWalking";
@@ -38,19 +40,21 @@ public class ZombieEnemy : Enemy
     
     private Rigidbody2D rb;
     private BoxCollider2D boxCollider;
-    private SpriteRenderer spriteRenderer;
     private Animator animator; // For animation control
     private bool isGrounded = false;
     private GameObject currentPlatform;
     private Collider2D platformCollider;
     private ZombieState currentState = ZombieState.Falling;
     private bool isMovingRight = true; // Track movement direction separately
-    private bool hasTurnedRecently = false; // Prevent rapid turning
-    private float lastTurnTime = 0f;
-    private const float TURN_COOLDOWN = 1f; // Minimum time between turns
     
     // Player detection
     private bool playerDetected = false;
+    
+    // Movement tracking
+    private Vector2 startingPosition;
+    private float chaseTimeoutTimer = 0f;
+    private bool isChaseTimeoutActive = false;
+    private bool isReturningToPatrol = false; // Track if zombie is heading back to starting area
     
     protected override void Start()
     {
@@ -66,11 +70,13 @@ public class ZombieEnemy : Enemy
         // Get required components
         rb = GetComponent<Rigidbody2D>();
         boxCollider = GetComponent<BoxCollider2D>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
         
         // Configure Rigidbody2D for gravity
         SetupRigidbody();
+        
+        // Store starting position for patrol limits
+        startingPosition = transform.position;
     }
     
     void Update()
@@ -83,6 +89,9 @@ public class ZombieEnemy : Enemy
         
         // Check for player detection
         CheckForPlayer();
+        
+        // Handle chase timeout
+        HandleChaseTimeout();
         
         // Handle movement behavior based on state
         if (IsWalkingState())
@@ -100,12 +109,7 @@ public class ZombieEnemy : Enemy
         // Don't update if dead
         if (currentState == ZombieState.Dead) return;
         
-        // Alternative: Move edge detection here for less frequent checks
-        // This runs at a fixed time step (usually 50 times per second)
-        if (IsWalkingState())
-        {
-            CheckForEdgeTurn();
-        }
+        // FixedUpdate can be used for other physics-based checks if needed
     }
     
     // Override health management methods for zombie-specific behavior
@@ -134,11 +138,7 @@ public class ZombieEnemy : Enemy
         // Zombie-specific damage feedback
         Debug.Log($"Zombie grunts in pain! Took {damage} damage. Health: {CurrentHealth}/{MaxHealth}");
         
-        // Visual feedback - could flash red, play sound, etc.
-        if (spriteRenderer != null)
-        {
-            StartCoroutine(FlashRed());
-        }
+        // Additional zombie-specific damage behavior can be added here
     }
     
     protected override void OnDeath()
@@ -167,14 +167,9 @@ public class ZombieEnemy : Enemy
         Debug.Log("Zombie has been defeated!");
     }
     
-    // Visual feedback coroutine
-    private IEnumerator FlashRed()
-    {
-        Color originalColor = spriteRenderer.color;
-        spriteRenderer.color = Color.red;
-        yield return new WaitForSeconds(0.1f);
-        spriteRenderer.color = originalColor;
-    }
+
+    
+
     
     private void SetupRigidbody()
     {
@@ -230,9 +225,9 @@ public class ZombieEnemy : Enemy
             // Player just entered detection radius
             OnPlayerDetected();
         }
-        else if (!playerDetected && wasDetected)
+        else if (!playerDetected && wasDetected && currentState == ZombieState.Chasing)
         {
-            // Player just left detection radius
+            // Player just left detection radius while chasing
             OnPlayerLost();
         }
     }
@@ -240,6 +235,10 @@ public class ZombieEnemy : Enemy
     private void OnPlayerDetected()
     {
         Debug.Log("Zombie detected player! Switching to chase mode.");
+        
+        // Reset chase timeout
+        isChaseTimeoutActive = false;
+        chaseTimeoutTimer = 0f;
         
         // Determine chase direction based on player position
         isMovingRight = playerTransform.position.x > transform.position.x;
@@ -249,13 +248,35 @@ public class ZombieEnemy : Enemy
         SetAnimationState(currentState);
     }
     
+    private void HandleChaseTimeout()
+    {
+        if (isChaseTimeoutActive)
+        {
+            chaseTimeoutTimer -= Time.deltaTime;
+            
+            if (chaseTimeoutTimer <= 0f)
+            {
+                // Chase timeout expired, return to walking
+                isChaseTimeoutActive = false;
+                currentState = ZombieState.Walking;
+                
+                // Set direction toward starting position when returning to patrol
+                isMovingRight = startingPosition.x > transform.position.x;
+                isReturningToPatrol = true; // Mark that we're heading back to starting area
+                
+                SetAnimationState(currentState);
+                Debug.Log("Zombie chase timeout expired! Returning to patrol mode and heading toward starting position.");
+            }
+        }
+    }
+    
     private void OnPlayerLost()
     {
-        Debug.Log("Zombie lost player! Returning to patrol mode.");
+        Debug.Log("Zombie lost player! Starting chase timeout.");
         
-        // Return to walking state
-        currentState = ZombieState.Walking;
-        SetAnimationState(currentState);
+        // Start chase timeout instead of immediately returning to walking
+        isChaseTimeoutActive = true;
+        chaseTimeoutTimer = chaseTimeout;
     }
     
     private void ChasePlayer()
@@ -266,9 +287,19 @@ public class ZombieEnemy : Enemy
         isMovingRight = playerTransform.position.x > transform.position.x;
         float direction = isMovingRight ? 1f : -1f;
         
-        // Move towards player at chase speed
-        Vector2 movement = new Vector2(direction * chaseSpeed, 0f);
-        rb.linearVelocity = movement;
+        // Check if moving in this direction would go off the platform edge
+        if (WouldGoOffEdge(direction))
+        {
+            // Don't move off the edge, but keep chase state active
+            rb.linearVelocity = Vector2.zero;
+            Debug.Log("Zombie stopped at platform edge while chasing!");
+        }
+        else
+        {
+            // Move towards player at chase speed
+            Vector2 movement = new Vector2(direction * chaseSpeed, 0f);
+            rb.linearVelocity = movement;
+        }
         
         // Flip sprite based on direction
         FlipSprite();
@@ -318,6 +349,24 @@ public class ZombieEnemy : Enemy
         
         // Move in current direction
         float direction = isMovingRight ? 1f : -1f;
+        
+        // Check if moving in this direction would go off the platform edge
+        if (WouldGoOffEdge(direction))
+        {
+            // Turn around
+            isMovingRight = !isMovingRight;
+            direction = isMovingRight ? 1f : -1f;
+            Debug.Log("Zombie reached platform edge, turning around!");
+        }
+        // Only check patrol distance if we're not returning to patrol area
+        else if (!isReturningToPatrol && WouldExceedPatrolDistance(direction))
+        {
+            // Turn around
+            isMovingRight = !isMovingRight;
+            direction = isMovingRight ? 1f : -1f;
+            Debug.Log("Zombie reached patrol limit, turning around!");
+        }
+        
         Vector2 movement = new Vector2(direction * walkSpeed, 0f);
         rb.linearVelocity = movement;
         
@@ -326,60 +375,61 @@ public class ZombieEnemy : Enemy
         
         // Set walk animation
         SetAnimationState(currentState);
-    }
-    
-    private void CheckForEdgeTurn()
-    {
-        // Check if we're at the edge of the platform
-        if (IsAtPlatformEdge())
+        
+        // Check if we've reached the starting area and can stop returning to patrol
+        if (isReturningToPatrol)
         {
-            // Turn around
-            isMovingRight = !isMovingRight;
+            float distanceFromStart = Mathf.Abs(transform.position.x - startingPosition.x);
+            if (distanceFromStart <= maxPatrolDistance)
+            {
+                isReturningToPatrol = false;
+                Debug.Log("Zombie has returned to patrol area! Resuming normal patrol behavior.");
+            }
         }
     }
     
+
+    
     private void FlipSprite()
     {
+        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
         if (spriteRenderer != null)
         {
             spriteRenderer.flipX = isMovingRight;
         }
     }
     
-    private bool IsAtPlatformEdge()
+    private bool WouldGoOffEdge(float direction)
     {
         if (platformCollider == null) return false;
-        
-        // Don't check for edges if we just turned
-        if (hasTurnedRecently && Time.time - lastTurnTime < TURN_COOLDOWN)
-        {
-            return false;
-        }
         
         // Get the platform bounds
         Bounds platformBounds = platformCollider.bounds;
         
-        // Check if zombie is near the left or right edge with buffer
+        // Calculate where the zombie would be after moving
         float zombieX = transform.position.x;
-        float leftEdge = platformBounds.min.x + edgeDetectionDistance + turnBufferDistance;
-        float rightEdge = platformBounds.max.x - edgeDetectionDistance - turnBufferDistance;
+        float nextX = zombieX + (direction * walkSpeed * Time.deltaTime);
         
-        bool atEdge = zombieX <= leftEdge || zombieX >= rightEdge;
+        // Check if the next position would be off the platform
+        float leftEdge = platformBounds.min.x + edgeDetectionDistance;
+        float rightEdge = platformBounds.max.x - edgeDetectionDistance;
         
-        // If we're at an edge, mark that we've turned recently
-        if (atEdge)
-        {
-            hasTurnedRecently = true;
-            lastTurnTime = Time.time;
-        }
-        else
-        {
-            // Reset the flag when we're away from edges
-            hasTurnedRecently = false;
-        }
-        
-        return atEdge;
+        return nextX <= leftEdge || nextX >= rightEdge;
     }
+    
+    private bool WouldExceedPatrolDistance(float direction)
+    {
+        // Calculate where the zombie would be after moving
+        float zombieX = transform.position.x;
+        float nextX = zombieX + (direction * walkSpeed * Time.deltaTime);
+        
+        // Check if the next position would exceed max patrol distance from starting point
+        float distanceFromStart = Mathf.Abs(nextX - startingPosition.x);
+        
+        return distanceFromStart > maxPatrolDistance;
+    }
+    
+
     
     // Implementation of abstract method from Enemy base class
     protected override void OnPlayerCollision(Player player)
