@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6985657126960284532}
   - component: {fileID: 6368035574528993871}
-  m_Layer: 6
+  m_Layer: 9
   m_Name: Loop Intersection Point
   m_TagString: Untagged
   m_Icon: {fileID: 0}

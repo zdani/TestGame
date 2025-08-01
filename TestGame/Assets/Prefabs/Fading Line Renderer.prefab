@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4340636884306284932}
   - component: {fileID: 1709035257570557006}
   - component: {fileID: 8456210577226938326}
-  m_Layer: 6
+  m_Layer: 9
   m_Name: Fading Line Renderer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
