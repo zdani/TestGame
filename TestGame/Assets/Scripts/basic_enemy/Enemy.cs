@@ -10,6 +10,10 @@ public abstract class Enemy : MonoBehaviour, IHealthManager
     [SerializeField] protected float maxHealth = 100f;
     [SerializeField] protected float currentHealth;
     
+    [Header("Player Interaction Settings")]
+    [SerializeField] protected float slideForce = 5f; // Horizontal force to make player slide off
+    [SerializeField] protected float downwardForce = 3f; // Downward force to push player toward ground
+    
     // Public properties
     public string EnemyName => enemyName;
     public abstract float DamageAmount { get; }
@@ -145,8 +149,18 @@ public abstract class Enemy : MonoBehaviour, IHealthManager
         if (player != null)
         {
             Debug.Log($"Found Player component on {collision.gameObject.name}, calling OnPlayerCollision");
-            OnPlayerCollision(player);
-            DealDamageToPlayer(player);
+            
+            // Check if player is landing on top of the enemy
+            if (IsPlayerLandingOnEnemy(collision, player))
+            {
+                ApplySlideAndDownwardEffect(player);
+            }
+            else
+            {
+                // Normal side collision - deal damage
+                OnPlayerCollision(player);
+                DealDamageToPlayer(player);
+            }
             return;
         }
         
@@ -171,6 +185,68 @@ public abstract class Enemy : MonoBehaviour, IHealthManager
         }
         
         Debug.Log($"No FireballProjectile component found on {other.gameObject.name}");
+    }
+    
+    // Check if player is landing on top of the enemy
+    private bool IsPlayerLandingOnEnemy(Collision2D collision, Player player)
+    {
+        // Get the contact points
+        ContactPoint2D[] contacts = collision.contacts;
+        
+        foreach (ContactPoint2D contact in contacts)
+        {
+            // Check if the contact point is above the enemy's center
+            if (contact.point.y > transform.position.y)
+            {
+                // Check if player is moving downward (landing)
+                Rigidbody2D playerRb = player.GetComponent<Rigidbody2D>();
+                if (playerRb != null && playerRb.linearVelocity.y < 0)
+                {
+                    return true;
+                }
+            }
+        }
+        
+        return false;
+    }
+    
+    // Apply slide and downward effect when player lands on enemy
+    private void ApplySlideAndDownwardEffect(Player player)
+    {
+        Rigidbody2D playerRb = player.GetComponent<Rigidbody2D>();
+        if (playerRb == null) return;
+        
+        // Determine slide direction based on player's position relative to enemy
+        float slideDirection = (player.transform.position.x > transform.position.x) ? 1f : -1f;
+        
+        // Immediately set velocity to push player away and down (more aggressive)
+        Vector2 pushVelocity = new Vector2(slideDirection * slideForce, -downwardForce);
+        playerRb.linearVelocity = pushVelocity;
+        
+        // Temporarily disable collision between player and enemy to prevent sticking
+        StartCoroutine(TemporarilyDisableCollision(player));
+        
+        Debug.Log($"{enemyName} pushed player with velocity {pushVelocity}");
+    }
+    
+    // Temporarily disable collision to prevent sticking
+    private IEnumerator TemporarilyDisableCollision(Player player)
+    {
+        // Get colliders
+        Collider2D enemyCollider = GetComponent<Collider2D>();
+        Collider2D playerCollider = player.GetComponent<Collider2D>();
+        
+        if (enemyCollider != null && playerCollider != null)
+        {
+            // Disable collision
+            Physics2D.IgnoreCollision(enemyCollider, playerCollider, true);
+            
+            // Wait a short time
+            yield return new WaitForSeconds(0.2f);
+            
+            // Re-enable collision
+            Physics2D.IgnoreCollision(enemyCollider, playerCollider, false);
+        }
     }
     
     // Visual feedback coroutine
