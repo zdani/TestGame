@@ -87,23 +87,23 @@ public abstract class Enemy : MonoBehaviour, IHealthManager
         OnPlayerHit(player);
     }
     
-    // Collision detection methods - enemy is now responsible for detecting hits
-    protected virtual void OnCollisionEnter2D(Collision2D collision)
+    // Unified trigger detection for all collisions
+    protected virtual void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log($"Enemy OnCollisionEnter2D with: {collision.gameObject.name} (Tag: {collision.gameObject.tag})");
+        Debug.Log($"Enemy OnTriggerEnter2D with: {other.gameObject.name} (Tag: {other.gameObject.tag})");
         
         // Check for Player collision
-        Player player = collision.gameObject.GetComponent<Player>();
+        Player player = other.gameObject.GetComponent<Player>();
         if (player != null)
         {
-            Debug.Log($"Found Player component on {collision.gameObject.name}, calling OnPlayerCollision");
+            Debug.Log($"Found Player component on {other.gameObject.name}, calling OnPlayerCollision");
             OnPlayerCollision(player);
             DealDamageToPlayer(player);
             return;
         }
         
         // Check for FireballProjectile collision
-        FireballProjectile fireball = collision.gameObject.GetComponent<FireballProjectile>();
+        FireballProjectile fireball = other.gameObject.GetComponent<FireballProjectile>();
         if (fireball != null)
         {
             Debug.Log($"{enemyName} hit by fireball! Taking 1 damage.");
@@ -114,26 +114,6 @@ public abstract class Enemy : MonoBehaviour, IHealthManager
             return;
         }
         
-        Debug.Log($"No Player or FireballProjectile component found on {collision.gameObject.name}");
-    }
-    
-    // Trigger detection for projectiles (often more reliable than collision)
-    protected virtual void OnTriggerEnter2D(Collider2D other)
-    {
-        Debug.Log($"Enemy OnTriggerEnter2D with: {other.gameObject.name} (Tag: {other.gameObject.tag})");
-        
-        // Check for FireballProjectile collision
-        FireballProjectile fireball = other.gameObject.GetComponent<FireballProjectile>();
-        if (fireball != null)
-        {
-            Debug.Log($"{enemyName} hit by fireball (trigger)! Taking 1 damage.");
-            TakeDamage(1f);
-            
-            // Destroy the fireball
-            Destroy(fireball.gameObject);
-            return;
-        }
-        
-        Debug.Log($"No FireballProjectile component found on {other.gameObject.name}");
+        Debug.Log($"No Player or FireballProjectile component found on {other.gameObject.name}");
     }
 } 
