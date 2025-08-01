@@ -6092,6 +6092,7 @@ MonoBehaviour:
   minPointDistance: 0.15
   minLoopLength: 0.75
   closeLoopThreshold: 0.6
+  intersectionThreshold: 0.3
   fadeDuration: 1
   fireballPrefab: {fileID: 2883197107166799354, guid: 7e601ec6d7087ba4eb013ea8fdea5960, type: 3}
   fireballSpawnPoint: {fileID: 2616962592543162866}
@@ -13538,6 +13539,10 @@ PrefabInstance:
     - target: {fileID: 3031331951272698403, guid: 17e13cd806406e04589db6953a252182, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6917841373093443536, guid: 17e13cd806406e04589db6953a252182, type: 3}
+      propertyPath: m_GravityScale
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

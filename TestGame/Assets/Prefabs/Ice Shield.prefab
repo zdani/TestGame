@@ -79,7 +79,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: -7438441151615837592, guid: 312afb06d7a0e78409ac90c75b80640c, type: 3}
+  m_Sprite: {fileID: 6477709335251292871, guid: efdcb7ff814df6f4da82d6f00d40a666, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -139,6 +139,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 976a5561204b54041865e526134bead4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animationFrames:
+  - {fileID: 7973135725110585532, guid: efdcb7ff814df6f4da82d6f00d40a666, type: 3}
+  - {fileID: 7160595095725142679, guid: efdcb7ff814df6f4da82d6f00d40a666, type: 3}
+  animationSpeed: 0.5
+  breakSound: {fileID: 8300000, guid: b7780dc8007a18846a9d0ace85978d51, type: 3}
 --- !u!82 &1356992274783901314
 AudioSource:
   m_ObjectHideFlags: 0
