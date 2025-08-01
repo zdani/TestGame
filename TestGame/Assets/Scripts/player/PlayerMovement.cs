@@ -46,12 +46,15 @@ public class PlayerMovementScript : MonoBehaviour
         // Horizontal movement
         Vector2 moveInput = walkAction.ReadValue<Vector2>(); // walkAction is a Vector2 so it'll read joystick inputs correctly
 
-        if (moveInput.x > 0) // moveInput.x will be positive when moving right
+        // Add deadzone to prevent rapid flipping when input is near zero
+        float flipDeadzone = 0.3f;
+        
+        if (moveInput.x > flipDeadzone) // moveInput.x will be positive when moving right
         {
             // Flip scale to face right
             transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y);
         }
-        else if (moveInput.x < 0) // moveInput.x will be negative when moving left
+        else if (moveInput.x < -flipDeadzone) // moveInput.x will be negative when moving left
         {
             // Flip scale to face left
             transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y);
