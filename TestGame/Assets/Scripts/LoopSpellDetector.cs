@@ -23,7 +23,8 @@ public class LoopSpellDetector : MonoBehaviour
 
     public float minPointDistance = 0.15f;
     public float minLoopLength = 0.75f;
-    public float closeLoopThreshold = 0.4f;
+    public float closeLoopThreshold = 0.6f;
+    public float intersectionThreshold = 0.3f;
     public float fadeDuration = 1f;
 
     private LineRenderer lineRenderer;
@@ -97,7 +98,7 @@ public class LoopSpellDetector : MonoBehaviour
             for (int i = pendingIntersections.Count - 1; i >= 0; i--)
             {
                 Vector2 intersectPoint = pendingIntersections[i];
-                if (Vector2.Distance(intersectPoint, drawnPoints[^1]) > closeLoopThreshold)
+                if (Vector2.Distance(intersectPoint, drawnPoints[^1]) > intersectionThreshold)
                 {
                     intersectionObjs.Add(Instantiate(intersectionPrefab, intersectPoint, intersectionPrefab.transform.rotation));
                     activeIntersections.Add(intersectPoint);
