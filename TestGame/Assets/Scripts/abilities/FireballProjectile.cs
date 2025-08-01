@@ -4,7 +4,6 @@ public class FireballProjectile : MonoBehaviour
 {
     public float speed = 10f;
     public float lifetime = 3f;
-    private Vector2 direction;
 
     public Sprite[] animationFrames; // Size = 2 in Inspector
     public float animationSpeed = 0.1f; // Time between frames
@@ -33,6 +32,23 @@ public class FireballProjectile : MonoBehaviour
         //Debug.Log("Fireball sound pitch set to: " + audioSource.pitch);
         audioSource.Play();
     }
+    
+        public void Initialize(Vector2 shootDirection)
+    {
+        Vector2 direction = shootDirection.normalized;
+
+        // Flip sprite if shooting left
+        if (direction.x < 0)
+        {
+            Vector3 scale = transform.localScale;
+            scale.x *= -1;
+            transform.localScale = scale;
+        }
+
+        // Apply velocity
+        Rigidbody2D rb = GetComponent<Rigidbody2D>();
+        rb.linearVelocity = direction * speed;
+    }
 
     void Update()
     {
@@ -47,23 +63,4 @@ public class FireballProjectile : MonoBehaviour
             animationTimer = animationSpeed;
         }
     }
-
-    public void Initialize(Vector2 shootDirection)
-    {
-        direction = shootDirection.normalized;
-
-        // Flip sprite if shooting left
-        if (direction.x < 0)
-        {
-            Vector3 scale = transform.localScale;
-            scale.x *= -1;
-            transform.localScale = scale;
-        }
-
-        // Apply velocity
-        Rigidbody2D rb = GetComponent<Rigidbody2D>();
-        rb.linearVelocity = direction * speed;
-    }
-    
-
 }

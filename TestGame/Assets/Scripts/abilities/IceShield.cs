@@ -2,15 +2,10 @@ using UnityEngine;
 
 public class IceShield : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    public GameObject iceShieldPrefab;
 
-    // Update is called once per frame
-    void Update()
+    public void Initialize(float duration = 5f)
     {
-        
+        Destroy(gameObject, duration); // Destroy after duration, replace later with a method that includes animation
     }
 }

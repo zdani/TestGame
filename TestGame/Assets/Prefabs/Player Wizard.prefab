@@ -14,7 +14,10 @@ GameObject:
   - component: {fileID: 6917841373093443536}
   - component: {fileID: 5877969832043053282}
   - component: {fileID: 4029295158634634499}
-  - component: {fileID: 9148065324815327233}
+  - component: {fileID: 7922651830821514491}
+  - component: {fileID: 5007413261924078733}
+  - component: {fileID: 1046699426527618609}
+  - component: {fileID: 315865048144270632}
   m_Layer: 0
   m_Name: Player Wizard
   m_TagString: Untagged
@@ -36,6 +39,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1579912711116261893}
+  - {fileID: 2348171589119017799}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &6599738817436392878
@@ -180,7 +184,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 5
   jumpForce: 7
-  animator: {fileID: 0}
+  animator: {fileID: 4029295158634634499}
   walkAction:
     m_Name: Walk
     m_Type: 0
@@ -285,7 +289,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &9148065324815327233
+--- !u!114 &7922651830821514491
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -294,11 +298,86 @@ MonoBehaviour:
   m_GameObject: {fileID: 1008893781474412776}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d62487e38a5831045bf2ff3275ffe886, type: 3}
+  m_Script: {fileID: 11500000, guid: 2352adf88b0ab2740b0539783cb004c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fireballPrefab: {fileID: 0}
+  fireballSpawnPoint: {fileID: 0}
+--- !u!114 &5007413261924078733
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1008893781474412776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4497f726dd917d34798bb02c7a797efd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  iceShieldPrefab: {fileID: 0}
+  shieldDuration: 5
+  shieldSpawnPoint: {fileID: 0}
+--- !u!114 &1046699426527618609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1008893781474412776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2352adf88b0ab2740b0539783cb004c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   fireballPrefab: {fileID: 2883197107166799354, guid: 7e601ec6d7087ba4eb013ea8fdea5960, type: 3}
   fireballSpawnPoint: {fileID: 1579912711116261893}
+--- !u!114 &315865048144270632
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1008893781474412776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4497f726dd917d34798bb02c7a797efd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  iceShieldPrefab: {fileID: 6340426162429100583, guid: dde4a4404a1fa4b4493c5933e2fa1a3f, type: 3}
+  shieldDuration: 5
+  shieldSpawnPoint: {fileID: 2348171589119017799}
+--- !u!1 &6657705052439693089
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2348171589119017799}
+  m_Layer: 0
+  m_Name: Ice Shield Spawn Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2348171589119017799
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6657705052439693089}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.165, y: 1.2, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3031331951272698403}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7978497709604289181
 GameObject:
   m_ObjectHideFlags: 0

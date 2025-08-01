@@ -1,7 +1,7 @@
 using UnityEngine;
 
 // Base ability class
-public abstract class Ability : IAbility
+public abstract class Ability : MonoBehaviour, IAbility
 {
     public string AbilityName { get; protected set; }
 
