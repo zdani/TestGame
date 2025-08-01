@@ -38,7 +38,6 @@ public class ZombieEnemy : Enemy
     
     private Rigidbody2D rb;
     private BoxCollider2D boxCollider;
-    private SpriteRenderer spriteRenderer;
     private Animator animator; // For animation control
     private bool isGrounded = false;
     private GameObject currentPlatform;
@@ -66,17 +65,10 @@ public class ZombieEnemy : Enemy
         // Get required components
         rb = GetComponent<Rigidbody2D>();
         boxCollider = GetComponent<BoxCollider2D>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
         
         // Configure Rigidbody2D for gravity
         SetupRigidbody();
-        
-        // Store the original sprite color for flashing
-        if (spriteRenderer != null)
-        {
-            originalSpriteColor = spriteRenderer.color;
-        }
     }
     
     void Update()
@@ -119,15 +111,6 @@ public class ZombieEnemy : Enemy
     {
         if (currentState == ZombieState.Dead) return;
         
-        // Check damage cooldown to prevent multiple rapid hits
-        if (Time.time - lastDamageTime < DAMAGE_COOLDOWN)
-        {
-            Debug.Log($"Zombie damage blocked by cooldown. Time since last damage: {Time.time - lastDamageTime:F3}s");
-            return;
-        }
-        
-        lastDamageTime = Time.time;
-        
         // Call base implementation
         base.TakeDamage(damage);
         
@@ -149,22 +132,7 @@ public class ZombieEnemy : Enemy
         // Zombie-specific damage feedback
         Debug.Log($"Zombie grunts in pain! Took {damage} damage. Health: {CurrentHealth}/{MaxHealth}");
         
-        // Visual feedback - could flash red, play sound, etc.
-        if (spriteRenderer != null)
-        {
-            Debug.Log($"Starting flash coroutine for zombie. Current color: {spriteRenderer.color}");
-            // Stop any existing flash coroutine before starting a new one
-            if (flashCoroutine != null)
-            {
-                Debug.Log("Stopping existing flash coroutine");
-                StopCoroutine(flashCoroutine);
-            }
-            flashCoroutine = StartCoroutine(FlashRed());
-        }
-        else
-        {
-            Debug.LogError("SpriteRenderer is null! Cannot flash zombie.");
-        }
+        // Additional zombie-specific damage behavior can be added here
     }
     
     protected override void OnDeath()
@@ -193,27 +161,9 @@ public class ZombieEnemy : Enemy
         Debug.Log("Zombie has been defeated!");
     }
     
-    // Visual feedback coroutine
-    private Coroutine flashCoroutine;
+
     
-    // Damage cooldown to prevent multiple hits from same source
-    private float lastDamageTime = 0f;
-    private const float DAMAGE_COOLDOWN = 0.1f; // 100ms cooldown between damage events
-    
-    // Store the original color to prevent issues with rapid damage
-    private Color originalSpriteColor = Color.white;
-    
-    private IEnumerator FlashRed()
-    {
-        Debug.Log("FlashRed coroutine started");
-        Debug.Log($"Original color: {originalSpriteColor}, Setting to red");
-        spriteRenderer.color = Color.red;
-        yield return new WaitForSeconds(0.1f);
-        Debug.Log($"Setting color back to: {originalSpriteColor}");
-        spriteRenderer.color = originalSpriteColor;
-        flashCoroutine = null; // Clear the reference when done
-        Debug.Log("FlashRed coroutine finished");
-    }
+
     
     private void SetupRigidbody()
     {
@@ -379,6 +329,7 @@ public class ZombieEnemy : Enemy
     
     private void FlipSprite()
     {
+        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
         if (spriteRenderer != null)
         {
             spriteRenderer.flipX = isMovingRight;
