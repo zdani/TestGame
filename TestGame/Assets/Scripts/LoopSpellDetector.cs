@@ -238,15 +238,6 @@ public class LoopSpellDetector : MonoBehaviour
                     }
                 }
             }
-
-            for (int i = pendingIntersections.Count - 1; i >= 0; i--)
-            {
-                Vector2 intersectPoint = pendingIntersections[i];
-
-                intersectionObjs.Add(Instantiate(intersectionPrefab, intersectPoint, intersectionPrefab.transform.rotation));
-                activeIntersections.Add(intersectPoint);
-                pendingIntersections.RemoveAt(i);
-            }
         }
     }
 
