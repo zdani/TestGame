@@ -310,14 +310,7 @@ public class LoopSpellDetector : MonoBehaviour
         {
             case 0:
                 Debug.Log("Casting Fireball");
-                foreach (var ability in player.Abilities)
-                {
-                    if (ability.AbilityName == "Fireball")
-                    {
-                        player.CastAbility(ability);
-                        break;
-                    }
-                }
+                
                 break;
             case 1:
                 Debug.Log("Casting ability #2");
