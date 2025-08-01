@@ -7,10 +7,9 @@ public class Player : MonoBehaviour
 {
     [Header("Combat Settings")]
     [SerializeField] private float invincibilityDuration = 3f;
-    
+
     // Public properties
     public IHealthManager HealthManager { get; private set; }
-    public List<Ability> Abilities => new List<Ability>();
     public bool IsInvincible { get; private set; } = false;
     [SerializeField] Image _healthBarSprite;
 
@@ -94,33 +93,23 @@ public class Player : MonoBehaviour
         Debug.Log("Player has died!");
     }
 
-    // Public methods for casting abilities
-    public bool CastAbility(Ability ability)
+
+    // Public method for casting abilities
+    public bool CastAbility(IAbility ability)
     {
-        if (!Abilities.Contains(ability))
+        // Get the ability manager to handle the casting
+        AbilityManager abilityManager = GetComponent<AbilityManager>();
+        if (abilityManager != null)
         {
-            Debug.LogWarning($"Ability '{ability.AbilityName}' is not in the available abilities list");
-            return false;
+            return abilityManager.CastAbility(ability);
         }
-
-        ability.Cast(this);
-        GameEvents.Instance.TriggerAbilityCast(ability);
-        return true;
+        
+        Debug.LogWarning($"Player {gameObject.name} doesn't have an AbilityManager component!");
+        return false;
     }
 
-    // Methods to add/remove abilities
-    public void AddAbility(Ability ability)
-    {
-        if (!Abilities.Contains(ability))
-        {
-            Abilities.Add(ability);
-        }
-    }
 
-    public void RemoveAbility(Ability ability)
-    {
-        Abilities.Remove(ability);
-    }
+    // No ability management needed since Ability class is removed
 
     // Utility methods
     public float GetHealthPercentage()
