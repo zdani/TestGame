@@ -7,6 +7,8 @@ public class PlayerMovementScript : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float jumpForce = 7f;
+    [SerializeField] private float airControlForce = 10f; // Force applied for air movement
+    [SerializeField] private float maxAirSpeed = 8f; // Maximum horizontal speed in air
 
     public Animator animator;
     public InputAction walkAction;
@@ -55,32 +57,35 @@ public class PlayerMovementScript : MonoBehaviour
             transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y);
         }
 
-        // Apply horizontal movement - different methods for ground vs air
-        if (Mathf.Abs(moveInput.x) > 0.1f)
+        // Separate ground and air movement
+        if (IsOnGround)
         {
-            if (IsOnGround)
-            {
-                // On ground: use velocity for responsive movement
-                float targetVelocityX = moveInput.x * moveSpeed;
-                float currentVelocityX = body.linearVelocity.x;
-                
-                // Smoothly interpolate to target velocity
-                float newVelocityX = Mathf.Lerp(currentVelocityX, targetVelocityX, 0.8f);
-                body.linearVelocity = new Vector2(newVelocityX, body.linearVelocity.y);
-            }
-            else
-            {
-                // In air: use AddForce to prevent wall-sticking
-                body.AddForce(new Vector2(moveInput.x * moveSpeed, 0), ForceMode2D.Force);
-            }
+            // On ground: set velocity directly for precise control
+            velocity.x = moveInput.x * moveSpeed;
+            body.linearVelocity = new Vector2(velocity.x, body.linearVelocity.y);
         }
         else
         {
-            // Apply friction when no input
-            body.linearVelocity = new Vector2(body.linearVelocity.x * 0.8f, body.linearVelocity.y);
+            // In air: apply forces for better physics and maintain gravity
+            if (Mathf.Abs(moveInput.x) > 0.1f)
+            {
+                // Apply horizontal force for air movement
+                body.AddForce(Vector2.right * moveInput.x * airControlForce, ForceMode2D.Force);
+                
+                // Clamp horizontal speed in air to prevent excessive speed
+                if (Mathf.Abs(body.linearVelocity.x) > maxAirSpeed)
+                {
+                    body.linearVelocity = new Vector2(Mathf.Sign(body.linearVelocity.x) * maxAirSpeed, body.linearVelocity.y);
+                }
+            }
+            else
+            {
+                // When no input, gradually reduce horizontal velocity for better feel
+                body.linearVelocity = new Vector2(body.linearVelocity.x * 0.95f, body.linearVelocity.y);
+            }
         }
 
-        IsWalking = Mathf.Abs(moveInput.x) > 0.1f; // Consider the player walking if the input is above a small threshold
+        IsWalking = Mathf.Abs(velocity.x) > 0.1f; // Consider the player walking if the horizontal velocity is above a small threshold
 
         if (IsWalking)
         {
@@ -106,6 +111,4 @@ public class PlayerMovementScript : MonoBehaviour
         RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 0.1f, groundLayerMask);
         return hit.collider != null;
     }
-    
-
 }
