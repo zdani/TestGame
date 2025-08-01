@@ -30,7 +30,7 @@ public class FireballProjectile : MonoBehaviour
 
         audioSource = GetComponent<AudioSource>();
         audioSource.pitch = Random.Range(0.95f, 1.15f);
-        Debug.Log("Fireball sound pitch set to: " + audioSource.pitch);
+        //Debug.Log("Fireball sound pitch set to: " + audioSource.pitch);
         audioSource.Play();
     }
 
