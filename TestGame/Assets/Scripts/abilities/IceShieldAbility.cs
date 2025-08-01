@@ -3,8 +3,9 @@ using UnityEngine;
 public class IceShieldAbility : MonoBehaviour
 {
     public GameObject iceShieldPrefab;
-    public float shieldDuration = 5f;
     public Transform shieldSpawnPoint;
+    public float shieldDuration = 5f;
+    
 
     public void Cast()
     {
