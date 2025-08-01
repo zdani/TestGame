@@ -7,7 +7,7 @@ public class PlayerMovementScript : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float jumpForce = 7f;
-    [SerializeField] private float airControlForce = 10f; // Force applied for air movement
+    [SerializeField] private float airControlForce = 20f; // Force applied for air movement
     [SerializeField] private float maxAirSpeed = 8f; // Maximum horizontal speed in air
 
     public Animator animator;
