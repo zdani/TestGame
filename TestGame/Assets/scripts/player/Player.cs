@@ -20,7 +20,7 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
-        HealthManager = new HealthManager(INIT_MAX_HEALTH, _healthBarSprite);
+        HealthManager = new HealthManager(INIT_MAX_HEALTH, _healthBarSprite, this);
         spriteRenderer = GetComponent<SpriteRenderer>();
         
         // Subscribe to health events through GameEvents

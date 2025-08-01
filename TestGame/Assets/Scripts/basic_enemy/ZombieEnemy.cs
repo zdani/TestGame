@@ -152,7 +152,7 @@ public class ZombieEnemy : Enemy
         if (rb != null)
         {
             rb.linearVelocity = Vector2.zero;
-            rb.isKinematic = true; // Prevent further physics interactions
+            rb.bodyType = RigidbodyType2D.Kinematic; // Prevent further physics interactions
         }
         
         // Disable collider to prevent further collisions
