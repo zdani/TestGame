@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+
 [RequireComponent(typeof(LineRenderer))]
 public class LoopSpellDetector : MonoBehaviour
 {
     public GameObject player;
     private Animator playerAnimator;
-    private AbilityManager playerAbilityManager;
+    private Player playerComponent;
+    private AbilityManager abilityManager;
 
     public GameObject intersectionPrefab;
     private List<Vector2> activeIntersections = new();
@@ -38,7 +40,8 @@ public class LoopSpellDetector : MonoBehaviour
     void Awake()
     {
         playerAnimator = player.GetComponent<Animator>();
-        playerAbilityManager = player.GetComponent<AbilityManager>();
+        playerComponent = player.GetComponent<Player>();
+        abilityManager = player.GetComponent<AbilityManager>();
 
         lineRenderer = GetComponent<LineRenderer>();
         lineRenderer.positionCount = 0;
@@ -292,24 +295,23 @@ public class LoopSpellDetector : MonoBehaviour
 
     void TriggerSpell(int crossings)
     {
-        switch (crossings)
+        if (abilityManager == null)
         {
-            case 0:
-                Debug.Log("Casting Fireball");
-                playerAbilityManager.CastFireball();
-                break;
-            case 1:
-                Debug.Log("Casting ability #2");
-                break;
-            case 2:
-                Debug.Log("Casting ability #3");
-                break;
-            case 3:
-                Debug.Log("Casting ability #4");
-                break;
-            default:
-                Debug.Log("No ability is mapped to this number of crossings");
-                break;
+            Debug.LogWarning("No AbilityManager found on player!");
+            return;
+        }
+        
+        List<IAbility> availableAbilities = abilityManager.GetAvailableAbilities();
+        
+        if (crossings >= 0 && crossings < availableAbilities.Count)
+        {
+            IAbility abilityToCast = availableAbilities[crossings];
+            Debug.Log($"Casting {abilityToCast.AbilityName}");
+            playerComponent.CastAbility(abilityToCast);
+        }
+        else
+        {
+            Debug.Log($"No ability available for {crossings} crossings. Available abilities: {availableAbilities.Count}");
         }
     }
 }
