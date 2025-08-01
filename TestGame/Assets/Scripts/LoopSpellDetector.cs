@@ -29,6 +29,11 @@ public class LoopSpellDetector : MonoBehaviour
     private bool isDrawing = false;
     private bool loopReady = false;
 
+    public GameObject fireballPrefab;
+    public Transform fireballSpawnPoint;
+    private IAbility fireballAbility;
+    private Player player;
+
     void Awake()
     {
         lineRenderer = GetComponent<LineRenderer>();
@@ -37,8 +42,15 @@ public class LoopSpellDetector : MonoBehaviour
         lineRenderer.loop = false;
         lineRenderer.widthMultiplier = 0.05f;
         lineRenderer.colorGradient = lineGradientNormal;
-
         myParticleSystem = GetComponent<ParticleSystem>();
+
+        // Get references to the abilities
+        //fireballAbility = new FireballAbility("Fireball", fireballPrefab, fireballSpawnPoint);
+    }
+
+    private void Start()
+    {
+        player = GetComponent<Player>();
     }
 
     void Update()
@@ -97,7 +109,7 @@ public class LoopSpellDetector : MonoBehaviour
         {
             isDrawing = false;
             playerAnimator.SetBool("isCasting", false);
-            
+
             myParticleSystem.Stop();
             CloseLoopIfNeeded();
             SpawnAndFadeCloneLine();
@@ -298,6 +310,14 @@ public class LoopSpellDetector : MonoBehaviour
         {
             case 0:
                 Debug.Log("Casting Fireball");
+                foreach (var ability in player.Abilities)
+                {
+                    if (ability.AbilityName == "Fireball")
+                    {
+                        player.CastAbility(ability);
+                        break;
+                    }
+                }
                 break;
             case 1:
                 Debug.Log("Casting ability #2");
