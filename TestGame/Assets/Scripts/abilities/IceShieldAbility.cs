@@ -5,12 +5,22 @@ public class IceShieldAbility : MonoBehaviour
     public GameObject iceShieldPrefab;
     public Transform shieldSpawnPoint;
     public float shieldDuration = 5f;
-    
+
+    public bool isShieldActive = false;
+
 
     public void Cast()
     {
+        if (isShieldActive)
+        {
+            Debug.Log("Ice Shield is already active, cannot cast again.");
+            return; // Prevent multiple shields
+        }
+        else Debug.Log("Casting Ice Shield");
+
         GameObject iceShield = Instantiate(iceShieldPrefab, shieldSpawnPoint.position, Quaternion.identity);
         iceShield.transform.SetParent(transform); // Attach to player
         iceShield.GetComponent<IceShield>().Initialize(shieldDuration);
+        isShieldActive = true;
     }
 }

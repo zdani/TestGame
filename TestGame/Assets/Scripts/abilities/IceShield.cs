@@ -4,21 +4,17 @@ using UnityEngine;
 public class IceShield : MonoBehaviour
 {
     private SpriteRenderer spriteRenderer;
+    private IceShieldAbility iceShieldAbility;
     private readonly float fadeOutDuration = 1f;
-
-    private void Awake()
-    {
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        if (spriteRenderer == null)
-        {
-            Debug.LogError("IceShield: No SpriteRenderer found!");
-        }
-    }
 
     public void Initialize(float duration)
     {
         if (duration > 0f)
         {
+            spriteRenderer = GetComponent<SpriteRenderer>();
+            iceShieldAbility = transform.parent.GetComponent<IceShieldAbility>();
+            Debug.Log("parent ice shield ability found: " + iceShieldAbility);
+
             StartCoroutine(ShieldLifeRoutine(duration));
         }
     }
@@ -40,9 +36,8 @@ public class IceShield : MonoBehaviour
             yield return null;
         }
 
-        // Ensure it's fully transparent
         spriteRenderer.color = new Color(color.r, color.g, color.b, 0f);
-
+        iceShieldAbility.isShieldActive = false;
         Destroy(gameObject);
     }
 }

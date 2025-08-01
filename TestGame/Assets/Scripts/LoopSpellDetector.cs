@@ -314,7 +314,6 @@ public class LoopSpellDetector : MonoBehaviour
                 if (true) // Add logic to check Player.cs for ability availability
                 {
                     iceShieldAbility.Cast();
-                    Debug.Log("Casting Ice Shield");
                 }
                 else
                 {
