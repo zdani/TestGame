@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 // Health manager implementation
 public class HealthManager : IHealthManager
@@ -8,11 +9,19 @@ public class HealthManager : IHealthManager
     public float CurrentHealth { get; private set; }
     public float MaxHealth { get; private set; }
     public bool IsAlive => CurrentHealth > 0f;
+    private Image _healthBarSprite;
 
-    public HealthManager(float maxHealth)
+    public HealthManager(float maxHealth, Image healthBarSprite)
     {
         MaxHealth = maxHealth;
         CurrentHealth = maxHealth;
+        _healthBarSprite = healthBarSprite;
+        GameEvents.Instance.OnHealthChanged += OnHealthChanged;
+    }
+
+    private void OnHealthChanged(float obj)
+    {
+        _healthBarSprite.fillAmount = CurrentHealth / MaxHealth;
     }
 
     public void TakeDamage(float damage)
@@ -23,7 +32,7 @@ public class HealthManager : IHealthManager
         CurrentHealth = Mathf.Max(0f, CurrentHealth - damage);
 
         // Trigger health changed event through GameEvents
-        GameEvents.Instance?.TriggerHealthChanged(CurrentHealth);
+        GameEvents.Instance.TriggerHealthChanged(CurrentHealth);
 
         if (CurrentHealth <= 0f && oldHealth > 0f)
         {
@@ -42,7 +51,7 @@ public class HealthManager : IHealthManager
         if (CurrentHealth != oldHealth)
         {
             // Trigger health changed event through GameEvents
-            GameEvents.Instance?.TriggerHealthChanged(CurrentHealth);
+            GameEvents.Instance.TriggerHealthChanged(CurrentHealth);
         }
     }
 

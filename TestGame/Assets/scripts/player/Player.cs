@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -11,14 +12,15 @@ public class Player : MonoBehaviour
     public IHealthManager HealthManager { get; private set; }
     public List<Ability> Abilities => new List<Ability>();
     public bool IsInvincible { get; private set; } = false;
+    [SerializeField] Image _healthBarSprite;
 
-    const int INIT_MAX_HEALTH = 100;
+    const int INIT_MAX_HEALTH = 5;
     private float invincibilityTimer = 0f;
     private SpriteRenderer spriteRenderer;
 
     private void Awake()
     {
-        HealthManager = new HealthManager(INIT_MAX_HEALTH);
+        HealthManager = new HealthManager(INIT_MAX_HEALTH, _healthBarSprite);
         spriteRenderer = GetComponent<SpriteRenderer>();
         
         // Subscribe to health events through GameEvents

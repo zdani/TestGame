@@ -12,7 +12,7 @@ public enum ZombieState
 public class ZombieEnemy : Enemy
 {
     [Header("Zombie Settings")]
-    [SerializeField] private float damageAmount = 30f;
+    [SerializeField] private float damageAmount = 1f;
     [SerializeField] private LayerMask groundLayerMask = 1; // Default layer
     
     [Header("Zombie Health Settings")]
