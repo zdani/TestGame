@@ -25,20 +25,7 @@ public class BossWiz : Enemy
             rb.constraints = RigidbodyConstraints2D.FreezeRotation;
         }
         
-        // Find player's head for targeting
-        if (playerTransform != null)
-        {
-            headTarget = playerTransform.Find("Head");
-            if (headTarget == null)
-            {
-                Debug.LogWarning("BossWiz could not find 'Head' transform on player. Defaulting to player's main transform.");
-                headTarget = playerTransform;
-            }
-            else
-            {
-                Debug.Log("BossWiz successfully targeted player's 'Head' transform.");
-            }
-        }
+        headTarget = playerTransform.Find("Head");
 
         // Find teleport points
         GameObject teleportParent = GameObject.Find("TeleportationPoints");
