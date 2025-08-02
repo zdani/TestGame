@@ -8,6 +8,7 @@ public class IceShieldAbility : MonoBehaviour
 
     [HideInInspector]
     public bool isShieldActive = false;
+    private IceShield _iceShield;
 
 
     public void Cast()
@@ -21,7 +22,13 @@ public class IceShieldAbility : MonoBehaviour
 
         GameObject iceShield = Instantiate(iceShieldPrefab, shieldSpawnPoint.position, Quaternion.identity);
         iceShield.transform.SetParent(transform); // Attach to player
-        iceShield.GetComponent<IceShield>().Initialize(shieldDuration);
+        _iceShield = iceShield.GetComponent<IceShield>();
+        _iceShield.Initialize(shieldDuration);
         isShieldActive = true;
+    }
+
+    public void BreakShield()
+    {
+        _iceShield.BreakShield();
     }
 }
