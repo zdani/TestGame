@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 5591183312747999662}
   - component: {fileID: 1046699426527618609}
   - component: {fileID: 315865048144270632}
+  - component: {fileID: 7801389114076293220}
   - component: {fileID: 4029295158634634499}
   - component: {fileID: 8691692074631212765}
   m_Layer: 0
@@ -230,6 +231,19 @@ MonoBehaviour:
   shieldSpawnPoint: {fileID: 2348171589119017799}
   shieldDuration: 1
   isShieldActive: 0
+--- !u!114 &7801389114076293220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1008893781474412776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ecf578f196fea2489d71475b58b97ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boulderPrefab: {fileID: 2219041384829122900, guid: 35e028b7885e1894e97ced972aedebb2, type: 3}
 --- !u!95 &4029295158634634499
 Animator:
   serializedVersion: 7
