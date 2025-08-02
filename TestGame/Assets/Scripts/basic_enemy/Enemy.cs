@@ -162,7 +162,6 @@ public abstract class Enemy : MonoBehaviour, IHealthManager
     protected virtual void OnDeath()
     {
         Debug.Log($"{enemyName} has died!");
-        // Derived classes can override this to add death behavior
     }
     
     // Abstract method that derived classes must implement for custom collision behavior
@@ -188,8 +187,9 @@ public abstract class Enemy : MonoBehaviour, IHealthManager
     // Handle physical collisions (player bumping into enemy)
     protected virtual void OnCollisionEnter2D(Collision2D collision)
     {
-        // Check for Player collision
-        if (collision.gameObject.TryGetComponent<Player>(out var player))
+        Debug.Log($"OnCollisionEnter2D triggered with {collision.gameObject.name}. IsAlive: {IsAlive}");
+        // Check for Player collision and ensure the enemy is alive
+        if (IsAlive && collision.gameObject.TryGetComponent<Player>(out var player))
         {
             // Let the concrete implementation handle specific collision effects
             OnPlayerCollision(player);
@@ -206,7 +206,7 @@ public abstract class Enemy : MonoBehaviour, IHealthManager
         
         // Check for Player proximity (if using a larger trigger collider)
         Player player = other.gameObject.GetComponent<Player>();
-        if (player != null)
+        if (player != null && IsAlive)
         {
             // If player is moving fast and about to collide, force a collision check
             Rigidbody2D playerRb = player.GetComponent<Rigidbody2D>();
@@ -239,7 +239,7 @@ public abstract class Enemy : MonoBehaviour, IHealthManager
             TakeDamage(3f); // Boulders do more damage
             
             // Destroy the boulder after impact
-            Destroy(other.gameObject);
+            //Destroy(other.gameObject);
             return;
         }
         

@@ -8,6 +8,7 @@ public class Boulder : MonoBehaviour
     public float lingerDuration = 0.8f;
     public float fadeOutDuration = 0.2f;
     public AudioClip slamSound;
+    public LayerMask groundLayer;
 
     private Vector3 originalPos;
     private SpriteRenderer sr;
@@ -51,29 +52,22 @@ public class Boulder : MonoBehaviour
         isFalling = true;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D other)
     {
         if (hasLanded) return;
 
-        if (isFalling)
+        // Check if the boulder has hit the ground
+        if ((groundLayer.value & (1 << other.gameObject.layer)) > 0)
         {
-            /*
-            if (((1 << collision.gameObject.layer) & damageableLayers) != 0)
+            if (isFalling)
             {
-                Health targetHealth = collision.gameObject.GetComponent<Health>();
-                if (targetHealth != null)
-                {
-                    targetHealth.TakeDamage(damageAmount);
-                }
+                // Stop damaging and start fade
+                hasLanded = true;
+                isFalling = false;
+                rb.bodyType = RigidbodyType2D.Static;
+
+                StartCoroutine(FadeAndDestroy());
             }
-            */
-
-            // Stop damaging and start fade
-            hasLanded = true;
-            isFalling = false;
-            rb.bodyType = RigidbodyType2D.Static;
-
-            StartCoroutine(FadeAndDestroy());
         }
     }
 

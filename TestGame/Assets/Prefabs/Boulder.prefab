@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 9134076632752311676}
   - component: {fileID: 2070351816501313606}
   - component: {fileID: 2567613108890237392}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Boulder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -172,6 +172,9 @@ MonoBehaviour:
   lingerDuration: 0.8
   fadeOutDuration: 0.4
   slamSound: {fileID: 8300000, guid: 40d64a5c3c5f5cc40a90c590f8f12d88, type: 3}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 8
 --- !u!82 &2567613108890237392
 AudioSource:
   m_ObjectHideFlags: 0
