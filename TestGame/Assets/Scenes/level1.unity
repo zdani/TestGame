@@ -11295,9 +11295,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1008893781474412776, guid: 17e13cd806406e04589db6953a252182, type: 3}
       insertIndex: -1
       addedObject: {fileID: 32327941}
-    - targetCorrespondingSourceObject: {fileID: 1008893781474412776, guid: 17e13cd806406e04589db6953a252182, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 32327949}
   m_SourcePrefab: {fileID: 100100000, guid: 17e13cd806406e04589db6953a252182, type: 3}
 --- !u!1 &32327940 stripped
 GameObject:
@@ -11318,21 +11315,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   invincibilityDuration: 3
   _healthBarSprite: {fileID: 933685309}
---- !u!4 &32327948 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3031331951272698403, guid: 17e13cd806406e04589db6953a252182, type: 3}
-  m_PrefabInstance: {fileID: 32327939}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &32327949
+--- !u!114 &32327949 stripped
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 5591183312747999662, guid: 17e13cd806406e04589db6953a252182, type: 3}
+  m_PrefabInstance: {fileID: 32327939}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 32327940}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bff575eb01253d0499503a338192fa89, type: 3}
+  m_Script: {fileID: 11500000, guid: eec9deaa464dee648afe832dc7928e63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &41102287 stripped
@@ -12422,7 +12413,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25740bec7a6d93c4595c78618d90be4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 32327948}
+  playerController: {fileID: 32327949}
   offset: {x: 0, y: 3.5, z: -10}
   smoothSpeed: 10
 --- !u!1001 &526149886
