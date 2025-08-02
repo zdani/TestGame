@@ -133,19 +133,21 @@ MonoBehaviour:
   enemyName: Enemy
   maxHealth: 100
   currentHealth: 0
+  detectionRadius: 5
   slideForce: 5
   downwardForce: 3
+  mainCollider: {fileID: 0}
   damageAmount: 1
   groundLayerMask:
     serializedVersion: 2
     m_Bits: 8
   zombieMaxHealth: 3
-  detectionRadius: 5
   walkSpeed: 2
   chaseSpeed: 4
   edgeDetectionDistance: 0.1
   maxPatrolDistance: 10
   chaseTimeout: 4
+  startPatrolRight: 1
 --- !u!95 &3744883840427090133
 Animator:
   serializedVersion: 7
