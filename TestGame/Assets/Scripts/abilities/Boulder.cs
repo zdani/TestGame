@@ -23,7 +23,7 @@ public class Boulder : MonoBehaviour
         col = GetComponent<Collider2D>();
         sr = GetComponent<SpriteRenderer>();
         audioSource = GetComponent<AudioSource>();
-        rb.bodyType = RigidbodyType2D.Static;
+        rb.bodyType = RigidbodyType2D.Static; // The boulder is unaffected by gravity while static
     }
 
     private void Start()
@@ -47,7 +47,7 @@ public class Boulder : MonoBehaviour
         }
 
         transform.position = startPos; // Reset position
-        rb.bodyType = RigidbodyType2D.Dynamic;
+        rb.bodyType = RigidbodyType2D.Dynamic; // Switch to dynamic to allow falling
         isFalling = true;
     }
 
