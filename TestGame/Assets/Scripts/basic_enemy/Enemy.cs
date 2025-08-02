@@ -42,7 +42,7 @@ public abstract class Enemy : MonoBehaviour, IHealthManager
             originalSpriteColor = spriteRenderer.color;
         }
 
-        playerTransform = FindObjectOfType<Player>()?.transform;
+        playerTransform = FindFirstObjectByType<Player>()?.transform;
         
         // Base initialization - can be overridden by derived classes
     }
