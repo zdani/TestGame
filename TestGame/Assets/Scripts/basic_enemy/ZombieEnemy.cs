@@ -221,6 +221,8 @@ public class ZombieEnemy : Enemy
     
     protected override void OnPlayerDetected()
     {
+        if (currentState == ZombieState.Dead) return;
+        
         Debug.Log("Zombie detected player! Switching to chase mode.");
         
         // Reset chase timeout
