@@ -13469,10 +13469,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 315865048144270632, guid: 17e13cd806406e04589db6953a252182, type: 3}
-      propertyPath: shieldDuration
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1008893781474412776, guid: 17e13cd806406e04589db6953a252182, type: 3}
       propertyPath: m_Name
       value: Player Wizard
