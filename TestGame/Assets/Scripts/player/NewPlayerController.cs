@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class NewPlayerController : MonoBehaviour
 {
@@ -9,23 +10,37 @@ public class NewPlayerController : MonoBehaviour
     [SerializeField] private float maxAirSpeed = 8f;
     
     [Header("Ground Detection")]
-    [SerializeField] private LayerMask groundLayerMask = 1;
-    [SerializeField] private float groundCheckDistance = 0.2f;
+    [SerializeField] private LayerMask groundLayerMask;
+    [SerializeField] private float groundCheckDistance = 0.1f; // Reduced since we're now at the exact bottom
     
     [Header("Enemy Interaction")]
-    [SerializeField] private float slideForce = 8f;
-    [SerializeField] private float downwardForce = 6f;
+    [SerializeField] private float slideForce = 20f; // Much more aggressive sliding
+    [SerializeField] private float downwardForce = 15f; // Much stronger downward force
     
     // Components
     private Rigidbody2D rb;
     private Animator animator;
+    private PhysicsMaterial2D noFrictionMaterial;
     
     // State
     private bool isGrounded;
     private bool isMoving;
     
-    // Ground check position
-    private Vector2 GroundCheckPosition => (Vector2)transform.position + Vector2.down * 0.5f;
+    // Ground check position - use actual collider bounds
+    private Vector2 GroundCheckPosition
+    {
+        get
+        {
+            Collider2D playerCollider = GetComponent<Collider2D>();
+            if (playerCollider != null)
+            {
+                // Use the bottom of the collider bounds
+                return new Vector2(transform.position.x, playerCollider.bounds.min.y);
+            }
+            // Fallback to transform position if no collider
+            return (Vector2)transform.position + Vector2.down * 0.5f;
+        }
+    }
     
     private void Awake()
     {
@@ -35,6 +50,14 @@ public class NewPlayerController : MonoBehaviour
         // Configure rigidbody
         rb.freezeRotation = true;
         rb.gravityScale = 1f;
+
+        // Create a physics material with zero friction to prevent sticking to walls
+        noFrictionMaterial = new PhysicsMaterial2D();
+        noFrictionMaterial.friction = 0f;
+        rb.sharedMaterial = noFrictionMaterial;
+
+        // Set up ground layer mask properly
+        groundLayerMask = LayerMask.GetMask("Ground");
     }
     
     private void Update()
@@ -51,7 +74,33 @@ public class NewPlayerController : MonoBehaviour
     
     private void CheckGrounded()
     {
-        isGrounded = Physics2D.Raycast(GroundCheckPosition, Vector2.down, groundCheckDistance, groundLayerMask);
+        RaycastHit2D hit = Physics2D.Raycast(GroundCheckPosition, Vector2.down, groundCheckDistance, groundLayerMask);
+        isGrounded = hit.collider != null;
+        
+        // Debug ground detection
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            Debug.Log($"Ground Check Debug:");
+            Debug.Log($"  Player position: {transform.position}");
+            Debug.Log($"  Ground check position: {GroundCheckPosition}");
+            Debug.Log($"  Ground check distance: {groundCheckDistance}");
+            Debug.Log($"  Layer mask: {groundLayerMask.value}");
+            Debug.Log($"  Hit something: {hit.collider != null}");
+            if (hit.collider != null)
+            {
+                Debug.Log($"  Hit object: {hit.collider.gameObject.name}");
+                Debug.Log($"  Hit layer: {hit.collider.gameObject.layer}");
+            }
+            Debug.Log($"  IsGrounded: {isGrounded}");
+            
+            // Check what collider the player has
+            Collider2D playerCollider = GetComponent<Collider2D>();
+            if (playerCollider != null)
+            {
+                Debug.Log($"  Player collider type: {playerCollider.GetType()}");
+                Debug.Log($"  Player collider bounds: {playerCollider.bounds}");
+            }
+        }
     }
     
     private void HandleMovement()
@@ -144,85 +193,100 @@ public class NewPlayerController : MonoBehaviour
     // Handle collisions with enemies
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Enemy enemy = collision.gameObject.GetComponent<Enemy>();
-        if (enemy != null)
+        if (collision.gameObject.TryGetComponent<Enemy>(out var enemy))
         {
-            HandleEnemyCollision(collision, enemy);
+            HandleEnemyCollision(collision, enemy, isInitialContact: true);
         }
     }
-    
-    private void HandleEnemyCollision(Collision2D collision, Enemy enemy)
+
+    private void OnCollisionStay2D(Collision2D collision)
     {
-        // Check if player is landing on top of enemy
+        if (collision.gameObject.TryGetComponent<Enemy>(out var enemy))
+        {
+            HandleEnemyCollision(collision, enemy, isInitialContact: false);
+        }
+    }
+
+    private void HandleEnemyCollision(Collision2D collision, Enemy enemy, bool isInitialContact)
+    {
         if (IsLandingOnEnemy(collision))
         {
-            // Apply slide effect
-            ApplySlideEffect();
-            
-            // Temporarily disable collision to prevent sticking
-            StartCoroutine(TemporarilyDisableCollision(collision.collider));
+            // We are on top of the enemy, so apply the slide effect.
+            // This is checked on both Enter and Stay to ensure the player slides off.
+            ApplySlideEffect(enemy);
         }
-        else
+        else if (isInitialContact)
         {
-            // Side collision - player takes damage
-            Player player = GetComponent<Player>();
-            if (player != null)
+            // It's a side collision on the first contact, so the player takes damage.
+            Debug.Log("Side collision with enemy - taking damage!");
+            if (TryGetComponent<Player>(out var player))
             {
                 player.TakeDamage(enemy.DamageAmount, enemy.EnemyName);
             }
         }
     }
-    
+
     private bool IsLandingOnEnemy(Collision2D collision)
     {
-        // Check if player is above the enemy and moving downward
-        if (rb.linearVelocity.y < 0)
+        // To be "landing", the player must be moving downwards.
+        if (rb.linearVelocity.y >= 0)
         {
-            ContactPoint2D[] contacts = collision.contacts;
-            foreach (ContactPoint2D contact in contacts)
+            return false;
+        }
+
+        // Check the contact points to see if we are on top of the collider.
+        foreach (var contact in collision.contacts)
+        {
+            // The contact normal is a vector pointing perpendicular to the collision surface.
+            // If we are landing on top, the normal should point upwards (positive y).
+            // We use a threshold to account for curved surfaces (like a head).
+            if (contact.normal.y > 0.5f)
             {
-                // If contact point is above the enemy's center, we're landing on it
-                if (contact.point.y > collision.transform.position.y)
-                {
-                    return true;
-                }
+                // This is a reliable indicator that we are on top of the enemy.
+                Debug.Log($"Landing on enemy detected! Contact normal: {contact.normal}");
+                return true;
             }
         }
+
         return false;
     }
-    
-    private void ApplySlideEffect()
+
+    private void ApplySlideEffect(Enemy enemy)
     {
-        // Determine slide direction based on player position relative to enemy
-        float slideDirection = transform.position.x > 0 ? 1f : -1f;
-        
-        // Apply slide and downward force
+        // Determine which side of the enemy the player should be pushed towards.
+        float slideDirection = (transform.position.x > enemy.transform.position.x) ? 1f : -1f;
+
+        // Apply a direct and immediate force to the player's velocity.
+        // This bypasses the regular movement physics to ensure a consistent push-off effect.
         Vector2 slideVelocity = new Vector2(slideDirection * slideForce, -downwardForce);
         rb.linearVelocity = slideVelocity;
+
+        Debug.Log($"Applying slide effect. Velocity: {slideVelocity}");
     }
-    
-    private System.Collections.IEnumerator TemporarilyDisableCollision(Collider2D enemyCollider)
-    {
-        Collider2D playerCollider = GetComponent<Collider2D>();
-        
-        if (playerCollider != null && enemyCollider != null)
-        {
-            // Disable collision
-            Physics2D.IgnoreCollision(playerCollider, enemyCollider, true);
-            
-            // Wait a short time
-            yield return new WaitForSeconds(0.1f);
-            
-            // Re-enable collision
-            Physics2D.IgnoreCollision(playerCollider, enemyCollider, false);
-        }
-    }
-    
+
+
+
     // Visual debugging
-    private void OnDrawGizmosSelected()
+    private void OnDrawGizmosSelected() 
     {
         // Draw ground check
         Gizmos.color = isGrounded ? Color.green : Color.red;
         Gizmos.DrawWireSphere(GroundCheckPosition, groundCheckDistance);
+        
+        // Draw the raycast line
+        Gizmos.color = isGrounded ? Color.green : Color.red;
+        Gizmos.DrawLine(GroundCheckPosition, GroundCheckPosition + Vector2.down * groundCheckDistance);
+    }
+    
+    // Always show gizmos for debugging
+    private void OnDrawGizmos()
+    {
+        // Draw ground check (always visible)
+        Gizmos.color = isGrounded ? Color.green : Color.red;
+        Gizmos.DrawWireSphere(GroundCheckPosition, groundCheckDistance);
+        
+        // Draw the raycast line (always visible)
+        Gizmos.color = isGrounded ? Color.green : Color.red;
+        Gizmos.DrawLine(GroundCheckPosition, GroundCheckPosition + Vector2.down * groundCheckDistance);
     }
 } 

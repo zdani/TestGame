@@ -13,7 +13,7 @@ public class ZombieEnemy : Enemy
 {
     [Header("Zombie Settings")]
     [SerializeField] private float damageAmount = 1f;
-    [SerializeField] private LayerMask groundLayerMask = 1; // Default layer
+    [SerializeField] private LayerMask groundLayerMask;
     
     [Header("Zombie Health Settings")]
     [SerializeField] private float zombieMaxHealth = 3f;
@@ -37,7 +37,7 @@ public class ZombieEnemy : Enemy
     public override float DamageAmount => damageAmount;
     
     private Rigidbody2D rb;
-    private BoxCollider2D boxCollider;
+    private Collider2D zombieCollider; // Changed to generic Collider2D for capsule support
     private Animator animator; // For animation control
     private bool isGrounded = false;
     private GameObject currentPlatform;
@@ -68,11 +68,14 @@ public class ZombieEnemy : Enemy
 
         // Get required components
         rb = GetComponent<Rigidbody2D>();
-        boxCollider = GetComponent<BoxCollider2D>();
+        zombieCollider = GetComponent<Collider2D>();
         animator = GetComponent<Animator>();
 
         // Configure Rigidbody2D for gravity
         SetupRigidbody();
+
+        // Set up ground layer mask properly
+        groundLayerMask = LayerMask.GetMask("Ground");
 
         // Store starting position for patrol limits
         startingPosition = transform.position;
@@ -158,9 +161,9 @@ public class ZombieEnemy : Enemy
         }
         
         // Disable collider to prevent further collisions
-        if (boxCollider != null)
+        if (zombieCollider != null)
         {
-            boxCollider.enabled = false;
+            zombieCollider.enabled = false;
         }
         
         // Set death animation
@@ -190,8 +193,19 @@ public class ZombieEnemy : Enemy
         if (isGrounded) return;
         
         // Cast a ray downward to detect ground
-        Vector2 rayOrigin = transform.position;
-        float rayDistance = boxCollider.bounds.extents.y + 0.1f; // Slightly more than half the collider height
+        Vector2 rayOrigin;
+        if (zombieCollider != null)
+        {
+            // Use the bottom of the collider bounds
+            rayOrigin = new Vector2(transform.position.x, zombieCollider.bounds.min.y);
+        }
+        else
+        {
+            // Fallback to transform position if no collider
+            rayOrigin = (Vector2)transform.position + Vector2.down * 0.5f;
+        }
+        
+        float rayDistance = 0.1f; // Short distance since we're at the exact bottom
         
         RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.down, rayDistance, groundLayerMask);
         
