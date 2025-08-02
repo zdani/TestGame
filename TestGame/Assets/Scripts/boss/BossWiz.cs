@@ -14,11 +14,13 @@ public class BossWiz : Enemy
     private int lastTeleportIndex = -1;
     private Transform headTarget;
     private bool isDead = false;
+    private Animator animator;
 
     protected override void Start()
     {
         base.Start();
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
         if (rb != null)
         {
             rb.gravityScale = 0;
@@ -57,10 +59,18 @@ public class BossWiz : Enemy
         {
             PerformTeleport();
             
-            yield return new WaitForSeconds(3f);
+            // First attack with casting
+            yield return new WaitForSeconds(1f);
+            if (animator != null) animator.SetBool("IsCasting", true);
+            yield return new WaitForSeconds(2f);
+            if (animator != null) animator.SetBool("IsCasting", false);
             PerformAttack();
 
-            yield return new WaitForSeconds(3f);
+            // Second attack with casting
+            yield return new WaitForSeconds(1f);
+            if (animator != null) animator.SetBool("IsCasting", true);
+            yield return new WaitForSeconds(2f);
+            if (animator != null) animator.SetBool("IsCasting", false);
             PerformAttack();
 
             yield return new WaitForSeconds(3f);

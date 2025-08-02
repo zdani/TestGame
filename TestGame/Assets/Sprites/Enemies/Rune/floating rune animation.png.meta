@@ -1,0 +1,559 @@
+fileFormatVersion: 2
+guid: bdc16f3dd76716f48b76eddf191b1af1
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -5046483966104184236
+    second: floating rune animation_0
+  - first:
+      213: 2223637575744361079
+    second: floating rune animation_1
+  - first:
+      213: -7530383890152966366
+    second: floating rune animation_2
+  - first:
+      213: 2150503651490914939
+    second: floating rune animation_3
+  - first:
+      213: -7058005647586714826
+    second: floating rune animation_4
+  - first:
+      213: 8013539207595232898
+    second: floating rune animation_5
+  - first:
+      213: 8841785787771771833
+    second: floating rune animation_6
+  - first:
+      213: 7534965575213359014
+    second: floating rune animation_7
+  - first:
+      213: -5451651855585300123
+    second: floating rune animation_8
+  - first:
+      213: 4409179722242149998
+    second: floating rune animation_9
+  - first:
+      213: 6258598896394583280
+    second: floating rune animation_10
+  - first:
+      213: 4084010176983241709
+    second: floating rune animation_11
+  - first:
+      213: -5548374612111562737
+    second: floating rune animation_12
+  - first:
+      213: -6919035494514685396
+    second: floating rune animation_13
+  - first:
+      213: -8606939071260939943
+    second: floating rune animation_14
+  - first:
+      213: -805283865875372155
+    second: floating rune animation_15
+  - first:
+      213: 3142985772564636558
+    second: floating rune animation_16
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: floating rune animation_0
+      rect:
+        serializedVersion: 2
+        x: 194
+        y: 266
+        width: 571
+        height: 484
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 45ad7abf19947f9b0800000000000000
+      internalID: -5046483966104184236
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: floating rune animation_1
+      rect:
+        serializedVersion: 2
+        x: 857
+        y: 234
+        width: 711
+        height: 556
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 77214730892fbde10800000000000000
+      internalID: 2223637575744361079
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: floating rune animation_2
+      rect:
+        serializedVersion: 2
+        x: 1764
+        y: 596
+        width: 9
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 227bb15efb3be7790800000000000000
+      internalID: -7530383890152966366
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: floating rune animation_3
+      rect:
+        serializedVersion: 2
+        x: 1719
+        y: 555
+        width: 22
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b72eb4b5daf18dd10800000000000000
+      internalID: 2150503651490914939
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: floating rune animation_4
+      rect:
+        serializedVersion: 2
+        x: 1764
+        y: 571
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 63b94e8224dec0e90800000000000000
+      internalID: -7058005647586714826
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: floating rune animation_5
+      rect:
+        serializedVersion: 2
+        x: 1779
+        y: 508
+        width: 72
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 28e0166a37fc53f60800000000000000
+      internalID: 8013539207595232898
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: floating rune animation_6
+      rect:
+        serializedVersion: 2
+        x: 1692
+        y: 387
+        width: 62
+        height: 165
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9bbdb34045554ba70800000000000000
+      internalID: 8841785787771771833
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: floating rune animation_7
+      rect:
+        serializedVersion: 2
+        x: 1851
+        y: 524
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6af9369c443919860800000000000000
+      internalID: 7534965575213359014
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: floating rune animation_8
+      rect:
+        serializedVersion: 2
+        x: 1756
+        y: 399
+        width: 107
+        height: 104
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5613dbc7587d754b0800000000000000
+      internalID: -5451651855585300123
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: floating rune animation_9
+      rect:
+        serializedVersion: 2
+        x: 1831
+        y: 493
+        width: 37
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e6e4917b89d803d30800000000000000
+      internalID: 4409179722242149998
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: floating rune animation_10
+      rect:
+        serializedVersion: 2
+        x: 1855
+        y: 477
+        width: 13
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0fc304b69820bd650800000000000000
+      internalID: 6258598896394583280
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: floating rune animation_11
+      rect:
+        serializedVersion: 2
+        x: 1848
+        y: 457
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: de39a223e915da830800000000000000
+      internalID: 4084010176983241709
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: floating rune animation_12
+      rect:
+        serializedVersion: 2
+        x: 2151
+        y: 396
+        width: 240
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f086b44dfa63003b0800000000000000
+      internalID: -5548374612111562737
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: floating rune animation_13
+      rect:
+        serializedVersion: 2
+        x: 2395
+        y: 420
+        width: 23
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c2a022950e5aaff90800000000000000
+      internalID: -6919035494514685396
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: floating rune animation_14
+      rect:
+        serializedVersion: 2
+        x: 1741
+        y: 404
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 959af0624820e8880800000000000000
+      internalID: -8606939071260939943
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: floating rune animation_15
+      rect:
+        serializedVersion: 2
+        x: 1748
+        y: 378
+        width: 22
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 587252f279e03d4f0800000000000000
+      internalID: -805283865875372155
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: floating rune animation_16
+      rect:
+        serializedVersion: 2
+        x: 1711
+        y: 360
+        width: 13
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e8362db68e02e9b20800000000000000
+      internalID: 3142985772564636558
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      floating rune animation_0: -5046483966104184236
+      floating rune animation_1: 2223637575744361079
+      floating rune animation_10: 6258598896394583280
+      floating rune animation_11: 4084010176983241709
+      floating rune animation_12: -5548374612111562737
+      floating rune animation_13: -6919035494514685396
+      floating rune animation_14: -8606939071260939943
+      floating rune animation_15: -805283865875372155
+      floating rune animation_16: 3142985772564636558
+      floating rune animation_2: -7530383890152966366
+      floating rune animation_3: 2150503651490914939
+      floating rune animation_4: -7058005647586714826
+      floating rune animation_5: 8013539207595232898
+      floating rune animation_6: 8841785787771771833
+      floating rune animation_7: 7534965575213359014
+      floating rune animation_8: -5451651855585300123
+      floating rune animation_9: 4409179722242149998
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
