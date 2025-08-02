@@ -9,6 +9,11 @@ public abstract class Enemy : MonoBehaviour, IHealthManager
     [Header("Health Settings")]
     [SerializeField] protected float maxHealth = 100f;
     [SerializeField] protected float currentHealth;
+
+    [Header("Detection Settings")]
+    [SerializeField] protected float detectionRadius = 10f;
+    protected Transform playerTransform;
+    protected bool playerDetected = false;
     
     [Header("Player Interaction Settings")]
     [SerializeField] protected float slideForce = 5f; // Horizontal force to make player slide off
@@ -36,8 +41,43 @@ public abstract class Enemy : MonoBehaviour, IHealthManager
         {
             originalSpriteColor = spriteRenderer.color;
         }
+
+        playerTransform = FindObjectOfType<Player>()?.transform;
         
         // Base initialization - can be overridden by derived classes
+    }
+
+    protected virtual void Update()
+    {
+        CheckForPlayer();
+    }
+
+    protected virtual void CheckForPlayer()
+    {
+        if (playerTransform == null) return;
+        
+        float distanceToPlayer = Vector2.Distance(transform.position, playerTransform.position);
+        bool wasDetected = playerDetected;
+        playerDetected = distanceToPlayer <= detectionRadius;
+        
+        if (playerDetected && !wasDetected)
+        {
+            OnPlayerDetected();
+        }
+        else if (!playerDetected && wasDetected)
+        {
+            OnPlayerLost();
+        }
+    }
+
+    protected virtual void OnPlayerDetected()
+    {
+        Debug.Log($"{enemyName} detected player!");
+    }
+
+    protected virtual void OnPlayerLost()
+    {
+        Debug.Log($"{enemyName} lost player!");
     }
     
     // IHealthManager implementation
@@ -114,7 +154,7 @@ public abstract class Enemy : MonoBehaviour, IHealthManager
         }
         else
         {
-            Debug.LogError($"SpriteRenderer is null on {enemyName}! Cannot flash.");
+            Debug.LogWarning($"SpriteRenderer is null on {enemyName}! Cannot flash.");
         }
     }
     
@@ -196,6 +236,10 @@ public abstract class Enemy : MonoBehaviour, IHealthManager
     // Visual feedback coroutine
     private IEnumerator FlashRed()
     {
+        if(spriteRenderer == null) {
+            Debug.LogWarning($"SpriteRenderer is null on {enemyName}! Cannot flash.");
+            yield break;
+        }
         Debug.Log($"FlashRed coroutine started for {enemyName}");
         Debug.Log($"Original color: {originalSpriteColor}, Setting to red");
         spriteRenderer.color = Color.red;
@@ -205,4 +249,18 @@ public abstract class Enemy : MonoBehaviour, IHealthManager
         flashCoroutine = null; // Clear the reference when done
         Debug.Log($"FlashRed coroutine finished for {enemyName}");
     }
-} 
+
+    protected void OnDrawGizmosSelected()
+    {
+        // Draw detection radius
+        Gizmos.color = playerDetected ? Color.red : Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, detectionRadius);
+        
+        // Draw line to player if detected
+        if (playerDetected && playerTransform != null)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawLine(transform.position, playerTransform.position);
+        }
+    }
+}
