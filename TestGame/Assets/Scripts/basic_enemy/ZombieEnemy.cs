@@ -20,13 +20,11 @@ public class ZombieEnemy : Enemy
     
     [Header("Detection Settings")]
     [SerializeField] private float detectionRadius = 5f;
-    [SerializeField] private Transform playerTransform; // Drag player here in inspector (added auto finding in Start)
     
     [Header("Movement Settings")]
     [SerializeField] private float walkSpeed = 2f;
     [SerializeField] private float chaseSpeed = 4f; // Speed when chasing player
     [SerializeField] private float edgeDetectionDistance = 0.1f;
-    [SerializeField] private float turnBufferDistance = 0.5f; // Buffer to prevent rapid turning
     [SerializeField] private float maxPatrolDistance = 10f; // Maximum distance from starting point
     [SerializeField] private float chaseTimeout = 4f; // How long to keep chasing after losing player
     
@@ -55,7 +53,8 @@ public class ZombieEnemy : Enemy
     private float chaseTimeoutTimer = 0f;
     private bool isChaseTimeoutActive = false;
     private bool isReturningToPatrol = false; // Track if zombie is heading back to starting area
-
+    private Transform playerTransform;
+    
     protected override void Start()
     {
         // Set zombie-specific health before calling base Start
@@ -77,9 +76,9 @@ public class ZombieEnemy : Enemy
 
         // Store starting position for patrol limits
         startingPosition = transform.position;
-        
-        // Finding the player this way allows for zombie prefabs to not require a player reference in the inspector
-        playerTransform = GameObject.FindGameObjectWithTag("Player")?.transform;
+
+        // Find the Player object in the scene and set playerTransform
+        playerTransform = FindFirstObjectByType<Player>().transform;
     }
     
     void Update()
@@ -359,7 +358,6 @@ public class ZombieEnemy : Enemy
             // Turn around
             isMovingRight = !isMovingRight;
             direction = isMovingRight ? 1f : -1f;
-            Debug.Log("Zombie reached platform edge, turning around!");
         }
         // Only check patrol distance if we're not returning to patrol area
         else if (!isReturningToPatrol && WouldExceedPatrolDistance(direction))
@@ -367,7 +365,6 @@ public class ZombieEnemy : Enemy
             // Turn around
             isMovingRight = !isMovingRight;
             direction = isMovingRight ? 1f : -1f;
-            Debug.Log("Zombie reached patrol limit, turning around!");
         }
         
         Vector2 movement = new Vector2(direction * walkSpeed, 0f);
