@@ -54,7 +54,8 @@ public abstract class Enemy : MonoBehaviour, IHealthManager
 
     protected virtual void CheckForPlayer()
     {
-        if (playerTransform == null) return;
+
+        if (playerTransform == null || !IsAlive) return;
         
         float distanceToPlayer = Vector2.Distance(transform.position, playerTransform.position);
         bool wasDetected = playerDetected;
@@ -227,6 +228,18 @@ public abstract class Enemy : MonoBehaviour, IHealthManager
             
             // Destroy the fireball
             Destroy(fireball.gameObject);
+            return;
+        }
+        
+        // Check for Boulder collision
+        Boulder boulder = other.gameObject.GetComponent<Boulder>();
+        if (boulder != null)
+        {
+            Debug.Log($"{enemyName} hit by boulder! Taking 3 damage.");
+            TakeDamage(3f); // Boulders do more damage
+            
+            // Destroy the boulder after impact
+            Destroy(other.gameObject);
             return;
         }
         
