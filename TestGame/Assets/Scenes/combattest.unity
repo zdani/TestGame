@@ -2093,7 +2093,7 @@ GameObject:
   - component: {fileID: 1755859329}
   - component: {fileID: 1755859328}
   - component: {fileID: 1755859327}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Loop Spell
   m_TagString: Untagged
   m_Icon: {fileID: 0}
