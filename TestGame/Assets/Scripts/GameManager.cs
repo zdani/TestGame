@@ -75,8 +75,8 @@ public class GameManager : MonoBehaviour
         Debug.Log("Button clicked! Starting game... Loading scene: " + level1SceneName);
         
         // Test without scene loading first
-        Debug.Log("Testing button functionality - scene loading disabled for now");
-        // SceneManager.LoadScene(level1SceneName);
+        //Debug.Log("Testing button functionality - scene loading disabled for now");
+        SceneManager.LoadScene(level1SceneName);
     }
     
     // Simple test method for debugging
