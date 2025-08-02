@@ -21,12 +21,14 @@ public class ZombieEnemy : Enemy
     [Header("Movement Settings")]
     [SerializeField] private float walkSpeed = 2f;
     [SerializeField] private float chaseSpeed = 4f; // Speed when chasing player
-    [SerializeField] private float edgeDetectionDistance = 0.1f;
     [SerializeField] private float maxPatrolDistance = 10f; // Maximum distance from starting point
     [SerializeField] private float chaseTimeout = 4f; // How long to keep chasing after losing player
 
     [Header("Patrol Settings")] 
     [SerializeField] private bool startPatrolRight = true;
+    
+    [Header("Chase Settings")]
+    [SerializeField] private float directionChangeCooldown = 1.5f;
     
     // Animation state constants
     private const string ANIM_IS_WALKING = "IsWalking";
@@ -40,8 +42,6 @@ public class ZombieEnemy : Enemy
     private Collider2D zombieCollider; // Changed to generic Collider2D for capsule support
     private Animator animator; // For animation control
     private bool isGrounded = false;
-    private GameObject currentPlatform;
-    private Collider2D platformCollider;
     private ZombieState currentState = ZombieState.Falling;
     private bool isMovingRight; // Track movement direction separately
     
@@ -50,7 +50,7 @@ public class ZombieEnemy : Enemy
     private float chaseTimeoutTimer = 0f;
     private bool isChaseTimeoutActive = false;
     private bool isReturningToPatrol = false; // Track if zombie is heading back to starting area
-    
+    private float lastDirectionChangeTime = 0f;
     
     protected override void Start()
     {
@@ -74,7 +74,7 @@ public class ZombieEnemy : Enemy
         // Set up ground layer mask properly
         groundLayerMask = LayerMask.GetMask("Ground");
 
-        // Store starting position for patrol limits
+        // Store starting for patrol limits
         startingPosition = transform.position;
 
         // Set initial patrol direction
@@ -164,10 +164,37 @@ public class ZombieEnemy : Enemy
         Debug.Log("Zombie has been defeated!");
     }
     
+    protected override void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (currentState == ZombieState.Walking)
+        {
+            // If we collide with another enemy, turn around.
+            if (collision.gameObject.GetComponent<Enemy>() != null)
+            {
+                 // Ensure we don't turn around on the same frame we collided with the player
+                if (collision.gameObject.GetComponent<Player>() == null)
+                {
+                    isMovingRight = !isMovingRight;
+                    return;
+                }
+            }
 
-    
+            // Check if we hit a wall. A wall is on the "Ground" layer and the collision normal is mostly horizontal.
+            if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
+            {
+                ContactPoint2D contact = collision.GetContact(0);
+                if (Mathf.Abs(contact.normal.x) > 0.9f) // Hit a wall
+                {
+                    isMovingRight = !isMovingRight;
+                    return;
+                }
+            }
+        }
 
-    
+        // If it's not a wall or another enemy, call the base class implementation to handle player collision.
+        base.OnCollisionEnter2D(collision);
+    }
+
     private void SetupRigidbody()
     {
         rb.constraints = RigidbodyConstraints2D.FreezeRotation; // Prevent rotation
@@ -185,19 +212,8 @@ public class ZombieEnemy : Enemy
         if (isGrounded) return;
         
         // Cast a ray downward to detect ground
-        Vector2 rayOrigin;
-        if (zombieCollider != null)
-        {
-            // Use the bottom of the collider bounds
-            rayOrigin = new Vector2(transform.position.x, zombieCollider.bounds.min.y);
-        }
-        else
-        {
-            // Fallback to transform position if no collider
-            rayOrigin = (Vector2)transform.position + Vector2.down * 0.5f;
-        }
-        
-        float rayDistance = 0.1f; // Short distance since we're at the exact bottom
+        Vector2 rayOrigin = new Vector2(transform.position.x, zombieCollider.bounds.min.y + 0.1f);
+        float rayDistance = 0.2f; 
         
         RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.down, rayDistance, groundLayerMask);
         
@@ -205,8 +221,6 @@ public class ZombieEnemy : Enemy
         {
             // Zombie has hit ground
             isGrounded = true;
-            currentPlatform = hit.collider.gameObject;
-            platformCollider = hit.collider;
             OnLanded();
         }
     }
@@ -235,6 +249,9 @@ public class ZombieEnemy : Enemy
         // Set chase state
         currentState = ZombieState.Chasing;
         SetAnimationState(currentState);
+        
+        // Reset the direction change cooldown so the zombie can turn immediately.
+        lastDirectionChangeTime = 0f;
     }
     
     private void HandleChaseTimeout()
@@ -267,13 +284,24 @@ public class ZombieEnemy : Enemy
         isChaseTimeoutActive = true;
         chaseTimeoutTimer = chaseTimeout;
     }
-    
+
     private void ChasePlayer()
     {
         if (playerTransform == null) return;
         
-        // Determine direction to player
-        isMovingRight = playerTransform.position.x > transform.position.x;
+        // Determine the direction to the player
+        bool newDirectionIsRight = playerTransform.position.x > transform.position.x;
+        
+        // If the direction needs to change, check the cooldown
+        if (newDirectionIsRight != isMovingRight)
+        {
+            if (Time.time - lastDirectionChangeTime > directionChangeCooldown)
+            {
+                isMovingRight = newDirectionIsRight;
+                lastDirectionChangeTime = Time.time;
+            }
+        }
+
         float direction = isMovingRight ? 1f : -1f;
         
         // Check if moving in this direction would go off the platform edge
@@ -334,8 +362,6 @@ public class ZombieEnemy : Enemy
     
     private void WalkOnPlatform()
     {
-        if (currentPlatform == null || platformCollider == null) return;
-        
         // Move in current direction
         float direction = isMovingRight ? 1f : -1f;
         
@@ -375,7 +401,6 @@ public class ZombieEnemy : Enemy
         }
     }
     
-
     
     private void FlipSprite()
     {
@@ -388,20 +413,21 @@ public class ZombieEnemy : Enemy
     
     private bool WouldGoOffEdge(float direction)
     {
-        if (platformCollider == null) return false;
+        // The point to start our raycast is at the leading edge of the collider.
+        Vector2 raycastOrigin = new Vector2(
+            zombieCollider.bounds.center.x + (direction * (zombieCollider.bounds.extents.x)),
+            zombieCollider.bounds.min.y + 0.1f // Start the ray slightly above the bottom
+        );
+
+        // Cast a short ray downwards from just in front of the zombie.
+        // If it doesn't hit anything on the ground layer, we're at a ledge.
+        float raycastDistance = 0.2f;
+        RaycastHit2D hit = Physics2D.Raycast(raycastOrigin, Vector2.down, raycastDistance, groundLayerMask);
         
-        // Get the platform bounds
-        Bounds platformBounds = platformCollider.bounds;
-        
-        // Calculate where the zombie would be after moving
-        float zombieX = transform.position.x;
-        float nextX = zombieX + (direction * walkSpeed * Time.deltaTime);
-        
-        // Check if the next position would be off the platform
-        float leftEdge = platformBounds.min.x + edgeDetectionDistance;
-        float rightEdge = platformBounds.max.x - edgeDetectionDistance;
-        
-        return nextX <= leftEdge || nextX >= rightEdge;
+        // You can enable this for debugging to see the raycasts in the Scene view
+        // Debug.DrawRay(raycastOrigin, Vector2.down * raycastDistance, hit.collider != null ? Color.green : Color.red);
+
+        return hit.collider == null;
     }
     
     private bool WouldExceedPatrolDistance(float direction)
@@ -417,9 +443,8 @@ public class ZombieEnemy : Enemy
     }
 
 
-
     // Implementation of abstract method from Enemy base class
     protected override void OnPlayerCollision(Player player)
     {
     }
-} 
+}
