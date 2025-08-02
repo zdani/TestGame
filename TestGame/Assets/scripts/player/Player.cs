@@ -53,6 +53,13 @@ public class Player : MonoBehaviour
         // Don't take damage if invincible
         if (IsInvincible) return;
         
+        // Find the IceShieldAbility component on this player's GameObject
+        IceShieldAbility iceShieldAbility = gameObject.GetComponent<IceShieldAbility>();
+        if (iceShieldAbility != null && iceShieldAbility.isShieldActive){
+            iceShieldAbility.BreakShield();
+            return;
+        }
+        
         // Take damage
         HealthManager.TakeDamage(damageAmount);
         

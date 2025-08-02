@@ -43,6 +43,11 @@ public abstract class Enemy : MonoBehaviour, IHealthManager
     // IHealthManager implementation
     public virtual void TakeDamage(float damage)
     {
+        IceShieldAbility iceShieldAbility = gameObject.GetComponent<IceShieldAbility>();
+        if (iceShieldAbility != null && iceShieldAbility.isShieldActive){
+            iceShieldAbility.BreakShield();
+            return;
+        }
         if (!IsAlive) return;
         
         // Check damage cooldown to prevent multiple rapid hits
