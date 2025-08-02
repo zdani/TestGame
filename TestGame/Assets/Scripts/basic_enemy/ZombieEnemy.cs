@@ -29,6 +29,7 @@ public class ZombieEnemy : Enemy
     
     [Header("Chase Settings")]
     [SerializeField] private float directionChangeCooldown = 1.5f;
+    [SerializeField] private float stuckTurnAroundTime = 2f;
     
     // Animation state constants
     private const string ANIM_IS_WALKING = "IsWalking";
@@ -51,6 +52,10 @@ public class ZombieEnemy : Enemy
     private bool isChaseTimeoutActive = false;
     private bool isReturningToPatrol = false; // Track if zombie is heading back to starting area
     private float lastDirectionChangeTime = 0f;
+    
+    // Stuck detection
+    private Vector2 lastPosition;
+    private float timeStuck;
     
     protected override void Start()
     {
@@ -79,6 +84,10 @@ public class ZombieEnemy : Enemy
 
         // Set initial patrol direction
         isMovingRight = startPatrolRight;
+
+        // Initialize stuck detection variables
+        lastPosition = transform.position;
+        timeStuck = 0f;
     }
     
     protected override void Update()
@@ -164,37 +173,6 @@ public class ZombieEnemy : Enemy
         Debug.Log("Zombie has been defeated!");
     }
     
-    protected override void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (currentState == ZombieState.Walking)
-        {
-            // If we collide with another enemy, turn around.
-            if (collision.gameObject.GetComponent<Enemy>() != null)
-            {
-                 // Ensure we don't turn around on the same frame we collided with the player
-                if (collision.gameObject.GetComponent<Player>() == null)
-                {
-                    isMovingRight = !isMovingRight;
-                    return;
-                }
-            }
-
-            // Check if we hit a wall. A wall is on the "Ground" layer and the collision normal is mostly horizontal.
-            if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
-            {
-                ContactPoint2D contact = collision.GetContact(0);
-                if (Mathf.Abs(contact.normal.x) > 0.9f) // Hit a wall
-                {
-                    isMovingRight = !isMovingRight;
-                    return;
-                }
-            }
-        }
-
-        // If it's not a wall or another enemy, call the base class implementation to handle player collision.
-        base.OnCollisionEnter2D(collision);
-    }
-
     private void SetupRigidbody()
     {
         rb.constraints = RigidbodyConstraints2D.FreezeRotation; // Prevent rotation
@@ -362,6 +340,23 @@ public class ZombieEnemy : Enemy
     
     private void WalkOnPlatform()
     {
+        // Stuck detection logic
+        if (Vector2.Distance(transform.position, lastPosition) < 0.1f)
+        {
+            timeStuck += Time.deltaTime;
+        }
+        else
+        {
+            lastPosition = transform.position;
+            timeStuck = 0f;
+        }
+
+        if (timeStuck >= stuckTurnAroundTime)
+        {
+            isMovingRight = !isMovingRight;
+            timeStuck = 0f; // Reset timer after turning
+        }
+        
         // Move in current direction
         float direction = isMovingRight ? 1f : -1f;
         
