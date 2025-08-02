@@ -2,53 +2,47 @@ using UnityEngine;
 
 public class OptionsMenuManager : MonoBehaviour
 {
-    public GameObject optionsMenu;   // Assign this in the Inspector
-    public GameObject controlsMenu;  // Assign this in the Inspector
+    public GameObject optionsPanel;   // Assign this in the Inspector
+    public GameObject controlsPanel;  // Assign this in the Inspector
 
-    private bool isGamePaused = false;
+    private bool isGamePaused = false; // May use later
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            HandleEscapePress();
+            ToggleOptionsMenu();
         }
     }
 
-    private void HandleEscapePress()
+    public void ToggleOptionsMenu()
     {
-        if (controlsMenu.activeSelf)
+        if (controlsPanel.activeSelf)
         {
             // If in controls menu, return to options menu
-            controlsMenu.SetActive(false);
-            optionsMenu.SetActive(true);
+            controlsPanel.SetActive(false);
+            optionsPanel.SetActive(true);
         }
-        else if (optionsMenu.activeSelf)
+        else if (optionsPanel.activeSelf)
         {
             // If in options menu, close everything and unpause
-            optionsMenu.SetActive(false);
+            optionsPanel.SetActive(false);
             Time.timeScale = 1f;
             isGamePaused = false;
         }
         else
         {
             // If nothing is open, open options and pause
-            optionsMenu.SetActive(true);
+            optionsPanel.SetActive(true);
             Time.timeScale = 0f;
             isGamePaused = true;
         }
     }
 
-    public void ShowControlsMenu()
+    public void ResumeGame() // Haven't implemented Resume button in options menu yet
     {
-        optionsMenu.SetActive(false);
-        controlsMenu.SetActive(true);
-    }
-
-    public void ResumeGame()
-    {
-        optionsMenu.SetActive(false);
-        controlsMenu.SetActive(false);
+        optionsPanel.SetActive(false);
+        controlsPanel.SetActive(false);
         Time.timeScale = 1f;
         isGamePaused = false;
     }
