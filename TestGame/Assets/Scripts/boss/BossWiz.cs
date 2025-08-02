@@ -33,6 +33,7 @@ public class BossWiz : Enemy
         if (rb != null)
         {
             rb.gravityScale = 0;
+            rb.constraints = RigidbodyConstraints2D.FreezeRotation;
         }
         currentState = BossState.Idle;
         lastAttackTime = -attackCooldown;
