@@ -12,12 +12,12 @@ GameObject:
   - component: {fileID: 6599738817436392878}
   - component: {fileID: 6917841373093443536}
   - component: {fileID: 9090110369973755013}
-  - component: {fileID: 5877969832043053282}
   - component: {fileID: 4029295158634634499}
   - component: {fileID: 1046699426527618609}
   - component: {fileID: 315865048144270632}
   - component: {fileID: 8691692074631212765}
   - component: {fileID: 4861603236588023376}
+  - component: {fileID: 5591183312747999662}
   m_Layer: 0
   m_Name: Player Wizard
   m_TagString: Untagged
@@ -138,105 +138,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   invincibilityDuration: 3
   _healthBarSprite: {fileID: 0}
---- !u!114 &5877969832043053282
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1008893781474412776}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eec9deaa464dee648afe832dc7928e63, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 5
-  jumpForce: 7
-  airControlForce: 20
-  maxAirSpeed: 8
-  animator: {fileID: 4029295158634634499}
-  walkAction:
-    m_Name: Walk
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 29266279-488d-487e-967b-a84169e3a91b
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: 2D Vector
-      m_Id: 5d534cdd-0211-4789-8b61-e67cb99b06d2
-      m_Path: 2DVector
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Walk
-      m_Flags: 4
-    - m_Name: left
-      m_Id: 1ea7ed17-92ea-4bad-865d-64157c5a05de
-      m_Path: <Keyboard>/a
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Walk
-      m_Flags: 8
-    - m_Name: left
-      m_Id: 1de9224e-96d0-4e86-adc7-7129f416094e
-      m_Path: <Keyboard>/leftArrow
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Walk
-      m_Flags: 8
-    - m_Name: right
-      m_Id: d4aa5bab-bf3a-48c4-9160-021f87e41730
-      m_Path: <Keyboard>/d
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Walk
-      m_Flags: 8
-    - m_Name: right
-      m_Id: 0f8439fd-de8e-4c1d-af7d-cd31b2bdc40f
-      m_Path: <Keyboard>/rightArrow
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Walk
-      m_Flags: 8
-    m_Flags: 0
-  jumpAction:
-    m_Name: Jump
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 2aec6131-2bab-4ac7-b899-2db3bb497112
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: 
-      m_Id: c4077392-00cc-4c8e-bae5-4af5d28a9108
-      m_Path: <Keyboard>/space
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Jump
-      m_Flags: 0
-    - m_Name: 
-      m_Id: 5743d4b1-eb28-4b8a-9982-2877faa2fd6d
-      m_Path: <Keyboard>/w
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Jump
-      m_Flags: 0
-    - m_Name: 
-      m_Id: e8eef85a-8db1-4154-8bc8-5b9e6afaf5ec
-      m_Path: <Keyboard>/upArrow
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Jump
-      m_Flags: 0
-    m_Flags: 0
 --- !u!95 &4029295158634634499
 Animator:
   serializedVersion: 7
@@ -424,6 +325,28 @@ CapsuleCollider2D:
   m_Offset: {x: -0.17919248, y: 1.2139814}
   m_Size: {x: 0.7268883, y: 2.3545556}
   m_Direction: 0
+--- !u!114 &5591183312747999662
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1008893781474412776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9deaa464dee648afe832dc7928e63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 6
+  jumpForce: 6
+  airControlMultiplier: 2
+  maxAirSpeed: 8
+  groundLayerMask:
+    serializedVersion: 2
+    m_Bits: 8
+  groundCheckDistance: 0.1
+  slideForce: 20
+  downwardForce: 15
 --- !u!1 &6657705052439693089
 GameObject:
   m_ObjectHideFlags: 0

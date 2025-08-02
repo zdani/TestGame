@@ -10999,9 +10999,131 @@ CompositeCollider2D:
   m_GeometryType: 0
   m_GenerationType: 0
   m_EdgeRadius: 0
-  m_ColliderPaths: []
+  m_ColliderPaths:
+  - m_Collider: {fileID: 23220645}
+    m_ColliderPaths:
+    - - X: 1600000000
+        Y: -30000000
+      - X: 1510000000
+        Y: -30000000
+      - X: 1510000000
+        Y: -20000000
+      - X: 1440000000
+        Y: -20000000
+      - X: 1440000000
+        Y: -30000000
+      - X: 1310000000
+        Y: -30000000
+      - X: 1310000000
+        Y: -20000000
+      - X: 1180000000
+        Y: -20000000
+      - X: 1180000000
+        Y: -30000000
+      - X: 1060000000
+        Y: -30000000
+      - X: 1060000000
+        Y: -20000000
+      - X: 1020000000
+        Y: -20000000
+      - X: 1020000000
+        Y: -30000000
+      - X: 1000000000
+        Y: -30000000
+      - X: 1000000000
+        Y: -20000000
+      - X: 950000000
+        Y: -20000000
+      - X: 950000000
+        Y: -30000000
+      - X: 900000000
+        Y: -30000000
+      - X: 900000000
+        Y: -20000000
+      - X: 840000000
+        Y: -20000000
+      - X: 840000000
+        Y: -30000000
+      - X: 690000000
+        Y: -30000000
+      - X: 690000000
+        Y: -20000000
+      - X: 600000000
+        Y: -20000000
+      - X: 600000000
+        Y: -30000000
+      - X: 580000000
+        Y: -30000000
+      - X: 580000000
+        Y: -40000000
+      - X: -150000000
+        Y: -40000000
+      - X: -150000000
+        Y: 80000000
+      - X: -280000000
+        Y: 80000000
+      - X: -280000000
+        Y: -80000000
+      - X: 1600000000
+        Y: -80000000
+    - - X: 580000000
+        Y: 20000000
+      - X: 520000000
+        Y: 20000000
+      - X: 520000000
+        Y: 10000000
+      - X: 580000000
+        Y: 10000000
+    - - X: 760000000
+        Y: 10000000
+      - X: 720000000
+        Y: 10000000
+      - X: 720000000
+        Y: 0
+      - X: 760000000
+        Y: 0
   m_CompositePaths:
-    m_Paths: []
+    m_Paths:
+    - - {x: 159.99997, y: -8}
+      - {x: 159.99997, y: -3}
+      - {x: 151, y: -2.9999707}
+      - {x: 150.99997, y: -2}
+      - {x: 144, y: -2.0000293}
+      - {x: 143.99997, y: -3}
+      - {x: 131, y: -2.9999707}
+      - {x: 130.99997, y: -2}
+      - {x: 118, y: -2.0000293}
+      - {x: 117.99998, y: -3}
+      - {x: 106, y: -2.9999707}
+      - {x: 105.99997, y: -2}
+      - {x: 102, y: -2.0000293}
+      - {x: 101.99997, y: -3}
+      - {x: 100, y: -2.9999707}
+      - {x: 99.99997, y: -2}
+      - {x: 95, y: -2.0000293}
+      - {x: 94.99997, y: -3}
+      - {x: 90, y: -2.9999707}
+      - {x: 89.99997, y: -2}
+      - {x: 84, y: -2.0000293}
+      - {x: 83.99997, y: -3}
+      - {x: 69, y: -2.9999707}
+      - {x: 68.99997, y: -2}
+      - {x: 60, y: -2.0000293}
+      - {x: 59.99997, y: -3}
+      - {x: 58, y: -3.0000293}
+      - {x: 57.99997, y: -4}
+      - {x: -15, y: -3.9999704}
+      - {x: -15.000029, y: 8}
+      - {x: -28, y: 7.9999704}
+      - {x: -27.999971, y: -8}
+    - - {x: 57.99997, y: 1}
+      - {x: 57.99997, y: 2}
+      - {x: 52, y: 1.9999708}
+      - {x: 52.00003, y: 1}
+    - - {x: 75.99997, y: 0}
+      - {x: 75.99997, y: 1}
+      - {x: 72, y: 0.99997073}
+      - {x: 72.00003, y: 0}
   m_VertexDistance: 0.0005
   m_OffsetDistance: 0.00005
   m_UseDelaunayMesh: 0
@@ -11123,6 +11245,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5591183312747999662, guid: 17e13cd806406e04589db6953a252182, type: 3}
+      propertyPath: jumpForce
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5591183312747999662, guid: 17e13cd806406e04589db6953a252182, type: 3}
+      propertyPath: maxAirSpeed
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5591183312747999662, guid: 17e13cd806406e04589db6953a252182, type: 3}
+      propertyPath: airControlMultiplier
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 5877969832043053282, guid: 17e13cd806406e04589db6953a252182, type: 3}
       propertyPath: jumpForce
       value: 8
@@ -11184,15 +11318,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 6
-  jumpForce: 12
+  jumpForce: 8
   airControlMultiplier: 2
   maxAirSpeed: 4
   groundLayerMask:
-    serializedVersion: 2
     m_Bits: 8
   groundCheckDistance: 2
   slideForce: 8
   downwardForce: 6
+  rb: {fileID: 0}
+  animator: {fileID: 0}
+  noFrictionMaterial: {fileID: 0}
+  isGrounded: 0
+  isMoving: 0
 --- !u!1 &58654362
 GameObject:
   m_ObjectHideFlags: 0
