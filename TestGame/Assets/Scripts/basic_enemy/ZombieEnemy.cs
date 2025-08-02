@@ -21,7 +21,6 @@ public class ZombieEnemy : Enemy
     [Header("Movement Settings")]
     [SerializeField] private float walkSpeed = 2f;
     [SerializeField] private float chaseSpeed = 4f; // Speed when chasing player
-    [SerializeField] private float edgeDetectionDistance = 0.1f;
     [SerializeField] private float maxPatrolDistance = 10f; // Maximum distance from starting point
     [SerializeField] private float chaseTimeout = 4f; // How long to keep chasing after losing player
 
@@ -43,8 +42,6 @@ public class ZombieEnemy : Enemy
     private Collider2D zombieCollider; // Changed to generic Collider2D for capsule support
     private Animator animator; // For animation control
     private bool isGrounded = false;
-    private GameObject currentPlatform;
-    private Collider2D platformCollider;
     private ZombieState currentState = ZombieState.Falling;
     private bool isMovingRight; // Track movement direction separately
     
@@ -174,7 +171,7 @@ public class ZombieEnemy : Enemy
             // If we collide with another enemy, turn around.
             if (collision.gameObject.GetComponent<Enemy>() != null)
             {
-                // Ensure we don't turn around on the same frame we collided with the player
+                 // Ensure we don't turn around on the same frame we collided with the player
                 if (collision.gameObject.GetComponent<Player>() == null)
                 {
                     isMovingRight = !isMovingRight;
@@ -215,19 +212,8 @@ public class ZombieEnemy : Enemy
         if (isGrounded) return;
         
         // Cast a ray downward to detect ground
-        Vector2 rayOrigin;
-        if (zombieCollider != null)
-        {
-            // Use the bottom of the collider bounds
-            rayOrigin = new Vector2(transform.position.x, zombieCollider.bounds.min.y);
-        }
-        else
-        {
-            // Fallback to transform position if no collider
-            rayOrigin = (Vector2)transform.position + Vector2.down * 0.5f;
-        }
-        
-        float rayDistance = 0.1f; // Short distance since we're at the exact bottom
+        Vector2 rayOrigin = new Vector2(transform.position.x, zombieCollider.bounds.min.y + 0.1f);
+        float rayDistance = 0.2f; 
         
         RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.down, rayDistance, groundLayerMask);
         
@@ -235,8 +221,6 @@ public class ZombieEnemy : Enemy
         {
             // Zombie has hit ground
             isGrounded = true;
-            currentPlatform = hit.collider.gameObject;
-            platformCollider = hit.collider;
             OnLanded();
         }
     }
@@ -378,8 +362,6 @@ public class ZombieEnemy : Enemy
     
     private void WalkOnPlatform()
     {
-        if (currentPlatform == null || platformCollider == null) return;
-        
         // Move in current direction
         float direction = isMovingRight ? 1f : -1f;
         
@@ -431,20 +413,21 @@ public class ZombieEnemy : Enemy
     
     private bool WouldGoOffEdge(float direction)
     {
-        if (platformCollider == null) return false;
+        // The point to start our raycast is at the leading edge of the collider.
+        Vector2 raycastOrigin = new Vector2(
+            zombieCollider.bounds.center.x + (direction * (zombieCollider.bounds.extents.x)),
+            zombieCollider.bounds.min.y + 0.1f // Start the ray slightly above the bottom
+        );
+
+        // Cast a short ray downwards from just in front of the zombie.
+        // If it doesn't hit anything on the ground layer, we're at a ledge.
+        float raycastDistance = 0.2f;
+        RaycastHit2D hit = Physics2D.Raycast(raycastOrigin, Vector2.down, raycastDistance, groundLayerMask);
         
-        // Get the platform bounds
-        Bounds platformBounds = platformCollider.bounds;
-        
-        // Calculate where the zombie would be after moving
-        float zombieX = transform.position.x;
-        float nextX = zombieX + (direction * walkSpeed * Time.deltaTime);
-        
-        // Check if the next position would be off the platform
-        float leftEdge = platformBounds.min.x + edgeDetectionDistance;
-        float rightEdge = platformBounds.max.x - edgeDetectionDistance;
-        
-        return nextX <= leftEdge || nextX >= rightEdge;
+        // You can enable this for debugging to see the raycasts in the Scene view
+        // Debug.DrawRay(raycastOrigin, Vector2.down * raycastDistance, hit.collider != null ? Color.green : Color.red);
+
+        return hit.collider == null;
     }
     
     private bool WouldExceedPatrolDistance(float direction)
