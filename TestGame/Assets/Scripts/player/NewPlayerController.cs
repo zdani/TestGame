@@ -76,31 +76,6 @@ public class NewPlayerController : MonoBehaviour
     {
         RaycastHit2D hit = Physics2D.Raycast(GroundCheckPosition, Vector2.down, groundCheckDistance, groundLayerMask);
         isGrounded = hit.collider != null;
-        
-        // Debug ground detection
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            Debug.Log($"Ground Check Debug:");
-            Debug.Log($"  Player position: {transform.position}");
-            Debug.Log($"  Ground check position: {GroundCheckPosition}");
-            Debug.Log($"  Ground check distance: {groundCheckDistance}");
-            Debug.Log($"  Layer mask: {groundLayerMask.value}");
-            Debug.Log($"  Hit something: {hit.collider != null}");
-            if (hit.collider != null)
-            {
-                Debug.Log($"  Hit object: {hit.collider.gameObject.name}");
-                Debug.Log($"  Hit layer: {hit.collider.gameObject.layer}");
-            }
-            Debug.Log($"  IsGrounded: {isGrounded}");
-            
-            // Check what collider the player has
-            Collider2D playerCollider = GetComponent<Collider2D>();
-            if (playerCollider != null)
-            {
-                Debug.Log($"  Player collider type: {playerCollider.GetType()}");
-                Debug.Log($"  Player collider bounds: {playerCollider.bounds}");
-            }
-        }
     }
     
     private void HandleMovement()
@@ -161,16 +136,9 @@ public class NewPlayerController : MonoBehaviour
     
     private void HandleJump()
     {
-        // Debug: Check if space is being pressed
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Debug.Log($"Space pressed! IsGrounded: {isGrounded}");
-        }
-        
         // Jump only when grounded and space is pressed
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
-            Debug.Log($"Jumping! Setting velocity.y to {jumpForce}");
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
         }
         
@@ -218,7 +186,6 @@ public class NewPlayerController : MonoBehaviour
         else if (isInitialContact)
         {
             // It's a side collision on the first contact, so the player takes damage.
-            Debug.Log("Side collision with enemy - taking damage!");
             if (TryGetComponent<Player>(out var player))
             {
                 player.TakeDamage(enemy.DamageAmount, enemy.EnemyName);
@@ -243,7 +210,6 @@ public class NewPlayerController : MonoBehaviour
             if (contact.normal.y > 0.5f)
             {
                 // This is a reliable indicator that we are on top of the enemy.
-                Debug.Log($"Landing on enemy detected! Contact normal: {contact.normal}");
                 return true;
             }
         }
@@ -260,25 +226,11 @@ public class NewPlayerController : MonoBehaviour
         // This bypasses the regular movement physics to ensure a consistent push-off effect.
         Vector2 slideVelocity = new Vector2(slideDirection * slideForce, -downwardForce);
         rb.linearVelocity = slideVelocity;
-
-        Debug.Log($"Applying slide effect. Velocity: {slideVelocity}");
     }
 
 
 
     // Visual debugging
-    private void OnDrawGizmosSelected() 
-    {
-        // Draw ground check
-        Gizmos.color = isGrounded ? Color.green : Color.red;
-        Gizmos.DrawWireSphere(GroundCheckPosition, groundCheckDistance);
-        
-        // Draw the raycast line
-        Gizmos.color = isGrounded ? Color.green : Color.red;
-        Gizmos.DrawLine(GroundCheckPosition, GroundCheckPosition + Vector2.down * groundCheckDistance);
-    }
-    
-    // Always show gizmos for debugging
     private void OnDrawGizmos()
     {
         // Draw ground check (always visible)
