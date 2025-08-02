@@ -48,6 +48,7 @@ public class PlayerMovement : MonoBehaviour
         animator = GetComponent<Animator>();
         
         // Configure rigidbody
+        rb.interpolation = RigidbodyInterpolation2D.Interpolate;
         rb.freezeRotation = true;
         rb.gravityScale = 1f;
 
