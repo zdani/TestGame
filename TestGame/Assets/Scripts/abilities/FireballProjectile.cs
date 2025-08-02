@@ -12,8 +12,6 @@ public class FireballProjectile : MonoBehaviour
     private int currentFrame;
     private float animationTimer;
 
-    private AudioSource audioSource;
-
     void Start()
     {
         Destroy(gameObject, lifetime); // Prevent lingering fireballs
@@ -26,13 +24,8 @@ public class FireballProjectile : MonoBehaviour
         {
             spriteRenderer.sprite = animationFrames[0];
         }
-
-        audioSource = GetComponent<AudioSource>();
-        audioSource.pitch = Random.Range(0.95f, 1.15f);
-        //Debug.Log("Fireball sound pitch set to: " + audioSource.pitch);
-        audioSource.Play();
     }
-    
+
         public void Initialize(Vector2 shootDirection)
     {
         Vector2 direction = shootDirection.normalized;
