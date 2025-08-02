@@ -4,8 +4,9 @@ public class IceShieldAbility : MonoBehaviour
 {
     public GameObject iceShieldPrefab;
     public Transform shieldSpawnPoint;
-    public float shieldDuration = 5f;
+    public float shieldDuration = 1f;
 
+    [HideInInspector]
     public bool isShieldActive = false;
 
 
