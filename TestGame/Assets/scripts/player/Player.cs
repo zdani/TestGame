@@ -134,5 +134,16 @@ public class Player : MonoBehaviour
     {
         return HealthManager.MaxHealth > 0 ? HealthManager.CurrentHealth / HealthManager.MaxHealth : 0f;
     }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        // Check for BossProjectile collision
+        BossProjectile bossProjectile = other.gameObject.GetComponent<BossProjectile>();
+        if (bossProjectile != null)
+        {
+            TakeDamage(bossProjectile.damage, "BossWiz");
+            Destroy(bossProjectile.gameObject);
+        }
+    }
 }
 
