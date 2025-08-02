@@ -24,13 +24,12 @@ public class HealthManager : IHealthManager
         CurrentHealth = maxHealth;
         _healthBarSprite = healthBarSprite;
         _coroutineRunner = coroutineRunner;
-        GameEvents.Instance.OnHealthChanged += OnHealthChanged;
         
         // Initialize health bar to full
         _healthBarSprite.fillAmount = 1f;
     }
 
-    private void OnHealthChanged(float obj)
+    private void UpdateHealthBar()
     {
         // Stop any existing animation
         if (_healthAnimationCoroutine != null)
@@ -70,7 +69,10 @@ public class HealthManager : IHealthManager
         float oldHealth = CurrentHealth;
         CurrentHealth = Mathf.Max(0f, CurrentHealth - damage);
 
-        // Trigger health changed event through GameEvents
+        // Update health bar directly
+        UpdateHealthBar();
+
+        // Trigger health changed event through GameEvents for other systems
         GameEvents.Instance.TriggerHealthChanged(CurrentHealth);
 
         if (CurrentHealth <= 0f && oldHealth > 0f)
@@ -89,7 +91,10 @@ public class HealthManager : IHealthManager
 
         if (CurrentHealth != oldHealth)
         {
-            // Trigger health changed event through GameEvents
+            // Update health bar directly
+            UpdateHealthBar();
+            
+            // Trigger health changed event through GameEvents for other systems
             GameEvents.Instance.TriggerHealthChanged(CurrentHealth);
         }
     }
