@@ -50,7 +50,7 @@ public class PlayerMovement : MonoBehaviour
         // Configure rigidbody
         rb.interpolation = RigidbodyInterpolation2D.Interpolate;
         rb.freezeRotation = true;
-        rb.gravityScale = 1f;
+        //rb.gravityScale = 1f;
 
         // Create a physics material with zero friction to prevent sticking to walls
         noFrictionMaterial = new PhysicsMaterial2D();
