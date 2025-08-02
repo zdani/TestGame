@@ -175,8 +175,10 @@ public class ZombieEnemy : Enemy
     
     private void SetupRigidbody()
     {
-
         rb.constraints = RigidbodyConstraints2D.FreezeRotation; // Prevent rotation
+        
+        // Enable continuous collision detection to prevent fast-moving objects from passing through
+        rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
 
         // Ensure the zombie starts falling
         rb.linearVelocity = Vector2.zero;

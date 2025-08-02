@@ -165,10 +165,25 @@ public abstract class Enemy : MonoBehaviour, IHealthManager
         }
     }
     
-    // Handle trigger collisions (projectiles)
+    // Handle trigger collisions (projectiles and player proximity)
     protected virtual void OnTriggerEnter2D(Collider2D other)
     {
         //Debug.Log($"Enemy OnTriggerEnter2D with: {other.gameObject.name} (Tag: {other.gameObject.tag})");
+        
+        // Check for Player proximity (if using a larger trigger collider)
+        Player player = other.gameObject.GetComponent<Player>();
+        if (player != null)
+        {
+            // If player is moving fast and about to collide, force a collision check
+            Rigidbody2D playerRb = player.GetComponent<Rigidbody2D>();
+            if (playerRb != null && Mathf.Abs(playerRb.linearVelocity.x) > 5f)
+            {
+                // Force collision detection for fast-moving players
+                OnPlayerCollision(player);
+                DealDamageToPlayer(player);
+            }
+            return;
+        }
         
         // Check for FireballProjectile collision
         FireballProjectile fireball = other.gameObject.GetComponent<FireballProjectile>();
@@ -239,8 +254,8 @@ public abstract class Enemy : MonoBehaviour, IHealthManager
             // Disable collision
             Physics2D.IgnoreCollision(enemyCollider, playerCollider, true);
             
-            // Wait a short time
-            yield return new WaitForSeconds(0.2f);
+                    // Wait a short time
+        yield return new WaitForSeconds(0.05f);
             
             // Re-enable collision
             Physics2D.IgnoreCollision(enemyCollider, playerCollider, false);
