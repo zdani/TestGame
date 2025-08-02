@@ -319,7 +319,7 @@ public class ZombieEnemy : Enemy
     
     private void SetAnimationState(ZombieState state)
     {
-        /*if (animator != null)
+        if (animator != null)
         {
             // Reset all animation parameters
             animator.SetBool(ANIM_IS_WALKING, false);
@@ -342,7 +342,7 @@ public class ZombieEnemy : Enemy
                     // No animation for falling state
                     break;
             }
-        }*/
+        }
     }
     
     private void WalkOnPlatform()

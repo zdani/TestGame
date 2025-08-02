@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6599738817436392878}
   - component: {fileID: 7941266435263716320}
   - component: {fileID: 6917841373093443536}
+  - component: {fileID: 9090110369973755013}
   - component: {fileID: 5877969832043053282}
   - component: {fileID: 4029295158634634499}
   - component: {fileID: 1046699426527618609}
@@ -156,7 +157,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 1.65
+  m_GravityScale: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -168,6 +169,20 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 0
+--- !u!114 &9090110369973755013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1008893781474412776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b02d44b4ae923f84f9b35c519129337a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  invincibilityDuration: 3
+  _healthBarSprite: {fileID: 0}
 --- !u!114 &5877969832043053282
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -182,6 +197,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 5
   jumpForce: 7
+  airControlForce: 20
+  maxAirSpeed: 8
   animator: {fileID: 4029295158634634499}
   walkAction:
     m_Name: Walk
@@ -316,6 +333,7 @@ MonoBehaviour:
   iceShieldPrefab: {fileID: 6340426162429100583, guid: dde4a4404a1fa4b4493c5933e2fa1a3f, type: 3}
   shieldSpawnPoint: {fileID: 2348171589119017799}
   shieldDuration: 5
+  isShieldActive: 0
 --- !u!1 &6657705052439693089
 GameObject:
   m_ObjectHideFlags: 0
