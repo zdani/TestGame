@@ -20,7 +20,7 @@ public class ZombieEnemy : Enemy
     
     [Header("Detection Settings")]
     [SerializeField] private float detectionRadius = 5f;
-    [SerializeField] private Transform playerTransform; // Drag player here in inspector
+    [SerializeField] private Transform playerTransform; // Drag player here in inspector (added auto finding in Start)
     
     [Header("Movement Settings")]
     [SerializeField] private float walkSpeed = 2f;
@@ -55,28 +55,31 @@ public class ZombieEnemy : Enemy
     private float chaseTimeoutTimer = 0f;
     private bool isChaseTimeoutActive = false;
     private bool isReturningToPatrol = false; // Track if zombie is heading back to starting area
-    
+
     protected override void Start()
     {
         // Set zombie-specific health before calling base Start
         SetMaxHealth(zombieMaxHealth);
-        
+
         // Call base class Start method
         base.Start();
-        
+
         // Set zombie-specific properties
         enemyName = "Zombie";
-        
+
         // Get required components
         rb = GetComponent<Rigidbody2D>();
         boxCollider = GetComponent<BoxCollider2D>();
         animator = GetComponent<Animator>();
-        
+
         // Configure Rigidbody2D for gravity
         SetupRigidbody();
-        
+
         // Store starting position for patrol limits
         startingPosition = transform.position;
+        
+        // Finding the player this way allows for zombie prefabs to not require a player reference in the inspector
+        playerTransform = GameObject.FindGameObjectWithTag("Player")?.transform;
     }
     
     void Update()
@@ -317,7 +320,7 @@ public class ZombieEnemy : Enemy
     
     private void SetAnimationState(ZombieState state)
     {
-        /*if (animator != null)
+        if (animator != null)
         {
             // Reset all animation parameters
             animator.SetBool(ANIM_IS_WALKING, false);
@@ -340,7 +343,7 @@ public class ZombieEnemy : Enemy
                     // No animation for falling state
                     break;
             }
-        }*/
+        }
     }
     
     private void WalkOnPlatform()

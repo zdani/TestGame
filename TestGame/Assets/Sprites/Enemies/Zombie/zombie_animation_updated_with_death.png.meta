@@ -1,19 +1,22 @@
 fileFormatVersion: 2
-guid: d702f3316de507446b7355dae04e1e8e
+guid: d4ef8aec5ef832f41a729b71f571c942
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8000342549551186686
-    second: zombie_animation_0
+      213: 55100665305584553
+    second: zombie_animation_updated_with_death_0
   - first:
-      213: -2575315313340380936
-    second: zombie_animation_1
+      213: 7911888899065180170
+    second: zombie_animation_updated_with_death_1
   - first:
-      213: 3298930060516850863
-    second: zombie_animation_2
+      213: 5888835653205476263
+    second: zombie_animation_updated_with_death_2
   - first:
-      213: -7824929339134980548
-    second: zombie_animation_3
+      213: 4826535424431798205
+    second: zombie_animation_updated_with_death_3
+  - first:
+      213: 4720499839652422237
+    second: zombie_animation_updated_with_death_4
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -161,10 +164,10 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: zombie_animation_0
+      name: zombie_animation_updated_with_death_0
       rect:
         serializedVersion: 2
-        x: 129
+        x: 154
         y: 124
         width: 398
         height: 738
@@ -176,17 +179,17 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ef20173492de60f60800000000000000
-      internalID: 8000342549551186686
+      spriteID: 9a35d6e53c1c3c000800000000000000
+      internalID: 55100665305584553
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: zombie_animation_1
+      name: zombie_animation_updated_with_death_1
       rect:
         serializedVersion: 2
-        x: 601
+        x: 626
         y: 127
         width: 430
         height: 728
@@ -198,17 +201,17 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8f809bbfd54a24cd0800000000000000
-      internalID: -2575315313340380936
+      spriteID: a00f223e80daccd60800000000000000
+      internalID: 7911888899065180170
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: zombie_animation_2
+      name: zombie_animation_updated_with_death_2
       rect:
         serializedVersion: 2
-        x: 1065
+        x: 1090
         y: 124
         width: 580
         height: 758
@@ -220,17 +223,17 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: facf6fb596728cd20800000000000000
-      internalID: 3298930060516850863
+      spriteID: 7a3c7f183d859b150800000000000000
+      internalID: 5888835653205476263
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: zombie_animation_3
+      name: zombie_animation_updated_with_death_3
       rect:
         serializedVersion: 2
-        x: 1672
+        x: 1697
         y: 127
         width: 623
         height: 753
@@ -242,8 +245,30 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c3ec35c6934486390800000000000000
-      internalID: -7824929339134980548
+      spriteID: db7b81d756c4bf240800000000000000
+      internalID: 4826535424431798205
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: zombie_animation_updated_with_death_4
+      rect:
+        serializedVersion: 2
+        x: 2426
+        y: 158
+        width: 971
+        height: 190
+      alignment: 9
+      pivot: {x: 0.48022887, y: 1.81352}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d5265c80895928140800000000000000
+      internalID: 4720499839652422237
       vertices: []
       indices: 
       edges: []
@@ -252,7 +277,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: b13dd26ecf8a2cd42bb385ff62d5637c
+    spriteID: 44614a47635ee86458f09d5da8181d48
     internalID: 0
     vertices: []
     indices: 
@@ -262,10 +287,11 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      zombie_animation_0: 8000342549551186686
-      zombie_animation_1: -2575315313340380936
-      zombie_animation_2: 3298930060516850863
-      zombie_animation_3: -7824929339134980548
+      zombie_animation_updated_with_death_0: 55100665305584553
+      zombie_animation_updated_with_death_1: 7911888899065180170
+      zombie_animation_updated_with_death_2: 5888835653205476263
+      zombie_animation_updated_with_death_3: 4826535424431798205
+      zombie_animation_updated_with_death_4: 4720499839652422237
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

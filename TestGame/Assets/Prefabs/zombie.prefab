@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2415717618683337439}
   - component: {fileID: 3036752153097983147}
   - component: {fileID: 269800691642227939}
+  - component: {fileID: 3744883840427090133}
   m_Layer: 7
   m_Name: Zombie
   m_TagString: Untagged
@@ -79,12 +80,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 8000342549551186686, guid: d702f3316de507446b7355dae04e1e8e, type: 3}
+  m_Sprite: {fileID: 55100665305584553, guid: d4ef8aec5ef832f41a729b71f571c942, type: 3}
   m_Color: {r: 0.9685534, g: 0.9411415, b: 0.9411415, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1.3266667, y: 2.4608512}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -128,8 +129,8 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.3266666, y: 2.460367}
-    newSize: {x: 1, y: 1}
+    oldSize: {x: 1.3266667, y: 2.4608512}
+    newSize: {x: 1.3266667, y: 2.4608512}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -193,3 +194,25 @@ MonoBehaviour:
   turnBufferDistance: 0.5
   maxPatrolDistance: 10
   chaseTimeout: 4
+--- !u!95 &3744883840427090133
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8050744641536421847}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 9784c7b9e43b1f445836db0f6550cb9a, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
