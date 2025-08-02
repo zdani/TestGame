@@ -5,7 +5,7 @@ public class OptionsMenuManager : MonoBehaviour
     public GameObject optionsPanel;   // Assign this in the Inspector
     public GameObject controlsPanel;  // Assign this in the Inspector
 
-    private bool isGamePaused = false; // May use later
+    //private bool isGamePaused = false; // May use later
 
     private void Update()
     {
@@ -28,22 +28,22 @@ public class OptionsMenuManager : MonoBehaviour
             // If in options menu, close everything and unpause
             optionsPanel.SetActive(false);
             Time.timeScale = 1f;
-            isGamePaused = false;
+            //isGamePaused = false;
         }
         else
         {
             // If nothing is open, open options and pause
             optionsPanel.SetActive(true);
             Time.timeScale = 0f;
-            isGamePaused = true;
+            //isGamePaused = true;
         }
     }
 
-    public void ResumeGame() // Haven't implemented Resume button in options menu yet
+    public void ResumeGame() // Haven't implemented Resume button in options menu yet, not sure if necessary
     {
         optionsPanel.SetActive(false);
         controlsPanel.SetActive(false);
         Time.timeScale = 1f;
-        isGamePaused = false;
+        //isGamePaused = false;
     }
 }
