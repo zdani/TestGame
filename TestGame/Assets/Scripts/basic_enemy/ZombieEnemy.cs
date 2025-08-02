@@ -18,9 +18,6 @@ public class ZombieEnemy : Enemy
     [Header("Zombie Health Settings")]
     [SerializeField] private float zombieMaxHealth = 3f;
     
-    [Header("Detection Settings")]
-    [SerializeField] private float detectionRadius = 5f;
-    
     [Header("Movement Settings")]
     [SerializeField] private float walkSpeed = 2f;
     [SerializeField] private float chaseSpeed = 4f; // Speed when chasing player
@@ -48,15 +45,12 @@ public class ZombieEnemy : Enemy
     private ZombieState currentState = ZombieState.Falling;
     private bool isMovingRight; // Track movement direction separately
     
-    // Player detection
-    private bool playerDetected = false;
-    
     // Movement tracking
     private Vector2 startingPosition;
     private float chaseTimeoutTimer = 0f;
     private bool isChaseTimeoutActive = false;
     private bool isReturningToPatrol = false; // Track if zombie is heading back to starting area
-    private Transform playerTransform;
+    
     
     protected override void Start()
     {
@@ -85,21 +79,17 @@ public class ZombieEnemy : Enemy
 
         // Set initial patrol direction
         isMovingRight = startPatrolRight;
-
-        // Find the Player object in the scene and set playerTransform
-        playerTransform = FindFirstObjectByType<Player>().transform;
     }
     
-    void Update()
+    protected override void Update()
     {
+        base.Update();
+        
         // Don't update if dead
         if (currentState == ZombieState.Dead) return;
         
         // Check if zombie has landed on ground
         CheckGrounded();
-        
-        // Check for player detection
-        CheckForPlayer();
         
         // Handle chase timeout
         HandleChaseTimeout();
@@ -228,31 +218,8 @@ public class ZombieEnemy : Enemy
         SetAnimationState(currentState);
     }
     
-    private void CheckForPlayer()
-    {
-        if (playerTransform == null) return;
-        
-        // Calculate distance to player
-        float distanceToPlayer = Vector2.Distance(transform.position, playerTransform.position);
-        
-        // Check if player is within detection radius
-        bool wasDetected = playerDetected;
-        playerDetected = distanceToPlayer <= detectionRadius;
-        
-        // Handle state transitions
-        if (playerDetected && !wasDetected)
-        {
-            // Player just entered detection radius
-            OnPlayerDetected();
-        }
-        else if (!playerDetected && wasDetected && currentState == ZombieState.Chasing)
-        {
-            // Player just left detection radius while chasing
-            OnPlayerLost();
-        }
-    }
     
-    private void OnPlayerDetected()
+    protected override void OnPlayerDetected()
     {
         Debug.Log("Zombie detected player! Switching to chase mode.");
         
@@ -290,7 +257,7 @@ public class ZombieEnemy : Enemy
         }
     }
     
-    private void OnPlayerLost()
+    protected override void OnPlayerLost()
     {
         Debug.Log("Zombie lost player! Starting chase timeout.");
         
@@ -446,30 +413,11 @@ public class ZombieEnemy : Enemy
         
         return distanceFromStart > maxPatrolDistance;
     }
-    
 
-    
+
+
     // Implementation of abstract method from Enemy base class
     protected override void OnPlayerCollision(Player player)
     {
-        Debug.Log($"ZombieEnemy.OnPlayerCollision called with player: {player.name}");
-        
-        // Zombie-specific collision behavior can be added here if needed
-        Debug.Log($"Zombie collided with player! Will deal {damageAmount} damage.");
-    }
-    
-    // Visual debug for detection radius (only visible in Scene view)
-    private void OnDrawGizmosSelected()
-    {
-        // Draw detection radius
-        Gizmos.color = playerDetected ? Color.red : Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, detectionRadius);
-        
-        // Draw line to player if detected
-        if (playerDetected && playerTransform != null)
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawLine(transform.position, playerTransform.position);
-        }
     }
 } 
