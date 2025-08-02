@@ -28,6 +28,9 @@ public class ZombieEnemy : Enemy
     [Header("Patrol Settings")] 
     [SerializeField] private bool startPatrolRight = true;
     
+    [Header("Chase Settings")]
+    [SerializeField] private float directionChangeCooldown = 1.5f;
+    
     // Animation state constants
     private const string ANIM_IS_WALKING = "IsWalking";
     private const string ANIM_IS_CHASING = "IsChasing";
@@ -50,7 +53,7 @@ public class ZombieEnemy : Enemy
     private float chaseTimeoutTimer = 0f;
     private bool isChaseTimeoutActive = false;
     private bool isReturningToPatrol = false; // Track if zombie is heading back to starting area
-    
+    private float lastDirectionChangeTime = 0f;
     
     protected override void Start()
     {
@@ -74,7 +77,7 @@ public class ZombieEnemy : Enemy
         // Set up ground layer mask properly
         groundLayerMask = LayerMask.GetMask("Ground");
 
-        // Store starting position for patrol limits
+        // Store starting for patrol limits
         startingPosition = transform.position;
 
         // Set initial patrol direction
@@ -164,10 +167,37 @@ public class ZombieEnemy : Enemy
         Debug.Log("Zombie has been defeated!");
     }
     
+    protected override void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (currentState == ZombieState.Walking)
+        {
+            // If we collide with another enemy, turn around.
+            if (collision.gameObject.GetComponent<Enemy>() != null)
+            {
+                // Ensure we don't turn around on the same frame we collided with the player
+                if (collision.gameObject.GetComponent<Player>() == null)
+                {
+                    isMovingRight = !isMovingRight;
+                    return;
+                }
+            }
 
-    
+            // Check if we hit a wall. A wall is on the "Ground" layer and the collision normal is mostly horizontal.
+            if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
+            {
+                ContactPoint2D contact = collision.GetContact(0);
+                if (Mathf.Abs(contact.normal.x) > 0.9f) // Hit a wall
+                {
+                    isMovingRight = !isMovingRight;
+                    return;
+                }
+            }
+        }
 
-    
+        // If it's not a wall or another enemy, call the base class implementation to handle player collision.
+        base.OnCollisionEnter2D(collision);
+    }
+
     private void SetupRigidbody()
     {
         rb.constraints = RigidbodyConstraints2D.FreezeRotation; // Prevent rotation
@@ -235,6 +265,9 @@ public class ZombieEnemy : Enemy
         // Set chase state
         currentState = ZombieState.Chasing;
         SetAnimationState(currentState);
+        
+        // Reset the direction change cooldown so the zombie can turn immediately.
+        lastDirectionChangeTime = 0f;
     }
     
     private void HandleChaseTimeout()
@@ -267,13 +300,24 @@ public class ZombieEnemy : Enemy
         isChaseTimeoutActive = true;
         chaseTimeoutTimer = chaseTimeout;
     }
-    
+
     private void ChasePlayer()
     {
         if (playerTransform == null) return;
         
-        // Determine direction to player
-        isMovingRight = playerTransform.position.x > transform.position.x;
+        // Determine the direction to the player
+        bool newDirectionIsRight = playerTransform.position.x > transform.position.x;
+        
+        // If the direction needs to change, check the cooldown
+        if (newDirectionIsRight != isMovingRight)
+        {
+            if (Time.time - lastDirectionChangeTime > directionChangeCooldown)
+            {
+                isMovingRight = newDirectionIsRight;
+                lastDirectionChangeTime = Time.time;
+            }
+        }
+
         float direction = isMovingRight ? 1f : -1f;
         
         // Check if moving in this direction would go off the platform edge
@@ -375,7 +419,6 @@ public class ZombieEnemy : Enemy
         }
     }
     
-
     
     private void FlipSprite()
     {
@@ -417,9 +460,8 @@ public class ZombieEnemy : Enemy
     }
 
 
-
     // Implementation of abstract method from Enemy base class
     protected override void OnPlayerCollision(Player player)
     {
     }
-} 
+}
