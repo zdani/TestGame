@@ -10,8 +10,9 @@ public class LoopSpellDetector : MonoBehaviour
     private Animator playerAnimator;
     private FireballAbility fireballAbility;
     private IceShieldAbility iceShieldAbility;
-    //private BoulderAbility boulderAbility;
-    
+    private BoulderAbility boulderAbility;
+
+    public Camera lineCamera;
     public GameObject intersectionPrefab;
     private List<Vector2> activeIntersections = new();
     private List<Vector2> pendingIntersections = new();
@@ -35,15 +36,12 @@ public class LoopSpellDetector : MonoBehaviour
     private bool isDrawing = false;
     private bool loopReady = false;
 
-    public GameObject fireballPrefab;
-    public Transform fireballSpawnPoint;
-
     void Awake()
     {
         playerAnimator = player.GetComponent<Animator>();
         fireballAbility = player.GetComponent<FireballAbility>();
         iceShieldAbility = player.GetComponent<IceShieldAbility>();
-        //boulderAbility = player.GetComponent<BoulderAbility>();
+        boulderAbility = player.GetComponent<BoulderAbility>();
 
         lineRenderer = GetComponent<LineRenderer>();
         lineRenderer.positionCount = 0;
@@ -63,7 +61,7 @@ public class LoopSpellDetector : MonoBehaviour
 
             drawnPoints.Clear();
             lineRenderer.positionCount = 0;
-            startPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            startPoint = lineCamera.ScreenToWorldPoint(Input.mousePosition);
             AddPoint(startPoint);
 
             //Particle effect management
@@ -72,7 +70,7 @@ public class LoopSpellDetector : MonoBehaviour
         }
         else if (Input.GetMouseButton(0) && isDrawing)
         {
-            Vector2 currentPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector2 currentPoint = lineCamera.ScreenToWorldPoint(Input.mousePosition);
             transform.position = currentPoint;
             if (Vector2.Distance(currentPoint, drawnPoints[^1]) > minPointDistance)
             {
@@ -321,14 +319,14 @@ public class LoopSpellDetector : MonoBehaviour
                 }
                 break;
             case 2:
-                if (false) // Add logic to check Player.cs for ability availability
+                if (true) // Add logic to check Player.cs for ability availability
                 {
-                    //boulderAbility.Cast();
-                    //Debug.Log("Casting Boulder");
+                    boulderAbility.Cast();
+                    Debug.Log("Casting Boulder");
                 }
                 else
                 {
-                    Debug.Log("Boulder ability is not available.");
+                    //Debug.Log("Boulder ability is not available.");
                 }
                 break;
             case 3:
