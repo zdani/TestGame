@@ -3,6 +3,8 @@ using System.Collections;
 
 public class BossWiz : Enemy
 {
+    public override float DamageAmount => 0f;
+
     public enum BossState
     {
         Idle,
@@ -20,7 +22,6 @@ public class BossWiz : Enemy
 
     private BossState currentState;
     private float lastAttackTime;
-    private Transform playerTransform;
 
     protected override void Start()
     {

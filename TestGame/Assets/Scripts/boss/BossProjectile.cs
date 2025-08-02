@@ -14,7 +14,7 @@ public class BossProjectile : MonoBehaviour
     public void Initialize(Vector2 direction)
     {
         Rigidbody2D rb = GetComponent<Rigidbody2D>();
-        rb.velocity = direction.normalized * speed;
+        rb.linearVelocity = direction.normalized * speed;
 
         // Flip the sprite based on direction
         if (direction.x < 0)
