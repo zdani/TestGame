@@ -27,6 +27,9 @@ public class ZombieEnemy : Enemy
     [SerializeField] private float edgeDetectionDistance = 0.1f;
     [SerializeField] private float maxPatrolDistance = 10f; // Maximum distance from starting point
     [SerializeField] private float chaseTimeout = 4f; // How long to keep chasing after losing player
+
+    [Header("Patrol Settings")] 
+    [SerializeField] private bool startPatrolRight = true;
     
     // Animation state constants
     private const string ANIM_IS_WALKING = "IsWalking";
@@ -43,7 +46,7 @@ public class ZombieEnemy : Enemy
     private GameObject currentPlatform;
     private Collider2D platformCollider;
     private ZombieState currentState = ZombieState.Falling;
-    private bool isMovingRight = true; // Track movement direction separately
+    private bool isMovingRight; // Track movement direction separately
     
     // Player detection
     private bool playerDetected = false;
@@ -79,6 +82,9 @@ public class ZombieEnemy : Enemy
 
         // Store starting position for patrol limits
         startingPosition = transform.position;
+
+        // Set initial patrol direction
+        isMovingRight = startPatrolRight;
 
         // Find the Player object in the scene and set playerTransform
         playerTransform = FindFirstObjectByType<Player>().transform;
@@ -128,11 +134,7 @@ public class ZombieEnemy : Enemy
         // Zombie-specific damage behavior
         if (IsAlive)
         {
-            // Zombies might get more aggressive when damaged
-            if (playerDetected && currentState == ZombieState.Walking)
-            {
-                OnPlayerDetected(); // Switch to chase mode
-            }
+            OnPlayerDetected(); // Switch to chase mode
         }
     }
     
