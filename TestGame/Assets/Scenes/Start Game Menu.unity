@@ -942,7 +942,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameOverGameObject: {fileID: 0}
-  level1SceneName: leveldesign
+  level1SceneName: level1
 --- !u!4 &1611030822
 Transform:
   m_ObjectHideFlags: 0

@@ -11249,6 +11249,10 @@ PrefabInstance:
       propertyPath: jumpForce
       value: 12
       objectReference: {fileID: 0}
+    - target: {fileID: 9090110369973755013, guid: 17e13cd806406e04589db6953a252182, type: 3}
+      propertyPath: _healthBarSprite
+      value: 
+      objectReference: {fileID: 933685309}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -11375,11 +11379,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1027875263075483106, guid: daceba86d12a39441b91937d0ad092df, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1027875263075483106, guid: daceba86d12a39441b91937d0ad092df, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1027875263075483106, guid: daceba86d12a39441b91937d0ad092df, type: 3}
       propertyPath: m_LocalPosition.x
@@ -12015,11 +12019,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1027875263075483106, guid: daceba86d12a39441b91937d0ad092df, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1027875263075483106, guid: daceba86d12a39441b91937d0ad092df, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1027875263075483106, guid: daceba86d12a39441b91937d0ad092df, type: 3}
       propertyPath: m_LocalPosition.x
@@ -12467,11 +12471,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1027875263075483106, guid: daceba86d12a39441b91937d0ad092df, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1027875263075483106, guid: daceba86d12a39441b91937d0ad092df, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1027875263075483106, guid: daceba86d12a39441b91937d0ad092df, type: 3}
       propertyPath: m_LocalPosition.x
@@ -12562,8 +12566,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -384, y: 213.75}
-  m_SizeDelta: {x: -1036.2903, y: -572.5}
+  m_AnchoredPosition: {x: -384, y: 348.38}
+  m_SizeDelta: {x: -1036.2903, y: -715.25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &550684420
 MonoBehaviour:
@@ -13105,6 +13109,7 @@ MonoBehaviour:
   minPointDistance: 0.15
   minLoopLength: 0.75
   closeLoopThreshold: 0.6
+  intersectionThreshold: 0.3
   fadeDuration: 1
   fireballPrefab: {fileID: 2883197107166799354, guid: 7e601ec6d7087ba4eb013ea8fdea5960, type: 3}
   fireballSpawnPoint: {fileID: 1815519507}
@@ -18804,11 +18809,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1027875263075483106, guid: daceba86d12a39441b91937d0ad092df, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1027875263075483106, guid: daceba86d12a39441b91937d0ad092df, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1027875263075483106, guid: daceba86d12a39441b91937d0ad092df, type: 3}
       propertyPath: m_LocalPosition.x
@@ -19289,11 +19294,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1027875263075483106, guid: daceba86d12a39441b91937d0ad092df, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1027875263075483106, guid: daceba86d12a39441b91937d0ad092df, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1027875263075483106, guid: daceba86d12a39441b91937d0ad092df, type: 3}
       propertyPath: m_LocalPosition.x
@@ -22167,11 +22172,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1027875263075483106, guid: daceba86d12a39441b91937d0ad092df, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1027875263075483106, guid: daceba86d12a39441b91937d0ad092df, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1027875263075483106, guid: daceba86d12a39441b91937d0ad092df, type: 3}
       propertyPath: m_LocalPosition.x
@@ -22386,6 +22391,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameOverGameObject: {fileID: 1936571323}
+  level1SceneName: level1
 --- !u!4 &1890661212
 Transform:
   m_ObjectHideFlags: 0

@@ -6978,6 +6978,7 @@ MonoBehaviour:
   minPointDistance: 0.15
   minLoopLength: 0.75
   closeLoopThreshold: 0.4
+  intersectionThreshold: 0.3
   fadeDuration: 1
   fireballPrefab: {fileID: 2883197107166799354, guid: 7e601ec6d7087ba4eb013ea8fdea5960, type: 3}
   fireballSpawnPoint: {fileID: 0}
@@ -7333,6 +7334,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameOverGameObject: {fileID: 17917853}
+  level1SceneName: level1
 --- !u!4 &1895125207
 Transform:
   m_ObjectHideFlags: 0
@@ -7636,6 +7638,10 @@ PrefabInstance:
       propertyPath: jumpForce
       value: 12
       objectReference: {fileID: 0}
+    - target: {fileID: 9090110369973755013, guid: 17e13cd806406e04589db6953a252182, type: 3}
+      propertyPath: _healthBarSprite
+      value: 
+      objectReference: {fileID: 1012873568}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
