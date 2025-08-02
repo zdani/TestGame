@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class NewPlayerController : MonoBehaviour
+public class PlayerMovement : MonoBehaviour
 {
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 6f;
@@ -23,7 +23,7 @@ public class NewPlayerController : MonoBehaviour
     private PhysicsMaterial2D noFrictionMaterial;
     
     // State
-    private bool isGrounded;
+    public bool isGrounded;
     private bool isMoving;
     
     // Ground check position - use actual collider bounds
@@ -48,6 +48,7 @@ public class NewPlayerController : MonoBehaviour
         animator = GetComponent<Animator>();
         
         // Configure rigidbody
+        rb.interpolation = RigidbodyInterpolation2D.Interpolate;
         rb.freezeRotation = true;
         rb.gravityScale = 1f;
 
