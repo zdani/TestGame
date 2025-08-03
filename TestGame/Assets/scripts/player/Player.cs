@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class Player : MonoBehaviour
 {
     [Header("Combat Settings")]
-    [SerializeField] private float invincibilityDuration = 3f;
+    [SerializeField] private float _invincibilityDuration = 3f;
     
     // Public properties
     public IHealthManager HealthManager { get; private set; }
@@ -59,6 +59,7 @@ public class Player : MonoBehaviour
         // Find the IceShieldAbility component on this player's GameObject
         IceShieldAbility iceShieldAbility = gameObject.GetComponent<IceShieldAbility>();
         if (iceShieldAbility != null && iceShieldAbility.isShieldActive){
+            StartInvincibility(1f);
             iceShieldAbility.BreakShield();
             return;
         }
@@ -67,13 +68,15 @@ public class Player : MonoBehaviour
         HealthManager.TakeDamage(damageAmount);
         
         // Start invincibility period
-        StartInvincibility();
+        StartInvincibility(_invincibilityDuration);
         
         // Trigger hit event through GameEvents
         GameEvents.Instance.TriggerPlayerHit();
         
         Debug.Log($"Player took {damageAmount} damage from {enemyName}! Health: {HealthManager.CurrentHealth}/{HealthManager.MaxHealth}");
     }
+
+    public void Heal(float healAmount) =>  HealthManager.Heal(healAmount);
 
     public void LearnAbility(AbilityType abilityType)
     {
@@ -84,7 +87,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void StartInvincibility()
+    private void StartInvincibility(float invincibilityDuration)
     {
         IsInvincible = true;
         invincibilityTimer = invincibilityDuration;
