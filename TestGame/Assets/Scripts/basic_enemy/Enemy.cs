@@ -22,6 +22,7 @@ public abstract class Enemy : MonoBehaviour, IHealthManager
     // Public properties
     public string EnemyName => enemyName;
     public abstract float DamageAmount { get; }
+    public virtual bool CanDealContactDamage => true;
     
     // IHealthManager implementation
     public float CurrentHealth => currentHealth;
@@ -188,7 +189,7 @@ public abstract class Enemy : MonoBehaviour, IHealthManager
     protected virtual void OnCollisionStay2D(Collision2D collision)
     {
         // Check for Player collision and ensure the enemy is alive
-        if (IsAlive && collision.gameObject.TryGetComponent<Player>(out var player))
+        if (IsAlive && CanDealContactDamage && collision.gameObject.TryGetComponent<Player>(out var player))
         {
             // Let the concrete implementation handle specific collision effects
             OnPlayerCollision(player);
@@ -206,6 +207,8 @@ public abstract class Enemy : MonoBehaviour, IHealthManager
         Player player = other.gameObject.GetComponent<Player>();
         if (player != null && IsAlive)
         {
+            if (!CanDealContactDamage) return;
+            
             // If player is moving fast and about to collide, force a collision check
             Rigidbody2D playerRb = player.GetComponent<Rigidbody2D>();
             if (playerRb != null && Mathf.Abs(playerRb.linearVelocity.x) > 5f)

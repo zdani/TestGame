@@ -18,6 +18,11 @@ public class BossWiz : Enemy
     private Transform headTarget;
     private bool isDead = false;
     private Animator animator;
+    private Collider2D bossCollider;
+
+    private bool isImmuneToContactDamage = false;
+
+    public override bool CanDealContactDamage => !isImmuneToContactDamage;
 
     protected override void Start()
     {
@@ -25,6 +30,7 @@ public class BossWiz : Enemy
         base.Start();
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        bossCollider = GetComponent<Collider2D>();
         if (rb != null)
         {
             rb.bodyType = RigidbodyType2D.Kinematic;
@@ -57,6 +63,10 @@ public class BossWiz : Enemy
     {
         if (isDead) return; // Don't start if already dead
         StopAllCoroutines(); // Stop any existing behavior cycles
+
+        // Immediately disable contact damage immunity when the cycle restarts to prevent it from getting stuck.
+        isImmuneToContactDamage = false;
+
         StartCoroutine(BehaviorCycle());
     }
 
@@ -92,15 +102,22 @@ public class BossWiz : Enemy
 
     private IEnumerator TeleportSequence()
     {
-        if (teleportPoints == null || teleportPoints.Length == 0)
-        {
-            yield break; // Can't teleport if there are no points
-        }
-        
+        bossCollider.enabled = false;
+
         // --- Disappear sequence ---
         SpawnSmokePuff();
+        yield return new WaitForSeconds(0.2f); // Short delay for smoke to appear before vanishing
         SetVisibility(false);
-        yield return new WaitForSeconds(0.2f);
+
+        // Check if we can teleport AFTER disappearing
+        if (teleportPoints == null || teleportPoints.Length == 0)
+        {
+            Debug.LogWarning("BossWiz cannot teleport; no points. Reappearing in place.");
+            yield return new WaitForSeconds(1f); // Wait a bit before reappearing
+            SetVisibility(true);
+            bossCollider.enabled = true;
+            yield break;
+        }
 
         // --- Move to new location ---
         int nextTeleportIndex = lastTeleportIndex;
@@ -115,22 +132,30 @@ public class BossWiz : Enemy
         {
             nextTeleportIndex = 0;
         }
-            
+
         lastTeleportIndex = nextTeleportIndex;
         rb.position = teleportPoints[nextTeleportIndex].position;
-
         if (rb != null)
         {
             rb.linearVelocity = Vector2.zero;
         }
 
-        // Wait for 1 second before reappearing
+        // Wait a bit at new location before starting the reappear sequence
         yield return new WaitForSeconds(1f);
 
         // --- Reappear sequence ---
         SpawnSmokePuff();
         yield return new WaitForSeconds(0.5f);
         SetVisibility(true);
+        bossCollider.enabled = true; // Enable collider AFTER becoming visible
+
+        // --- Grace period ---
+        // Boss is visible and can be damaged, but won't deal contact damage for a short time
+        isImmuneToContactDamage = true;
+        Debug.Log("No contact damage");
+        yield return new WaitForSeconds(3f); // 4.5s + 2s requested grace period
+        isImmuneToContactDamage = false;
+        Debug.Log("contact damage reenabled");
     }
 
     private void SpawnSmokePuff()
@@ -181,4 +206,8 @@ public class BossWiz : Enemy
     {
         // Boss might not damage on touch, relies on projectiles
     }
+
+    // OnCollisionStay2D and OnTriggerEnter2D are no longer needed here.
+    // The base Enemy class handles the CanDealContactDamage check, which is controlled
+    // by the isImmuneToContactDamage flag in this script.
 }
