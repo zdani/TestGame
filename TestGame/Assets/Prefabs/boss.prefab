@@ -43,6 +43,8 @@ GameObject:
   - component: {fileID: 4175705911981932633}
   - component: {fileID: 3036752153097983147}
   - component: {fileID: 3556857750704816889}
+  - component: {fileID: 3779274524782923228}
+  - component: {fileID: 8993798337818848389}
   m_Layer: 7
   m_Name: boss
   m_TagString: Untagged
@@ -60,7 +62,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 3.03, y: 0.92, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7573060675471209911}
@@ -185,3 +187,46 @@ CapsuleCollider2D:
   m_Offset: {x: -0.01886177, y: 0}
   m_Size: {x: 0.7985172, y: 2.4608512}
   m_Direction: 0
+--- !u!114 &3779274524782923228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8050744641536421847}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a04e31d4261a2f4a8a31cd9cfc17193, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyName: Enemy
+  maxHealth: 100
+  currentHealth: 0
+  detectionRadius: 10
+  slideForce: 5
+  downwardForce: 3
+  projectilePrefab: {fileID: 2883197107166799354, guid: d6700f02786304344a7316534aecac25, type: 3}
+  projectileSpawnPoint: {fileID: 7573060675471209911}
+  smokePuffPrefab: {fileID: 4738440531564132543, guid: 986bfb302615eea41b3af674e5e8de2f, type: 3}
+--- !u!95 &8993798337818848389
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8050744641536421847}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 0c13c5431f7f0fe41b155dc58ea7b004, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

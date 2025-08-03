@@ -9,6 +9,7 @@ public class BossWiz : Enemy
     private Transform[] teleportPoints;
     public GameObject projectilePrefab;
     public Transform projectileSpawnPoint;
+    public GameObject smokePuffPrefab;
 
     private Rigidbody2D rb;
     private int lastTeleportIndex = -1;
@@ -57,19 +58,19 @@ public class BossWiz : Enemy
 
         while (!isDead)
         {
-            PerformTeleport();
+            yield return StartCoroutine(TeleportSequence());
             
             // First attack with casting
             yield return new WaitForSeconds(1f);
             if (animator != null) animator.SetBool("IsCasting", true);
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(1f);
             if (animator != null) animator.SetBool("IsCasting", false);
             PerformAttack();
 
             // Second attack with casting
             yield return new WaitForSeconds(1f);
             if (animator != null) animator.SetBool("IsCasting", true);
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(1f);
             if (animator != null) animator.SetBool("IsCasting", false);
             PerformAttack();
 
@@ -77,13 +78,19 @@ public class BossWiz : Enemy
         }
     }
 
-    private void PerformTeleport()
+    private IEnumerator TeleportSequence()
     {
         if (teleportPoints == null || teleportPoints.Length == 0)
         {
-            return; // Can't teleport if there are no points
+            yield break; // Can't teleport if there are no points
         }
+        
+        // --- Disappear sequence ---
+        SpawnSmokePuff();
+        SetVisibility(false);
+        yield return new WaitForSeconds(0.2f);
 
+        // --- Move to new location ---
         int nextTeleportIndex = lastTeleportIndex;
         if (teleportPoints.Length > 1)
         {
@@ -103,6 +110,38 @@ public class BossWiz : Enemy
         if (rb != null)
         {
             rb.linearVelocity = Vector2.zero;
+        }
+
+        // Wait for 1 second before reappearing
+        yield return new WaitForSeconds(1f);
+
+        // --- Reappear sequence ---
+        SpawnSmokePuff();
+        yield return new WaitForSeconds(0.5f);
+        SetVisibility(true);
+    }
+
+    private void SpawnSmokePuff()
+    {
+        if (smokePuffPrefab == null) return;
+        
+        GameObject smokePuff = Instantiate(smokePuffPrefab, transform.position, Quaternion.identity);
+        var bossRenderer = GetComponent<Renderer>();
+        if (bossRenderer != null)
+        {
+            foreach (var smokeRenderer in smokePuff.GetComponentsInChildren<Renderer>())
+            {
+                smokeRenderer.sortingLayerName = bossRenderer.sortingLayerName;
+                smokeRenderer.sortingOrder = bossRenderer.sortingOrder + 1;
+            }
+        }
+    }
+
+    private void SetVisibility(bool isVisible)
+    {
+        foreach (var r in GetComponentsInChildren<Renderer>())
+        {
+            r.enabled = isVisible;
         }
     }
 
