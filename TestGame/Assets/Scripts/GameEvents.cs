@@ -19,6 +19,7 @@ public class GameEvents : MonoBehaviour
     public event Action OnInvincibilityStarted;
     public event Action OnInvincibilityEnded;
     public event Action OnPlayerDied;
+    public event Action<AbilityType> OnAbilityLearned;
 
     // Health events
     public event Action<float> OnHealthChanged;
@@ -85,6 +86,9 @@ public class GameEvents : MonoBehaviour
     {
         OnPlayerDied?.Invoke();
     }
+
+    // Ability events
+    public void TriggerAbilityLearned(AbilityType abilityType) => OnAbilityLearned?.Invoke(abilityType);
 
     // Health event triggers
     public void TriggerHealthChanged(float currentHealth)

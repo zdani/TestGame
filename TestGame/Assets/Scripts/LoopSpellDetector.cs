@@ -35,6 +35,7 @@ public class LoopSpellDetector : MonoBehaviour
     private Vector2 startPoint;
     private bool isDrawing = false;
     private bool loopReady = false;
+    private Player playerScript;
 
     void Awake()
     {
@@ -42,7 +43,7 @@ public class LoopSpellDetector : MonoBehaviour
         fireballAbility = player.GetComponent<FireballAbility>();
         iceShieldAbility = player.GetComponent<IceShieldAbility>();
         boulderAbility = player.GetComponent<BoulderAbility>();
-
+        playerScript = player.GetComponent<Player>();
         lineRenderer = GetComponent<LineRenderer>();
         lineRenderer.positionCount = 0;
         lineRenderer.useWorldSpace = true;
@@ -50,6 +51,7 @@ public class LoopSpellDetector : MonoBehaviour
         lineRenderer.widthMultiplier = 0.05f;
         lineRenderer.colorGradient = lineGradientNormal;
         myParticleSystem = GetComponent<ParticleSystem>();
+
     }
 
     void Update()
@@ -298,35 +300,35 @@ public class LoopSpellDetector : MonoBehaviour
         switch (crossings)
         {
             case 0:
-                if (true) // Add logic to check Player.cs for ability availability
+                if (playerScript.Abilities.Contains(AbilityType.Fireball))
                 {
                     fireballAbility.Cast();
                     Debug.Log("Casting Fireball");
                 }
                 else
                 {
-                    //Debug.Log("Fireball ability is not available.");
+                    Debug.Log("You have not learned the Fireball spell yet.");
                 }
                 break;
             case 1:
-                if (true) // Add logic to check Player.cs for ability availability
+                if (playerScript.Abilities.Contains(AbilityType.IceShield))
                 {
                     iceShieldAbility.Cast();
                 }
                 else
                 {
-                    //Debug.Log("Fireball ability is not available.");
+                    Debug.Log("You have not learned the Ice Shield spell yet.");
                 }
                 break;
             case 2:
-                if (true) // Add logic to check Player.cs for ability availability
+                if (playerScript.GetComponent<Player>().Abilities.Contains(AbilityType.Boulder))
                 {
                     boulderAbility.Cast();
                     Debug.Log("Casting Boulder");
                 }
                 else
                 {
-                    //Debug.Log("Boulder ability is not available.");
+                    Debug.Log("You have not learned the Boulder spell yet.");
                 }
                 break;
             case 3:

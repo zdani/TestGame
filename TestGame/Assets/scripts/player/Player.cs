@@ -10,7 +10,7 @@ public class Player : MonoBehaviour
     
     // Public properties
     public IHealthManager HealthManager { get; private set; }
-    public List<Ability> Abilities => new List<Ability>();
+    public HashSet<AbilityType> Abilities { get; private set; } = new HashSet<AbilityType>();
     public bool IsInvincible { get; private set; } = false;
     [SerializeField] Image _healthBarSprite;
 
@@ -22,6 +22,9 @@ public class Player : MonoBehaviour
     {
         HealthManager = new HealthManager(INIT_MAX_HEALTH, _healthBarSprite, this);
         spriteRenderer = GetComponent<SpriteRenderer>();
+        
+        // Start player with Fireball ability unlocked
+        Abilities.Add(AbilityType.Fireball);
         
         // Subscribe to health events through GameEvents
         GameEvents.Instance.OnPlayerDied += OnPlayerDied;
@@ -72,6 +75,15 @@ public class Player : MonoBehaviour
         Debug.Log($"Player took {damageAmount} damage from {enemyName}! Health: {HealthManager.CurrentHealth}/{HealthManager.MaxHealth}");
     }
 
+    public void LearnAbility(AbilityType abilityType)
+    {
+        if (Abilities.Add(abilityType))
+        {
+            Debug.Log($"Player has learned a new ability: {abilityType}");
+            GameEvents.Instance.TriggerAbilityLearned(abilityType);
+        }
+    }
+
     private void StartInvincibility()
     {
         IsInvincible = true;
@@ -99,34 +111,6 @@ public class Player : MonoBehaviour
     {
         // Add end game logic here later
         Debug.Log("Player has died!");
-    }
-
-    // Public methods for casting abilities
-    public bool CastAbility(Ability ability)
-    {
-        if (!Abilities.Contains(ability))
-        {
-            Debug.LogWarning($"Ability '{ability.AbilityName}' is not in the available abilities list");
-            return false;
-        }
-
-        ability.Cast(this);
-        GameEvents.Instance.TriggerAbilityCast(ability);
-        return true;
-    }
-
-    // Methods to add/remove abilities
-    public void AddAbility(Ability ability)
-    {
-        if (!Abilities.Contains(ability))
-        {
-            Abilities.Add(ability);
-        }
-    }
-
-    public void RemoveAbility(Ability ability)
-    {
-        Abilities.Remove(ability);
     }
 
     // Utility methods
