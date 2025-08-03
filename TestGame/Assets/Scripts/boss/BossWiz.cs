@@ -19,6 +19,7 @@ public class BossWiz : Enemy
 
     protected override void Start()
     {
+        maxHealth = 15f;
         base.Start();
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
