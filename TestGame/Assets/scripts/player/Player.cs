@@ -18,15 +18,17 @@ public class Player : MonoBehaviour
     private float invincibilityTimer = 0f;
     private bool isInvincibleFromDamage = false;
     private SpriteRenderer spriteRenderer;
+    private Animator playerAnimator;
 
     private void Awake()
     {
         HealthManager = new HealthManager(INIT_MAX_HEALTH, _healthBarSprite, this);
         spriteRenderer = GetComponent<SpriteRenderer>();
-        
+        playerAnimator = GetComponent<Animator>();
+
         // Start player with Fireball ability unlocked
         Abilities.Add(AbilityType.Fireball);
-        
+
         // Subscribe to health events through GameEvents
         GameEvents.Instance.OnPlayerDied += OnPlayerDied;
     }
@@ -116,6 +118,7 @@ public class Player : MonoBehaviour
     private void OnPlayerDied()
     {
         // Add end game logic here later
+        //playerAnimator?.SetTrigger("died");
         Debug.Log("Player has died!");
     }
 
