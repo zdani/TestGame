@@ -49,7 +49,12 @@ public class BossWiz : Enemy
             Debug.LogWarning("BossWiz could not find a 'TeleportationPoints' parent object. Teleportation will be disabled.");
             teleportPoints = new Transform[0]; // Initialize to prevent null reference errors
         }
-
+    }
+    
+    public void StartBehaviorCycle() // This method is triggered by the collider on BossTriggerZone
+    {
+        if (isDead) return; // Don't start if already dead
+        StopAllCoroutines(); // Stop any existing behavior cycles
         StartCoroutine(BehaviorCycle());
     }
 
@@ -61,7 +66,7 @@ public class BossWiz : Enemy
         while (!isDead)
         {
             yield return StartCoroutine(TeleportSequence());
-            
+
             // First attack with casting
             yield return new WaitForSeconds(1f);
             yield return StartCoroutine(PerformCastingAttack());
