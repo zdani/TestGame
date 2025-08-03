@@ -176,7 +176,7 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0.18155098, y: 0}
-  m_Radius: 1.6900444
+  m_Radius: 1.4349866
 --- !u!114 &2673620895863400268
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -192,13 +192,12 @@ MonoBehaviour:
   enemyName: Enemy
   maxHealth: 100
   currentHealth: 0
-  detectionRadius: 10
+  detectionRadius: 8.5
   slideForce: 5
   downwardForce: 3
   chargeSpeed: 15
-  chargeDelay: 1
+  chargeDelay: 1.5
   proximityThreshold: 0.5
-  chargeEffect: {fileID: 4168620118482215365, guid: 33ba6ff9e2860b041acd6282025c362d, type: 3}
 --- !u!1001 &7704462362269632739
 PrefabInstance:
   m_ObjectHideFlags: 0
