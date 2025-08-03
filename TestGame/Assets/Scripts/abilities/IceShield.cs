@@ -47,6 +47,7 @@ public class IceShield : MonoBehaviour
 
     public IEnumerator BreakShield()
     {
+        Debug.LogWarning("Breaking shield.");
         if (animationFrames == null || animationFrames.Length < 2)
         {
             Debug.LogWarning("Animation frames not set on IceShield component in inspector.");

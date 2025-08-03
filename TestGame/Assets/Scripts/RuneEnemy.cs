@@ -9,7 +9,7 @@ public class RuneEnemy : Enemy
     [SerializeField] private float proximityThreshold = 0.5f; // How close to get before it's a guaranteed hit.
 
     [Header("Effects")]
-    [SerializeField] private ParticleSystem chargeEffect;
+    private ParticleSystem chargeEffect;
 
     // Static variable to track the last time any rune enemy attacked.
     // This is shared across all instances of RuneEnemy.
@@ -27,6 +27,8 @@ public class RuneEnemy : Enemy
     {
         maxHealth = 1f;
         base.Start();
+
+        chargeEffect = GetComponentInChildren<ParticleSystem>();
 
         rb = GetComponent<Rigidbody2D>();
         if (rb != null)
@@ -74,6 +76,7 @@ public class RuneEnemy : Enemy
         // Play the charge effect if it exists
         if (chargeEffect != null)
         {
+            Debug.Log("Playing charge effect.");
             chargeEffect.Play();
         }
         
