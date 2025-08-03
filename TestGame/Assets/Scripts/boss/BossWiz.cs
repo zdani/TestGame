@@ -62,20 +62,23 @@ public class BossWiz : Enemy
             
             // First attack with casting
             yield return new WaitForSeconds(1f);
-            if (animator != null) animator.SetBool("IsCasting", true);
-            yield return new WaitForSeconds(1f);
-            if (animator != null) animator.SetBool("IsCasting", false);
-            PerformAttack();
+            yield return StartCoroutine(PerformCastingAttack());
 
             // Second attack with casting
-            yield return new WaitForSeconds(1f);
-            if (animator != null) animator.SetBool("IsCasting", true);
-            yield return new WaitForSeconds(1f);
-            if (animator != null) animator.SetBool("IsCasting", false);
-            PerformAttack();
+            yield return new WaitForSeconds(2.5f); // Increased delay
+            yield return StartCoroutine(PerformCastingAttack());
 
             yield return new WaitForSeconds(3f);
         }
+    }
+
+    private IEnumerator PerformCastingAttack()
+    {
+        if (animator != null) animator.SetBool("IsCasting", true);
+        yield return new WaitForSeconds(0.7f);
+        PerformAttack();
+        yield return new WaitForSeconds(0.3f);
+        if (animator != null) animator.SetBool("IsCasting", false);
     }
 
     private IEnumerator TeleportSequence()
