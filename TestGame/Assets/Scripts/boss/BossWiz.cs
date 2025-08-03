@@ -110,7 +110,7 @@ public class BossWiz : Enemy
         }
             
         lastTeleportIndex = nextTeleportIndex;
-        transform.position = teleportPoints[nextTeleportIndex].position;
+        rb.position = teleportPoints[nextTeleportIndex].position;
 
         if (rb != null)
         {
