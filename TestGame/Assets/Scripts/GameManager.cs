@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     [Header("Scene Management")]
     [SerializeField] private string level1SceneName = "level1"; // Change this to your actual level 1 scene name
 
+
     private void Start()
     {
         Debug.Log("GameManager Start() called - script is working!");
@@ -93,5 +94,22 @@ public class GameManager : MonoBehaviour
         #else
             Application.Quit();
         #endif
+    }
+
+    // Function to hide the ControlsPanelForStart GameObject
+    public void HideControlsPanelForStart()
+    {
+        if (controlsPanelForStart == null)
+        {
+            controlsPanelForStart = GameObject.Find("ControlsPanelForStart");
+        }
+        if (controlsPanelForStart != null)
+        {
+            controlsPanelForStart.SetActive(false);
+        }
+        else
+        {
+            Debug.LogWarning("ControlsPanelForStart GameObject is not found in the scene!");
+        }
     }
 }
