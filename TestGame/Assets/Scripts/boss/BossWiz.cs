@@ -1,5 +1,7 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
+
 
 public class BossWiz : Enemy
 {
@@ -170,7 +172,9 @@ public class BossWiz : Enemy
         base.OnDeath();
         isDead = true;
         StopAllCoroutines();
+        
         // Add any death effects or logic here
+        SceneManager.LoadScene("FinalCutscene");
     }
 
     protected override void OnPlayerCollision(Player player)
