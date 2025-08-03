@@ -22,7 +22,7 @@ public abstract class Enemy : MonoBehaviour, IHealthManager
     // Public properties
     public string EnemyName => enemyName;
     public abstract float DamageAmount { get; }
-    protected virtual bool CanDealContactDamage => true;
+    public virtual bool CanDealContactDamage => true;
     
     // IHealthManager implementation
     public float CurrentHealth => currentHealth;

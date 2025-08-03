@@ -20,7 +20,7 @@ public class BossWiz : Enemy
 
     private bool isImmuneToContactDamage = false;
 
-    protected override bool CanDealContactDamage => !isImmuneToContactDamage;
+    public override bool CanDealContactDamage => !isImmuneToContactDamage;
 
     protected override void Start()
     {
@@ -61,6 +61,10 @@ public class BossWiz : Enemy
     {
         if (isDead) return; // Don't start if already dead
         StopAllCoroutines(); // Stop any existing behavior cycles
+
+        // Immediately disable contact damage immunity when the cycle restarts to prevent it from getting stuck.
+        isImmuneToContactDamage = false;
+
         StartCoroutine(BehaviorCycle());
     }
 
@@ -102,7 +106,7 @@ public class BossWiz : Enemy
         SpawnSmokePuff();
         yield return new WaitForSeconds(0.2f); // Short delay for smoke to appear before vanishing
         SetVisibility(false);
-        
+
         // Check if we can teleport AFTER disappearing
         if (teleportPoints == null || teleportPoints.Length == 0)
         {
@@ -112,7 +116,7 @@ public class BossWiz : Enemy
             bossCollider.enabled = true;
             yield break;
         }
-        
+
         // --- Move to new location ---
         int nextTeleportIndex = lastTeleportIndex;
         if (teleportPoints.Length > 1)
@@ -126,7 +130,7 @@ public class BossWiz : Enemy
         {
             nextTeleportIndex = 0;
         }
-            
+
         lastTeleportIndex = nextTeleportIndex;
         rb.position = teleportPoints[nextTeleportIndex].position;
         if (rb != null)
@@ -146,8 +150,10 @@ public class BossWiz : Enemy
         // --- Grace period ---
         // Boss is visible and can be damaged, but won't deal contact damage for a short time
         isImmuneToContactDamage = true;
-        yield return new WaitForSeconds(6.5f); // 4.5s + 2s requested grace period
+        Debug.Log("No contact damage");
+        yield return new WaitForSeconds(3f); // 4.5s + 2s requested grace period
         isImmuneToContactDamage = false;
+        Debug.Log("contact damage reenabled");
     }
 
     private void SpawnSmokePuff()

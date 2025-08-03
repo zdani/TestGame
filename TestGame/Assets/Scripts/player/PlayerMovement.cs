@@ -187,7 +187,7 @@ public class PlayerMovement : MonoBehaviour
         else if (isInitialContact)
         {
             // It's a side collision on the first contact, so the player takes damage.
-            if (TryGetComponent<Player>(out var player))
+            if (TryGetComponent<Player>(out var player) && enemy.CanDealContactDamage)
             {
                 player.TakeDamage(enemy.DamageAmount, enemy.EnemyName);
             }
