@@ -185,9 +185,8 @@ public abstract class Enemy : MonoBehaviour, IHealthManager
     }
     
     // Handle physical collisions (player bumping into enemy)
-    protected virtual void OnCollisionEnter2D(Collision2D collision)
+    protected virtual void OnCollisionStay2D(Collision2D collision)
     {
-        Debug.Log($"OnCollisionEnter2D triggered with {collision.gameObject.name}. IsAlive: {IsAlive}");
         // Check for Player collision and ensure the enemy is alive
         if (IsAlive && collision.gameObject.TryGetComponent<Player>(out var player))
         {
@@ -195,6 +194,7 @@ public abstract class Enemy : MonoBehaviour, IHealthManager
             OnPlayerCollision(player);
             
             // The enemy's primary job on collision is to deal damage
+            // The player's TakeDamage method handles invincibility frames.
             DealDamageToPlayer(player);
         }
     }
