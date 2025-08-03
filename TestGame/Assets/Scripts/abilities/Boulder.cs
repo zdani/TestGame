@@ -17,6 +17,7 @@ public class Boulder : MonoBehaviour
     private Collider2D col;
     private bool hasLanded = false;
     private bool isFalling = false;
+    private bool colliderTemporarilyDisabled = false;
 
     private void Awake()
     {
@@ -30,6 +31,9 @@ public class Boulder : MonoBehaviour
     private void Start()
     {
         audioSource.PlayOneShot(slamSound);
+
+        // If the boulder starts inside the ground, temporarily disable its collider
+        CheckSpawnOverlap();
 
         StartCoroutine(ShakeAndDrop());
     }
@@ -50,6 +54,35 @@ public class Boulder : MonoBehaviour
         transform.position = startPos; // Reset position
         rb.bodyType = RigidbodyType2D.Dynamic; // Switch to dynamic to allow falling
         isFalling = true;
+    }
+
+    private void Update()
+    {
+        if (colliderTemporarilyDisabled && !IsOverlappingGround())
+        {
+            // We're free from the ground, enable collider so it can interact normally
+            col.enabled = true;
+            colliderTemporarilyDisabled = false;
+        }
+    }
+
+    private void CheckSpawnOverlap()
+    {
+        if (IsOverlappingGround())
+        {
+            colliderTemporarilyDisabled = true;
+            col.enabled = false;
+        }
+    }
+
+    // Checks whether there is still ANY ground collider close enough to the boulder.
+    // We deliberately use a *larger* area than the boulder's own collider so we only
+    // switch the collider back on when the rock is completely clear of the ceiling
+    // and its surrounding walls.
+    private bool IsOverlappingGround()
+    {
+        float radius = Mathf.Max(col.bounds.extents.x, col.bounds.extents.y) * 1.2f; // 20 % larger than the boulder
+        return Physics2D.OverlapCircle(transform.position, radius, groundLayer) != null;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
