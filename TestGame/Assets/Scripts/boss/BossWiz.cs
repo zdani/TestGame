@@ -61,7 +61,7 @@ public class BossWiz : Enemy
     private IEnumerator BehaviorCycle()
     {
         // Initial delay before the first action
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(3f);
 
         while (!isDead)
         {
