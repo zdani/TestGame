@@ -2,10 +2,12 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class AudioManager : MonoBehaviour
 {
     public AudioMixer audioMixer;
+    public Slider volumeSlider;
     public float defaultVolume = 0.7f;
 
     public AudioClip backgroundMusic;
@@ -17,7 +19,7 @@ public class AudioManager : MonoBehaviour
 
     void Start()
     {
-        backgroundAudioSource = gameObject.AddComponent<AudioSource>();
+        backgroundAudioSource = GetComponent<AudioSource>();
 
         float savedVolume = PlayerPrefs.HasKey("MasterVolume") ? PlayerPrefs.GetFloat("MasterVolume") : defaultVolume;
         SetVolume(savedVolume);
