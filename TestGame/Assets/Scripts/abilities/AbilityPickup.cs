@@ -10,7 +10,7 @@ public class AbilityPickup : MonoBehaviour
         if (other.TryGetComponent(out Player player))
         {
             player.LearnAbility(abilityType);
-
+            player.Heal(2f);
             if (chestUnlockPrefab != null)
             {
                 Instantiate(chestUnlockPrefab, transform.position, transform.rotation);

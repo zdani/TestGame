@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class Player : MonoBehaviour
 {
     [Header("Combat Settings")]
-    [SerializeField] private float invincibilityDuration = 3f;
+    [SerializeField] private float _invincibilityDuration = 3f;
     
     // Public properties
     public IHealthManager HealthManager { get; private set; }
@@ -16,6 +16,7 @@ public class Player : MonoBehaviour
 
     const int INIT_MAX_HEALTH = 5;
     private float invincibilityTimer = 0f;
+    private bool isInvincibleFromDamage = false;
     private SpriteRenderer spriteRenderer;
 
     private void Awake()
@@ -37,8 +38,8 @@ public class Player : MonoBehaviour
         {
             invincibilityTimer -= Time.deltaTime;
             
-            // Flash the sprite during invincibility
-            if (spriteRenderer != null)
+            // Flash the sprite ONLY if invincibility is from damage
+            if (isInvincibleFromDamage && spriteRenderer != null)
             {
                 spriteRenderer.enabled = Mathf.Sin(Time.time * 10f) > 0f;
             }
@@ -59,6 +60,7 @@ public class Player : MonoBehaviour
         // Find the IceShieldAbility component on this player's GameObject
         IceShieldAbility iceShieldAbility = gameObject.GetComponent<IceShieldAbility>();
         if (iceShieldAbility != null && iceShieldAbility.isShieldActive){
+            StartInvincibility(1f, false);
             iceShieldAbility.BreakShield();
             return;
         }
@@ -67,13 +69,15 @@ public class Player : MonoBehaviour
         HealthManager.TakeDamage(damageAmount);
         
         // Start invincibility period
-        StartInvincibility();
+        StartInvincibility(_invincibilityDuration, true);
         
         // Trigger hit event through GameEvents
         GameEvents.Instance.TriggerPlayerHit();
         
         Debug.Log($"Player took {damageAmount} damage from {enemyName}! Health: {HealthManager.CurrentHealth}/{HealthManager.MaxHealth}");
     }
+
+    public void Heal(float healAmount) =>  HealthManager.Heal(healAmount);
 
     public void LearnAbility(AbilityType abilityType)
     {
@@ -84,9 +88,10 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void StartInvincibility()
+    private void StartInvincibility(float invincibilityDuration, bool fromDamage)
     {
         IsInvincible = true;
+        isInvincibleFromDamage = fromDamage;
         invincibilityTimer = invincibilityDuration;
         GameEvents.Instance.TriggerInvincibilityStarted();
         Debug.Log($"Player is now invincible for {invincibilityDuration} seconds");
@@ -95,6 +100,7 @@ public class Player : MonoBehaviour
     private void EndInvincibility()
     {
         IsInvincible = false;
+        isInvincibleFromDamage = false;
         invincibilityTimer = 0f;
         
         // Restore sprite visibility
