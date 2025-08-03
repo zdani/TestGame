@@ -171,7 +171,7 @@ public abstract class Enemy : MonoBehaviour, IHealthManager
     protected virtual void OnPlayerHit(Player player)
     {
         // Default behavior - can be overridden by specific enemy types
-        Debug.Log($"{enemyName} hit the player! (Base Enemy.OnPlayerHit called)");
+        //Debug.Log($"{enemyName} hit the player! (Base Enemy.OnPlayerHit called)");
     }
     
     // Method to deal damage to player - now handled by the enemy
