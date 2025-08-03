@@ -24,7 +24,7 @@ public class PlayerMovement : MonoBehaviour
     
     // State
     public bool isGrounded;
-    private bool isMoving;
+    public bool isMoving;
     
     // Ground check position - use actual collider bounds
     private Vector2 GroundCheckPosition
