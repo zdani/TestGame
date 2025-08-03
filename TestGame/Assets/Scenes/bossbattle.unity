@@ -8737,38 +8737,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 572334765}
   m_CullTransparentMesh: 1
---- !u!1 &593465466 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8050744641536421847, guid: e735f37aee6ba174fa899b33e4c93950, type: 3}
-  m_PrefabInstance: {fileID: 898688661}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &593465467 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1027875263075483106, guid: e735f37aee6ba174fa899b33e4c93950, type: 3}
   m_PrefabInstance: {fileID: 898688661}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &593465468
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 593465466}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a04e31d4261a2f4a8a31cd9cfc17193, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enemyName: Enemy
-  maxHealth: 100
-  currentHealth: 0
-  detectionRadius: 10
-  slideForce: 5
-  downwardForce: 3
-  projectilePrefab: {fileID: 2883197107166799354, guid: d6700f02786304344a7316534aecac25, type: 3}
-  projectileSpawnPoint: {fileID: 1822217419}
-  attackCooldown: 2
-  idleTime: 1.5
 --- !u!4 &599334990 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3141282719454845474, guid: 1d6472257825da4428fe1db3ca288ad7, type: 3}
@@ -9104,6 +9077,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 32327940}
+  lineCamera: {fileID: 0}
   intersectionPrefab: {fileID: 823190141134836104, guid: 5dba736b0894d02409677b41cd25c5c6, type: 3}
   fadingLinePrefab: {fileID: 8646012810190170219, guid: 53464d2a663b816479f7116efbdbfd08, type: 3}
   lineGradientNormal:
@@ -9171,8 +9145,6 @@ MonoBehaviour:
   closeLoopThreshold: 0.6
   intersectionThreshold: 0.3
   fadeDuration: 1
-  fireballPrefab: {fileID: 2883197107166799354, guid: 7e601ec6d7087ba4eb013ea8fdea5960, type: 3}
-  fireballSpawnPoint: {fileID: 1815519507}
 --- !u!120 &775114413
 LineRenderer:
   serializedVersion: 2
@@ -14258,6 +14230,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3779274524782923228, guid: e735f37aee6ba174fa899b33e4c93950, type: 3}
+      propertyPath: smokePuffPrefab
+      value: 
+      objectReference: {fileID: 1237302442557577196, guid: 42f759310adfdfa4e9ff5277e1d22330, type: 3}
     - target: {fileID: 8050744641536421847, guid: e735f37aee6ba174fa899b33e4c93950, type: 3}
       propertyPath: m_Name
       value: boss
@@ -14265,10 +14241,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8050744641536421847, guid: e735f37aee6ba174fa899b33e4c93950, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 593465468}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e735f37aee6ba174fa899b33e4c93950, type: 3}
 --- !u!1 &933685307
 GameObject:
@@ -17211,16 +17184,6 @@ Transform:
 Transform:
   m_CorrespondingSourceObject: {fileID: 8597280458727448504, guid: 5d853e555881d1c41874b16ff43a57c0, type: 3}
   m_PrefabInstance: {fileID: 372926947}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &1815519507 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1579912711116261893, guid: 17e13cd806406e04589db6953a252182, type: 3}
-  m_PrefabInstance: {fileID: 32327939}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &1822217419 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7573060675471209911, guid: e735f37aee6ba174fa899b33e4c93950, type: 3}
-  m_PrefabInstance: {fileID: 898688661}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1890661210
 GameObject:
