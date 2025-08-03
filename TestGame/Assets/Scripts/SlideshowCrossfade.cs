@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class SlideshowCrossfade : MonoBehaviour
@@ -87,5 +88,10 @@ public class SlideshowCrossfade : MonoBehaviour
         panel.alpha = 1;
         panel.interactable = true;
         panel.blocksRaycasts = true;
+    }
+
+    public void BackToStartMenu()
+    {
+        SceneManager.LoadScene("Start Game Menu");
     }
 }
