@@ -18,7 +18,7 @@ public class RuneEnemy : Enemy
     private Renderer rend;
     private Camera mainCamera;
 
-    public override float DamageAmount => 3f;
+    public override float DamageAmount => 2f;
 
     protected override void Start()
     {

@@ -16,11 +16,9 @@ public class BossProjectile : MonoBehaviour
         Rigidbody2D rb = GetComponent<Rigidbody2D>();
         rb.linearVelocity = direction.normalized * speed;
 
-        // Flip the sprite based on direction
-        if (direction.x < 0)
-        {
-            transform.localScale = new Vector3(-1, 1, 1);
-        }
+        // Rotate the projectile to face the direction of movement
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(0, 0, angle);
     }
 
 }

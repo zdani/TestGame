@@ -25,6 +25,7 @@ public class BossWiz : Enemy
         animator = GetComponent<Animator>();
         if (rb != null)
         {
+            rb.bodyType = RigidbodyType2D.Kinematic;
             rb.gravityScale = 0;
             rb.constraints = RigidbodyConstraints2D.FreezeRotation;
         }
@@ -109,7 +110,7 @@ public class BossWiz : Enemy
         }
             
         lastTeleportIndex = nextTeleportIndex;
-        transform.position = teleportPoints[nextTeleportIndex].position;
+        rb.position = teleportPoints[nextTeleportIndex].position;
 
         if (rb != null)
         {

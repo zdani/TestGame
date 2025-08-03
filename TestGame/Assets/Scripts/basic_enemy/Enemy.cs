@@ -202,8 +202,6 @@ public abstract class Enemy : MonoBehaviour, IHealthManager
     // Handle trigger collisions (projectiles and player proximity)
     protected virtual void OnTriggerEnter2D(Collider2D other)
     {
-        //Debug.Log($"Enemy OnTriggerEnter2D with: {other.gameObject.name} (Tag: {other.gameObject.tag})");
-        
         // Check for Player proximity (if using a larger trigger collider)
         Player player = other.gameObject.GetComponent<Player>();
         if (player != null && IsAlive)
