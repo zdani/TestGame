@@ -64706,11 +64706,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3031331951272698403, guid: 17e13cd806406e04589db6953a252182, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -11.6
+      value: 166.73
       objectReference: {fileID: 0}
     - target: {fileID: 3031331951272698403, guid: 17e13cd806406e04589db6953a252182, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.7
+      value: -37.44
       objectReference: {fileID: 0}
     - target: {fileID: 3031331951272698403, guid: 17e13cd806406e04589db6953a252182, type: 3}
       propertyPath: m_LocalPosition.z
@@ -75627,16 +75627,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c5d5c6da39abbf4387cd3acd916c0cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  loopSpellDetector: {fileID: 775114412}
-  audioSource: {fileID: 775114417}
-  clipIntro: {fileID: 8300000, guid: ea658d463abf8ee42b896613b3db1143, type: 3}
-  clipLoop: {fileID: 8300000, guid: 082411b2237fef84bacd33b349019d2b, type: 3}
-  clipEndA: {fileID: 0}
-  clipEndB: {fileID: 0}
-  useClipB: 0
-  hasStarted: 0
-  waitingToLoop: 0
-  loopPlaying: 0
 --- !u!4 &790966208 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1027875263075483106, guid: daceba86d12a39441b91937d0ad092df, type: 3}
