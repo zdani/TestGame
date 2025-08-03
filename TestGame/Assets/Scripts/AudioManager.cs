@@ -6,7 +6,8 @@ public class AudioManager : MonoBehaviour
     public AudioMixer audioMixer;
     public float defaultVolume = 0.7f;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public AudioClip backgroundMusic;
+
     void Start()
     {
         float savedVolume = PlayerPrefs.HasKey("MasterVolume") ? PlayerPrefs.GetFloat("MasterVolume") : defaultVolume;
