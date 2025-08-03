@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: c623f5548dbf380478a209ce9a57baa6
+guid: cea8890e3d553444c946ff821737f68b
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 6360238994214624161
-    second: ability3_updated_0
+      213: 3981416424323496381
+    second: sky_for_deep_area_updated_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -48,10 +48,10 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 80
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -152,13 +152,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: ability3_updated_0
+      name: sky_for_deep_area_updated_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 130
-        height: 130
+        width: 2628
+        height: 7665
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -167,8 +167,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1ab10c0daab144850800000000000000
-      internalID: 6360238994214624161
+      spriteID: db935bab425d04730800000000000000
+      internalID: 3981416424323496381
       vertices: []
       indices: 
       edges: []
@@ -186,7 +186,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      sky_for_deep_area_updated_0: 3981416424323496381
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
