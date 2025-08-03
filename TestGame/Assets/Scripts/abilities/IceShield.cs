@@ -72,7 +72,7 @@ public class IceShield : MonoBehaviour
         Destroy(gameObject);
     }
 
-    // Just for testing, remove later
+    /* Just for testing
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.B))
@@ -80,4 +80,5 @@ public class IceShield : MonoBehaviour
             StartCoroutine(BreakShield());
         }
     }
+    */
 }
