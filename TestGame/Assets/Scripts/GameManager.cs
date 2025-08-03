@@ -99,10 +99,8 @@ public class GameManager : MonoBehaviour
     // Function to hide the ControlsPanelForStart GameObject
     public void HideControlsPanelForStart()
     {
-        if (controlsPanelForStart == null)
-        {
-            controlsPanelForStart = GameObject.Find("ControlsPanelForStart");
-        }
+        var controlsPanelForStart = GameObject.Find("ControlsPanelForStart");
+ 
         if (controlsPanelForStart != null)
         {
             controlsPanelForStart.SetActive(false);
