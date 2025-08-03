@@ -15,6 +15,8 @@ public class AudioManager : MonoBehaviour
     public float fadeOutDuration = 0.3f;
     public float delayBeforeBossMusic = 1f;
 
+    private float volumeBeforeFade;
+
     private AudioSource backgroundAudioSource;
 
     void Start()
@@ -50,14 +52,14 @@ public class AudioManager : MonoBehaviour
     
     private IEnumerator FadeOutThenPlayBossMusic()
     {
-        float startVolume = backgroundAudioSource.volume;
+        volumeBeforeFade = backgroundAudioSource.volume;
         float t = 0f;
 
         // Fade out
         while (t < fadeOutDuration)
         {
             t += Time.deltaTime;
-            backgroundAudioSource.volume = Mathf.Lerp(startVolume, 0f, t / fadeOutDuration);
+            backgroundAudioSource.volume = Mathf.Lerp(volumeBeforeFade, 0f, t / fadeOutDuration);
             yield return null;
         }
 
@@ -68,7 +70,7 @@ public class AudioManager : MonoBehaviour
         yield return new WaitForSeconds(delayBeforeBossMusic);
 
         // Start boss music instantly at desired volume
-        backgroundAudioSource.volume = PlayerPrefs.GetFloat("MasterVolume");
+        backgroundAudioSource.volume = volumeBeforeFade;
         backgroundAudioSource.loop = true;
         backgroundAudioSource.Play();
     }
