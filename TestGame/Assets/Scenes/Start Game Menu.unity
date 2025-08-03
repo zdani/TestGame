@@ -2327,9 +2327,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1570520841}
+  - component: {fileID: 1570520842}
   - component: {fileID: 1570520840}
   m_Layer: 0
-  m_Name: MenuMusic
+  m_Name: AudioManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2345,10 +2346,10 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 24300002, guid: cc5a9d339b8af3c4889d05e7ee19c2c9, type: 2}
-  m_audioClip: {fileID: 8300000, guid: 5bfd71b3e20a2a148981ec1f83658f49, type: 3}
-  m_Resource: {fileID: 8300000, guid: 5bfd71b3e20a2a148981ec1f83658f49, type: 3}
-  m_PlayOnAwake: 1
-  m_Volume: 0.2
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -2447,6 +2448,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1570520842
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1570520839}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91fda45ed27f01e4880dcddd70e47131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioMixer: {fileID: 24100000, guid: cc5a9d339b8af3c4889d05e7ee19c2c9, type: 2}
+  defaultVolume: 0.7
+  backgroundMusic: {fileID: 0}
+  bossMusic: {fileID: 0}
+  fadeOutDuration: 0.3
+  delayBeforeBossMusic: 1
 --- !u!1 &1576348394
 GameObject:
   m_ObjectHideFlags: 0
@@ -2673,7 +2692,6 @@ GameObject:
   - component: {fileID: 1611030822}
   - component: {fileID: 1611030821}
   - component: {fileID: 1611030823}
-  - component: {fileID: 1611030824}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -2724,20 +2742,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   optionsPanel: {fileID: 1614578581}
   controlsPanel: {fileID: 1614578582}
---- !u!114 &1611030824
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1611030820}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 91fda45ed27f01e4880dcddd70e47131, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  audioMixer: {fileID: 24100000, guid: cc5a9d339b8af3c4889d05e7ee19c2c9, type: 2}
-  defaultVolume: 0.7
 --- !u!1001 &1614578579
 PrefabInstance:
   m_ObjectHideFlags: 0
