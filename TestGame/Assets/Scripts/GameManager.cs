@@ -40,10 +40,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void OnGameOver()
+    public void OnGameOver()
     {
         Debug.Log("Game Over triggered! Enabling game over UI.");
-        
+        Player player = FindFirstObjectByType<Player>();
+        player.gameObject.SetActive(false);
         if (gameOverGameObject != null)
         {
             gameOverGameObject.SetActive(true);
