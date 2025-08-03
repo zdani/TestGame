@@ -68682,7 +68682,7 @@ GameObject:
   - component: {fileID: 572334768}
   - component: {fileID: 572334767}
   m_Layer: 5
-  m_Name: Ability 2
+  m_Name: IceShield
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -77552,7 +77552,7 @@ GameObject:
   - component: {fileID: 1122426253}
   - component: {fileID: 1122426252}
   m_Layer: 5
-  m_Name: Ability 1
+  m_Name: Fireball
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -79099,7 +79099,7 @@ GameObject:
   - component: {fileID: 1248158566}
   - component: {fileID: 1248158565}
   m_Layer: 5
-  m_Name: Ability 4
+  m_Name: Unknown
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -98303,6 +98303,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1869365668}
   - component: {fileID: 1869365669}
+  - component: {fileID: 1869365670}
   m_Layer: 5
   m_Name: Ability Icons
   m_TagString: Untagged
@@ -98359,6 +98360,18 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &1869365670
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1869365667}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5cea9f22214922459f5dbc8d8ed6af5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1890661210
 GameObject:
   m_ObjectHideFlags: 0
@@ -99965,7 +99978,7 @@ GameObject:
   - component: {fileID: 2084132861}
   - component: {fileID: 2084132860}
   m_Layer: 5
-  m_Name: Ability 3
+  m_Name: Boulder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
