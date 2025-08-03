@@ -29,6 +29,10 @@ public class IceShieldAbility : MonoBehaviour
 
     public void BreakShield()
     {
-        _iceShield.BreakShield();
+        if (_iceShield != null && isShieldActive)
+        {
+            // A coroutine must be started with StartCoroutine to execute.
+            StartCoroutine(_iceShield.BreakShield());
+        }
     }
 }
