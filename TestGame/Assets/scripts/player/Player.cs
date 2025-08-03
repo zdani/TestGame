@@ -16,6 +16,7 @@ public class Player : MonoBehaviour
 
     const int INIT_MAX_HEALTH = 5;
     private float invincibilityTimer = 0f;
+    private bool isInvincibleFromDamage = false;
     private SpriteRenderer spriteRenderer;
 
     private void Awake()
@@ -37,8 +38,8 @@ public class Player : MonoBehaviour
         {
             invincibilityTimer -= Time.deltaTime;
             
-            // Flash the sprite during invincibility
-            if (spriteRenderer != null)
+            // Flash the sprite ONLY if invincibility is from damage
+            if (isInvincibleFromDamage && spriteRenderer != null)
             {
                 spriteRenderer.enabled = Mathf.Sin(Time.time * 10f) > 0f;
             }
@@ -59,7 +60,7 @@ public class Player : MonoBehaviour
         // Find the IceShieldAbility component on this player's GameObject
         IceShieldAbility iceShieldAbility = gameObject.GetComponent<IceShieldAbility>();
         if (iceShieldAbility != null && iceShieldAbility.isShieldActive){
-            StartInvincibility(1f);
+            StartInvincibility(1f, false);
             iceShieldAbility.BreakShield();
             return;
         }
@@ -68,7 +69,7 @@ public class Player : MonoBehaviour
         HealthManager.TakeDamage(damageAmount);
         
         // Start invincibility period
-        StartInvincibility(_invincibilityDuration);
+        StartInvincibility(_invincibilityDuration, true);
         
         // Trigger hit event through GameEvents
         GameEvents.Instance.TriggerPlayerHit();
@@ -87,9 +88,10 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void StartInvincibility(float invincibilityDuration)
+    private void StartInvincibility(float invincibilityDuration, bool fromDamage)
     {
         IsInvincible = true;
+        isInvincibleFromDamage = fromDamage;
         invincibilityTimer = invincibilityDuration;
         GameEvents.Instance.TriggerInvincibilityStarted();
         Debug.Log($"Player is now invincible for {invincibilityDuration} seconds");
@@ -98,6 +100,7 @@ public class Player : MonoBehaviour
     private void EndInvincibility()
     {
         IsInvincible = false;
+        isInvincibleFromDamage = false;
         invincibilityTimer = 0f;
         
         // Restore sprite visibility
