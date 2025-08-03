@@ -2,5 +2,6 @@ public enum AbilityType
 {
     Fireball,
     IceShield,
-    Boulder
+    Boulder,
+    Unknown
 } 
