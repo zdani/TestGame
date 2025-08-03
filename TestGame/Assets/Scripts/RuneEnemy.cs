@@ -5,8 +5,11 @@ public class RuneEnemy : Enemy
 {
     [Header("Rune Settings")]
     [SerializeField] private float chargeSpeed = 15f;
-    [SerializeField] private float chargeDelay = 1f;
+    [SerializeField] private float chargeDelay = 3f;
     [SerializeField] private float proximityThreshold = 0.5f; // How close to get before it's a guaranteed hit.
+
+    [Header("Effects")]
+    private ParticleSystem chargeEffect;
 
     // Static variable to track the last time any rune enemy attacked.
     // This is shared across all instances of RuneEnemy.
@@ -24,6 +27,8 @@ public class RuneEnemy : Enemy
     {
         maxHealth = 1f;
         base.Start();
+
+        chargeEffect = GetComponentInChildren<ParticleSystem>();
 
         rb = GetComponent<Rigidbody2D>();
         if (rb != null)
@@ -67,9 +72,22 @@ public class RuneEnemy : Enemy
         
         // Set the static attack time for all other runes
         lastAttackTime = Time.time;
+
+        // Play the charge effect if it exists
+        if (chargeEffect != null)
+        {
+            Debug.Log("Playing charge effect.");
+            chargeEffect.Play();
+        }
         
-        // Short pause before charging
+        // Pause for the duration of the charge.
         yield return new WaitForSeconds(chargeDelay);
+
+        // Stop the charge effect after the delay.
+        if (chargeEffect != null)
+        {
+            chargeEffect.Stop();
+        }
 
         while (true) // This loop runs every physics frame until the object is destroyed
         {
