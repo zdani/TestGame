@@ -33,8 +33,8 @@ public class LoopSpellDetector : MonoBehaviour
 
     private readonly List<Vector2> drawnPoints = new();
     private Vector2 startPoint;
-    private bool isDrawing = false;
-    private bool loopReady = false;
+    public bool isDrawing = false;
+    public bool loopReady = false;
     private Player playerScript;
 
     void Awake()
