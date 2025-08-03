@@ -118,7 +118,7 @@ public class Player : MonoBehaviour
     private void OnPlayerDied()
     {
         // Add end game logic here later
-        playerAnimator?.SetTrigger("died");
+        //playerAnimator?.SetTrigger("died");
         Debug.Log("Player has died!");
     }
 
