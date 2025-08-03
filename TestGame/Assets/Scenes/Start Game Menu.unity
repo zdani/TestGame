@@ -2346,9 +2346,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 24300002, guid: cc5a9d339b8af3c4889d05e7ee19c2c9, type: 2}
-  m_audioClip: {fileID: 8300000, guid: 5bfd71b3e20a2a148981ec1f83658f49, type: 3}
-  m_Resource: {fileID: 8300000, guid: 5bfd71b3e20a2a148981ec1f83658f49, type: 3}
-  m_PlayOnAwake: 1
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 0
   m_Volume: 0.5
   m_Pitch: 1
   Loop: 1
@@ -2463,6 +2463,9 @@ MonoBehaviour:
   audioMixer: {fileID: 24100000, guid: cc5a9d339b8af3c4889d05e7ee19c2c9, type: 2}
   defaultVolume: 0.7
   backgroundMusic: {fileID: 0}
+  bossMusic: {fileID: 0}
+  fadeOutDuration: 0.3
+  delayBeforeBossMusic: 1
 --- !u!1 &1576348394
 GameObject:
   m_ObjectHideFlags: 0

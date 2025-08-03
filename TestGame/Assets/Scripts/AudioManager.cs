@@ -1,5 +1,7 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.SceneManagement;
 
 public class AudioManager : MonoBehaviour
 {
@@ -7,11 +9,25 @@ public class AudioManager : MonoBehaviour
     public float defaultVolume = 0.7f;
 
     public AudioClip backgroundMusic;
+    public AudioClip bossMusic;
+    public float fadeOutDuration = 0.3f;
+    public float delayBeforeBossMusic = 1f;
+
+    private AudioSource backgroundAudioSource;
 
     void Start()
     {
+        backgroundAudioSource = gameObject.AddComponent<AudioSource>();
+
         float savedVolume = PlayerPrefs.HasKey("MasterVolume") ? PlayerPrefs.GetFloat("MasterVolume") : defaultVolume;
         SetVolume(savedVolume);
+
+        string currentScene = SceneManager.GetActiveScene().name;
+
+        if (currentScene != "Start Game Menu")
+        {
+            PlayLoopedMusic(backgroundAudioSource, backgroundMusic);
+        }
     }
 
     public void SetVolume(float volume)
@@ -23,5 +39,42 @@ public class AudioManager : MonoBehaviour
         // Save the linear volume (0–1), not the dB
         PlayerPrefs.SetFloat("MasterVolume", volume);
         PlayerPrefs.Save();
+    }
+
+    public void StartBossMusic()
+    {
+        StartCoroutine(FadeOutThenPlayBossMusic());
+    }
+    
+    private IEnumerator FadeOutThenPlayBossMusic()
+    {
+        float startVolume = backgroundAudioSource.volume;
+        float t = 0f;
+
+        // Fade out
+        while (t < fadeOutDuration)
+        {
+            t += Time.deltaTime;
+            backgroundAudioSource.volume = Mathf.Lerp(startVolume, 0f, t / fadeOutDuration);
+            yield return null;
+        }
+
+        backgroundAudioSource.Stop();
+        backgroundAudioSource.clip = bossMusic;
+
+        // Wait before starting boss music
+        yield return new WaitForSeconds(delayBeforeBossMusic);
+
+        // Start boss music instantly at desired volume
+        backgroundAudioSource.volume = PlayerPrefs.GetFloat("MasterVolume");
+        backgroundAudioSource.loop = true;
+        backgroundAudioSource.Play();
+    }
+
+    private void PlayLoopedMusic(AudioSource source, AudioClip musicClip)
+    {
+        source.clip = musicClip;
+        source.loop = true;
+        source.Play();
     }
 }
