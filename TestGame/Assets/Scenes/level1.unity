@@ -69034,7 +69034,6 @@ GameObject:
   - component: {fileID: 603570383}
   - component: {fileID: 603570385}
   - component: {fileID: 603570384}
-  - component: {fileID: 603570386}
   m_Layer: 5
   m_Name: Ability Icons Frame
   m_TagString: Untagged
@@ -69100,18 +69099,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 603570382}
   m_CullTransparentMesh: 1
---- !u!114 &603570386
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 603570382}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5cea9f22214922459f5dbc8d8ed6af5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &606339476
 PrefabInstance:
   m_ObjectHideFlags: 0
