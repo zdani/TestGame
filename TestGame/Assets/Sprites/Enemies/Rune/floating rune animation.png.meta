@@ -85,7 +85,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -123,7 +123,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -151,10 +151,10 @@ TextureImporter:
       name: floating rune animation_0
       rect:
         serializedVersion: 2
-        x: 194
-        y: 266
-        width: 571
-        height: 484
+        x: 213
+        y: 328
+        width: 350
+        height: 350
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -173,12 +173,12 @@ TextureImporter:
       name: floating rune animation_1
       rect:
         serializedVersion: 2
-        x: 857
-        y: 234
-        width: 711
-        height: 556
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 934
+        y: 331
+        width: 350
+        height: 350
+      alignment: 9
+      pivot: {x: 0.43567872, y: 0.4999999}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -195,10 +195,10 @@ TextureImporter:
       name: floating rune animation_2
       rect:
         serializedVersion: 2
-        x: 1764
-        y: 596
-        width: 9
-        height: 8
+        x: 1595
+        y: 330
+        width: 350
+        height: 350
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -217,306 +217,20 @@ TextureImporter:
       name: floating rune animation_3
       rect:
         serializedVersion: 2
-        x: 1719
-        y: 555
-        width: 22
-        height: 33
+        x: 2079
+        y: 328
+        width: 350
+        height: 350
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: b72eb4b5daf18dd10800000000000000
+      spriteID: 0d9aa787ab093054fbaba68dc940d6ad
       internalID: 2150503651490914939
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: floating rune animation_4
-      rect:
-        serializedVersion: 2
-        x: 1764
-        y: 571
-        width: 6
-        height: 6
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 63b94e8224dec0e90800000000000000
-      internalID: -7058005647586714826
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: floating rune animation_5
-      rect:
-        serializedVersion: 2
-        x: 1779
-        y: 508
-        width: 72
-        height: 87
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 28e0166a37fc53f60800000000000000
-      internalID: 8013539207595232898
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: floating rune animation_6
-      rect:
-        serializedVersion: 2
-        x: 1692
-        y: 387
-        width: 62
-        height: 165
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 9bbdb34045554ba70800000000000000
-      internalID: 8841785787771771833
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: floating rune animation_7
-      rect:
-        serializedVersion: 2
-        x: 1851
-        y: 524
-        width: 7
-        height: 7
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 6af9369c443919860800000000000000
-      internalID: 7534965575213359014
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: floating rune animation_8
-      rect:
-        serializedVersion: 2
-        x: 1756
-        y: 399
-        width: 107
-        height: 104
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 5613dbc7587d754b0800000000000000
-      internalID: -5451651855585300123
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: floating rune animation_9
-      rect:
-        serializedVersion: 2
-        x: 1831
-        y: 493
-        width: 37
-        height: 22
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: e6e4917b89d803d30800000000000000
-      internalID: 4409179722242149998
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: floating rune animation_10
-      rect:
-        serializedVersion: 2
-        x: 1855
-        y: 477
-        width: 13
-        height: 8
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 0fc304b69820bd650800000000000000
-      internalID: 6258598896394583280
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: floating rune animation_11
-      rect:
-        serializedVersion: 2
-        x: 1848
-        y: 457
-        width: 6
-        height: 6
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: de39a223e915da830800000000000000
-      internalID: 4084010176983241709
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: floating rune animation_12
-      rect:
-        serializedVersion: 2
-        x: 2151
-        y: 396
-        width: 240
-        height: 72
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: f086b44dfa63003b0800000000000000
-      internalID: -5548374612111562737
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: floating rune animation_13
-      rect:
-        serializedVersion: 2
-        x: 2395
-        y: 420
-        width: 23
-        height: 22
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: c2a022950e5aaff90800000000000000
-      internalID: -6919035494514685396
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: floating rune animation_14
-      rect:
-        serializedVersion: 2
-        x: 1741
-        y: 404
-        width: 8
-        height: 8
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 959af0624820e8880800000000000000
-      internalID: -8606939071260939943
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: floating rune animation_15
-      rect:
-        serializedVersion: 2
-        x: 1748
-        y: 378
-        width: 22
-        height: 12
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 587252f279e03d4f0800000000000000
-      internalID: -805283865875372155
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: floating rune animation_16
-      rect:
-        serializedVersion: 2
-        x: 1711
-        y: 360
-        width: 13
-        height: 7
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: e8362db68e02e9b20800000000000000
-      internalID: 3142985772564636558
       vertices: []
       indices: 
       edges: []
@@ -525,7 +239,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 80470795ee1d9ff4bbab500e0fd8624f
     internalID: 0
     vertices: []
     indices: 
@@ -537,21 +251,8 @@ TextureImporter:
     nameFileIdTable:
       floating rune animation_0: -5046483966104184236
       floating rune animation_1: 2223637575744361079
-      floating rune animation_10: 6258598896394583280
-      floating rune animation_11: 4084010176983241709
-      floating rune animation_12: -5548374612111562737
-      floating rune animation_13: -6919035494514685396
-      floating rune animation_14: -8606939071260939943
-      floating rune animation_15: -805283865875372155
-      floating rune animation_16: 3142985772564636558
       floating rune animation_2: -7530383890152966366
       floating rune animation_3: 2150503651490914939
-      floating rune animation_4: -7058005647586714826
-      floating rune animation_5: 8013539207595232898
-      floating rune animation_6: 8841785787771771833
-      floating rune animation_7: 7534965575213359014
-      floating rune animation_8: -5451651855585300123
-      floating rune animation_9: 4409179722242149998
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
