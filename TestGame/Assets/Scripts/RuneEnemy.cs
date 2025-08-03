@@ -18,8 +18,6 @@ public class RuneEnemy : Enemy
 
     private bool isCharging = false;
     private Rigidbody2D rb;
-    private Renderer rend;
-    private Camera mainCamera;
 
     public override float DamageAmount => 2f;
 
@@ -36,32 +34,24 @@ public class RuneEnemy : Enemy
             rb.gravityScale = 0;
             rb.constraints = RigidbodyConstraints2D.FreezeRotation;
         }
-
-        rend = GetComponent<Renderer>();
-        mainCamera = Camera.main;
     }
 
     protected override void Update()
     {
-        // Don't use base.Update() or playerDetected.
-        // Instead, we check if the rune is visible to the main camera.
-
-        if (isCharging || rend == null || mainCamera == null)
+        // If we are already charging, or don't have a player reference, do nothing.
+        if (isCharging || playerTransform == null)
         {
             return;
         }
 
-        // Check if this rune is inside the camera's view frustum
-        var planes = GeometryUtility.CalculateFrustumPlanes(mainCamera);
-        if (GeometryUtility.TestPlanesAABB(planes, rend.bounds))
+        // Check if the player is within the detection radius
+        float distanceToPlayer = Vector2.Distance(transform.position, playerTransform.position);
+        if (distanceToPlayer <= detectionRadius)
         {
             // Check if enough time has passed since the last rune attack
             if (Time.time >= lastAttackTime + ATTACK_COOLDOWN)
             {
-                if (playerTransform != null) // Make sure we have a player to charge at
-                {
-                    StartCoroutine(ChargeAttack());
-                }
+                StartCoroutine(ChargeAttack());
             }
         }
     }
