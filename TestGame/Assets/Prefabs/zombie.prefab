@@ -79,7 +79,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 55100665305584553, guid: d4ef8aec5ef832f41a729b71f571c942, type: 3}
   m_Color: {r: 0.9685534, g: 0.9411415, b: 0.9411415, a: 1}
   m_FlipX: 0
@@ -136,7 +136,6 @@ MonoBehaviour:
   detectionRadius: 5
   slideForce: 5
   downwardForce: 3
-  mainCollider: {fileID: 0}
   damageAmount: 1
   groundLayerMask:
     serializedVersion: 2
@@ -144,10 +143,11 @@ MonoBehaviour:
   zombieMaxHealth: 3
   walkSpeed: 2
   chaseSpeed: 4
-  edgeDetectionDistance: 0.1
   maxPatrolDistance: 10
   chaseTimeout: 4
   startPatrolRight: 1
+  directionChangeCooldown: 1.5
+  stuckTurnAroundTime: 2
 --- !u!95 &3744883840427090133
 Animator:
   serializedVersion: 7
