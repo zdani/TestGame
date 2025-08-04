@@ -18,7 +18,7 @@ public class VolumeSlider : MonoBehaviour
         // Convert from 0–1 slider value to decibels
         float dB = Mathf.Log10(Mathf.Clamp(volume, 0.0001f, 1f)) * 20f;
         audioMixer.SetFloat("MasterVolume", dB);
-        Debug.Log($"Volume set to {volume} (dB: {dB})");
+        //Debug.Log($"Volume set to {volume} (dB: {dB})");
 
         // Save the linear volume (0–1), not the dB
         PlayerPrefs.SetFloat("MasterVolume", volume);
