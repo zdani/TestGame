@@ -11,7 +11,7 @@ public class StartMenu : MonoBehaviour
     private CanvasGroup titleCanvas;
 
     public float fadeInDuration = 1f;
-    public float fadeOutDuration = 3f;
+    public float fadeOutDuration = 2f;
 
     void Start()
     {

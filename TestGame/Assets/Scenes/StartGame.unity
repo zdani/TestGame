@@ -2461,6 +2461,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioMixer: {fileID: 24100000, guid: cc5a9d339b8af3c4889d05e7ee19c2c9, type: 2}
+  volumeSlider: {fileID: 0}
   defaultVolume: 0.7
   backgroundMusic: {fileID: 0}
   bossMusic: {fileID: 0}
@@ -3195,7 +3196,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Programming
+  m_text: Level Design / Programming
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3474,7 +3475,7 @@ MonoBehaviour:
   title: {fileID: 700693712}
   gameManager: {fileID: 1611030821}
   fadeInDuration: 1
-  fadeOutDuration: 2
+  fadeOutDuration: 1
 --- !u!225 &2066370229
 CanvasGroup:
   m_ObjectHideFlags: 0
