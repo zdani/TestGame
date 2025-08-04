@@ -171,8 +171,8 @@ TextureImporter:
         y: 124
         width: 398
         height: 738
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.5272088, y: 0.027509902}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -193,8 +193,8 @@ TextureImporter:
         y: 127
         width: 430
         height: 728
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.46474227, y: 0.012094476}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -215,8 +215,8 @@ TextureImporter:
         y: 124
         width: 580
         height: 758
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.67550635, y: 0.025690245}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -233,12 +233,12 @@ TextureImporter:
       name: zombie_animation_updated_with_death_3
       rect:
         serializedVersion: 2
-        x: 1697
+        x: 1699
         y: 127
         width: 623
         height: 753
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.62515163, y: 0.0110356705}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -260,7 +260,7 @@ TextureImporter:
         width: 971
         height: 190
       alignment: 9
-      pivot: {x: 0.48022887, y: 1.81352}
+      pivot: {x: 0.5, y: 0.2}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
