@@ -28,15 +28,15 @@ public abstract class Enemy : MonoBehaviour, IHealthManager
     public float CurrentHealth => currentHealth;
     public float MaxHealth => maxHealth;
     public bool IsAlive => currentHealth > 0f;
-    
+
     protected virtual void Start()
     {
         // Initialize health
         currentHealth = maxHealth;
-        
+
         // Get sprite renderer for flashing
         spriteRenderer = GetComponent<SpriteRenderer>();
-        
+
         // Store the original sprite color for flashing
         if (spriteRenderer != null)
         {
@@ -44,6 +44,9 @@ public abstract class Enemy : MonoBehaviour, IHealthManager
         }
 
         playerTransform = FindFirstObjectByType<Player>()?.transform;
+        
+        // Ensure enemy sprites are drawn on top of the player so you can see their attacks
+        spriteRenderer.sortingOrder = 1;
         
         // Base initialization - can be overridden by derived classes
     }
@@ -162,6 +165,8 @@ public abstract class Enemy : MonoBehaviour, IHealthManager
     
     protected virtual void OnDeath()
     {
+        // Ensure dead enemies appear behind the player
+        spriteRenderer.sortingOrder = -1;
         Debug.Log($"{enemyName} has died!");
     }
     
