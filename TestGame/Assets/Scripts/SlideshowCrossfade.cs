@@ -92,6 +92,6 @@ public class SlideshowCrossfade : MonoBehaviour
 
     public void BackToStartMenu()
     {
-        SceneManager.LoadScene("Start Game Menu");
+        SceneManager.LoadScene("StartGame");
     }
 }
