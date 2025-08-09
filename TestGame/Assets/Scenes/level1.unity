@@ -102658,6 +102658,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 8f4fdc2ce5be674478487127318baf21, type: 3}
+    - target: {fileID: 4366883828094524221, guid: a71e4b4f4611bf942aea448063c6f301, type: 3}
+      propertyPath: m_Name
+      value: TryAgainText
+      objectReference: {fileID: 0}
     - target: {fileID: 4647876870875477104, guid: a71e4b4f4611bf942aea448063c6f301, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 1
@@ -102688,11 +102692,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5687998780241680928, guid: a71e4b4f4611bf942aea448063c6f301, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 424.2072
+      value: 340
       objectReference: {fileID: 0}
     - target: {fileID: 5687998780241680928, guid: a71e4b4f4611bf942aea448063c6f301, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 113.3684
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 5687998780241680928, guid: a71e4b4f4611bf942aea448063c6f301, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -102700,7 +102704,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5687998780241680928, guid: a71e4b4f4611bf942aea448063c6f301, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -444
+      value: -470
+      objectReference: {fileID: 0}
+    - target: {fileID: 6184568098707929094, guid: a71e4b4f4611bf942aea448063c6f301, type: 3}
+      propertyPath: m_text
+      value: Try Again
       objectReference: {fileID: 0}
     - target: {fileID: 6184568098707929094, guid: a71e4b4f4611bf942aea448063c6f301, type: 3}
       propertyPath: m_fontSize
@@ -102714,13 +102722,21 @@ PrefabInstance:
       propertyPath: m_fontSizeBase
       value: 60
       objectReference: {fileID: 0}
+    - target: {fileID: 7252071453366181913, guid: a71e4b4f4611bf942aea448063c6f301, type: 3}
+      propertyPath: m_Name
+      value: TryAgainButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 7252071453366181913, guid: a71e4b4f4611bf942aea448063c6f301, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7938396185195348787, guid: a71e4b4f4611bf942aea448063c6f301, type: 3}
       propertyPath: m_Name
       value: GameOverScreen
       objectReference: {fileID: 0}
     - target: {fileID: 7938396185195348787, guid: a71e4b4f4611bf942aea448063c6f301, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
