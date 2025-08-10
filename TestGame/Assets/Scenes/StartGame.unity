@@ -2349,7 +2349,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 0.5
+  m_Volume: 0.05
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -2461,12 +2461,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioMixer: {fileID: 24100000, guid: cc5a9d339b8af3c4889d05e7ee19c2c9, type: 2}
-  volumeSlider: {fileID: 0}
+  volumeSlider: {fileID: 1722374481}
   defaultVolume: 0.7
-  backgroundMusic: {fileID: 0}
-  bossMusic: {fileID: 0}
-  fadeOutDuration: 0.3
+  startMenuMusic: {fileID: 8300000, guid: 60d2c0f7662260d4b83ff84619610eef, type: 3}
+  levelMusic: {fileID: 8300000, guid: b4515753d6c543a45a1c4c1061fb6126, type: 3}
+  bossMusic: {fileID: 8300000, guid: b2cd2d359c9ddf844ae7d7d2a51257d4, type: 3}
+  finalCutsceneMusic: {fileID: 8300000, guid: df0fb9a453a6a6a4d8142c996ba05703, type: 3}
+  preBossFadeOutDuration: 0.3
   delayBeforeBossMusic: 1
+  bossMusicVolumeIncrease: 0.1
+  musicAudioSource: {fileID: 1570520840}
 --- !u!1 &1576348394
 GameObject:
   m_ObjectHideFlags: 0
@@ -2751,6 +2755,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2066370225}
     m_Modifications:
+    - target: {fileID: 1146303613222426965, guid: 0eb10983a0e1a8a4fbe3f38ef413a17c, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1570520842}
+    - target: {fileID: 1146303613222426965, guid: 0eb10983a0e1a8a4fbe3f38ef413a17c, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SetVolume
+      objectReference: {fileID: 0}
+    - target: {fileID: 1146303613222426965, guid: 0eb10983a0e1a8a4fbe3f38ef413a17c, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: AudioManager, Assembly-CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 1958672628318821380, guid: 0eb10983a0e1a8a4fbe3f38ef413a17c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -2851,7 +2867,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4804908040901978488, guid: 0eb10983a0e1a8a4fbe3f38ef413a17c, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -2871,6 +2888,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2829091931911860436, guid: 0eb10983a0e1a8a4fbe3f38ef413a17c, type: 3}
   m_PrefabInstance: {fileID: 1614578579}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1722374481 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1146303613222426965, guid: 0eb10983a0e1a8a4fbe3f38ef413a17c, type: 3}
+  m_PrefabInstance: {fileID: 1614578579}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1842262617
 GameObject:
   m_ObjectHideFlags: 0
@@ -3474,7 +3502,8 @@ MonoBehaviour:
   blackPanel: {fileID: 725175417}
   title: {fileID: 700693712}
   gameManager: {fileID: 1611030821}
-  fadeInDuration: 1
+  audioManager: {fileID: 1570520842}
+  fadeInDuration: 2
   fadeOutDuration: 1
 --- !u!225 &2066370229
 CanvasGroup:

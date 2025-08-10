@@ -6,12 +6,13 @@ public class StartMenu : MonoBehaviour
     public GameObject blackPanel;   // Assign in inspector
     public GameObject title;        // Assign in inspector
     public GameManager gameManager; // Assign in inspector
+    public AudioManager audioManager; // Assign in inspector
 
     private CanvasGroup blackCanvas;
     private CanvasGroup titleCanvas;
 
     public float fadeInDuration = 1f;
-    public float fadeOutDuration = 2f;
+    public float fadeOutDuration = 1f;
 
     void Start()
     {
@@ -47,6 +48,7 @@ public class StartMenu : MonoBehaviour
     {
         // Start the fade out sequence
         StartCoroutine(FadeOutSequence());
+        StartCoroutine(audioManager.FadeMasterVolumeTo(0f, fadeOutDuration));
     }
 
     IEnumerator FadeOutSequence()
