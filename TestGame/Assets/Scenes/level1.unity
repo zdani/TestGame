@@ -64810,6 +64810,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 469530991364578842, guid: 17e13cd806406e04589db6953a252182, type: 3}
+      propertyPath: m_Volume
+      value: 0.3
+      objectReference: {fileID: 0}
     - target: {fileID: 1008893781474412776, guid: 17e13cd806406e04589db6953a252182, type: 3}
       propertyPath: m_Name
       value: Player Wizard
@@ -64853,6 +64857,10 @@ PrefabInstance:
     - target: {fileID: 3031331951272698403, guid: 17e13cd806406e04589db6953a252182, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8691692074631212765, guid: 17e13cd806406e04589db6953a252182, type: 3}
+      propertyPath: m_Volume
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 9090110369973755013, guid: 17e13cd806406e04589db6953a252182, type: 3}
       propertyPath: _healthBarSprite
@@ -93303,8 +93311,8 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 24300002, guid: cc5a9d339b8af3c4889d05e7ee19c2c9, type: 2}
   m_audioClip: {fileID: 8300000, guid: b4515753d6c543a45a1c4c1061fb6126, type: 3}
   m_Resource: {fileID: 8300000, guid: b4515753d6c543a45a1c4c1061fb6126, type: 3}
-  m_PlayOnAwake: 1
-  m_Volume: 1
+  m_PlayOnAwake: 0
+  m_Volume: 0.25
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -93401,12 +93409,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioMixer: {fileID: 24100000, guid: cc5a9d339b8af3c4889d05e7ee19c2c9, type: 2}
-  volumeSlider: {fileID: 0}
+  volumeSlider: {fileID: 534902431323602753}
   defaultVolume: 0.7
-  backgroundMusic: {fileID: 8300000, guid: b4515753d6c543a45a1c4c1061fb6126, type: 3}
+  startMenuMusic: {fileID: 8300000, guid: 60d2c0f7662260d4b83ff84619610eef, type: 3}
+  levelMusic: {fileID: 8300000, guid: b4515753d6c543a45a1c4c1061fb6126, type: 3}
   bossMusic: {fileID: 8300000, guid: b2cd2d359c9ddf844ae7d7d2a51257d4, type: 3}
-  fadeOutDuration: 0.3
+  finalCutsceneMusic: {fileID: 8300000, guid: df0fb9a453a6a6a4d8142c996ba05703, type: 3}
+  preBossFadeOutDuration: 0.3
   delayBeforeBossMusic: 1
+  bossMusicVolumeIncrease: 0.1
+  musicAudioSource: {fileID: 1488206313}
 --- !u!4 &1488206315
 Transform:
   m_ObjectHideFlags: 0
@@ -100346,7 +100358,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4795898665970628651, guid: cb47ef0674cd33f44a281a94d5b36a41, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5177874438114931622, guid: cb47ef0674cd33f44a281a94d5b36a41, type: 3}
       propertyPath: m_AnchorMax.y
@@ -101545,6 +101557,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0eb10983a0e1a8a4fbe3f38ef413a17c, type: 3}
+--- !u!114 &534902431323602753 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1146303613222426965, guid: 0eb10983a0e1a8a4fbe3f38ef413a17c, type: 3}
+  m_PrefabInstance: {fileID: 534902431323602752}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1029880192622283845
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -102736,7 +102759,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7938396185195348787, guid: a71e4b4f4611bf942aea448063c6f301, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

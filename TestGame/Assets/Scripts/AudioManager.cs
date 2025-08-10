@@ -18,13 +18,13 @@ public class AudioManager : MonoBehaviour
     public AudioClip finalCutsceneMusic;
 
     [Header("Timing")]
-    public float fadeOutDuration = 0.3f;
+    public float preBossFadeOutDuration = 0.3f;
     public float delayBeforeBossMusic = 1f;
+    public float bossMusicVolumeIncrease = 0.1f;
 
     [Header("Runtime")]
-    public AudioSource musicAudioSource; // Assign in inspector
+    public AudioSource musicAudioSource;
 
-    // internal
     private float savedVolumeLinear = 0.7f; // linear 0..1 (target for the fade)
     private const float mixerSilentDB = -80f; // dB value considered silence
 
@@ -72,7 +72,7 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    /// Called by the UI slider OnValueChanged(float).  Sets master volume (in dB) and saves the linear value.
+    // Called by the UI slider OnValueChanged(float).  Sets master volume (in dB) and saves the linear value.
     public void SetVolume(float volume)
     {
         // convert 0..1 to decibels and set the mixer param
@@ -84,7 +84,7 @@ public class AudioManager : MonoBehaviour
         PlayerPrefs.Save();
     }
 
-    /// Set mixer parameter immediately using a linear 0..1 value (does not call PlayerPrefs).
+    // Set mixer parameter immediately using a linear 0..1 value (does not call PlayerPrefs).
     private void SetMixerToLinearVolume(float linear)
     {
         float dB = Mathf.Log10(Mathf.Clamp(linear, 0.0001f, 1f)) * 20f;
@@ -102,15 +102,15 @@ public class AudioManager : MonoBehaviour
         float t = 0f;
 
         // Fade out AudioSource volume (not master mixer)
-        while (t < fadeOutDuration)
+        while (t < preBossFadeOutDuration)
         {
             t += Time.deltaTime;
-            musicAudioSource.volume = Mathf.Lerp(volumeBeforeFade, 0f, t / fadeOutDuration);
+            musicAudioSource.volume = Mathf.Lerp(volumeBeforeFade, 0f, t / preBossFadeOutDuration);
             yield return null;
         }
 
         musicAudioSource.Stop();
-        musicAudioSource.volume = volumeBeforeFade;
+        musicAudioSource.volume = volumeBeforeFade + bossMusicVolumeIncrease;
 
         // Wait before starting boss music
         yield return new WaitForSeconds(delayBeforeBossMusic);
@@ -119,33 +119,30 @@ public class AudioManager : MonoBehaviour
         PlayLoopedMusic(musicAudioSource, bossMusic, true);
     }
 
-    /// <summary>
-    /// Fades the MasterVolume mixer parameter from silence up to the target linear volume.
-    /// </summary>
-    private IEnumerator FadeMasterVolumeTo(float targetLinearVolume, float duration)
+    // Fades the MasterVolume mixer parameter from silence up to the target linear volume.
+    public IEnumerator FadeMasterVolumeTo(float targetVolume, float duration)
     {
-        // Make sure duration is positive
-        if (duration <= 0f)
-        {
-            SetMixerToLinearVolume(targetLinearVolume);
-            yield break;
-        }
+        float startVolume;
+        audioMixer.GetFloat("MasterVolume", out startVolume);
 
-        float startDB = mixerSilentDB;
-        float targetDB = Mathf.Log10(Mathf.Clamp(targetLinearVolume, 0.0001f, 1f)) * 20f;
-        float t = 0f;
+        // AudioMixer parameters are usually in decibels, so linear fades don't sound right
+        // Convert target volume to decibels if you were storing it as a linear 0–1 value
+        float startVolLin = Mathf.Pow(10f, startVolume / 20f);
+        float targetVolLin = Mathf.Clamp01(targetVolume);
 
-        while (t < duration)
+        float timer = 0f;
+        while (timer < duration)
         {
-            t += Time.deltaTime;
-            float alpha = Mathf.Clamp01(t / duration);
-            float currentDB = Mathf.Lerp(startDB, targetDB, alpha);
-            audioMixer.SetFloat("MasterVolume", currentDB);
+            timer += Time.deltaTime;
+            float newVolLin = Mathf.Lerp(startVolLin, targetVolLin, timer / duration);
+            float newVolDb = Mathf.Log10(Mathf.Max(newVolLin, 0.0001f)) * 20f;
+            audioMixer.SetFloat("MasterVolume", newVolDb);
             yield return null;
         }
 
-        // ensure final value is exact
-        audioMixer.SetFloat("MasterVolume", targetDB);
+        // Final snap to ensure exact target
+        float finalVolDb = Mathf.Log10(Mathf.Max(targetVolLin, 0.0001f)) * 20f;
+        audioMixer.SetFloat("MasterVolume", finalVolDb);
     }
 
     private void PlayLoopedMusic(AudioSource source, AudioClip musicClip, bool isLoop)

@@ -491,7 +491,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Continue Loop
+  m_text: Continue Loop?
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -734,6 +734,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1184679994}
+  - component: {fileID: 1184679995}
   - component: {fileID: 1184679993}
   m_Layer: 0
   m_Name: AudioManager
@@ -754,8 +755,8 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 24300002, guid: cc5a9d339b8af3c4889d05e7ee19c2c9, type: 2}
   m_audioClip: {fileID: 8300000, guid: df0fb9a453a6a6a4d8142c996ba05703, type: 3}
   m_Resource: {fileID: 8300000, guid: df0fb9a453a6a6a4d8142c996ba05703, type: 3}
-  m_PlayOnAwake: 1
-  m_Volume: 1
+  m_PlayOnAwake: 0
+  m_Volume: 0.15
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -854,6 +855,29 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1184679995
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1184679991}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91fda45ed27f01e4880dcddd70e47131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioMixer: {fileID: 24100000, guid: cc5a9d339b8af3c4889d05e7ee19c2c9, type: 2}
+  volumeSlider: {fileID: 0}
+  defaultVolume: 0.7
+  startMenuMusic: {fileID: 8300000, guid: 60d2c0f7662260d4b83ff84619610eef, type: 3}
+  levelMusic: {fileID: 8300000, guid: b4515753d6c543a45a1c4c1061fb6126, type: 3}
+  bossMusic: {fileID: 8300000, guid: b2cd2d359c9ddf844ae7d7d2a51257d4, type: 3}
+  finalCutsceneMusic: {fileID: 8300000, guid: df0fb9a453a6a6a4d8142c996ba05703, type: 3}
+  preBossFadeOutDuration: 0.3
+  delayBeforeBossMusic: 1
+  bossMusicVolumeIncrease: 0.1
+  musicAudioSource: {fileID: 1184679993}
 --- !u!1 &1187049730
 GameObject:
   m_ObjectHideFlags: 0
@@ -968,7 +992,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -201}
-  m_SizeDelta: {x: 580, y: 120}
+  m_SizeDelta: {x: 620, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!225 &1465227102
 CanvasGroup:
